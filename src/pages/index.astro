@@ -1,49 +1,26 @@
 ---
 import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
-import Header from '../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import '../styles/global.css';
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<BaseHead title="jaddenpicardal" description="jadden picardal" />
 	</head>
 	<body>
-		<Header />
 		<main>
-			<h1>🧑‍🚀 Hello, Astronaut!</h1>
-			<p>
-				Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This template
-				serves as a lightweight, minimally-styled starting point for anyone looking to build a personal
-				website, blog, or portfolio with Astro.
-			</p>
-			<p>
-				This template comes with a few integrations already configured in your
-				<code>astro.config.mjs</code> file. You can customize your setup with
-				<a href="https://astro.build/integrations">Astro Integrations</a> to add tools like Tailwind,
-				React, or Vue to your project.
-			</p>
-			<p>Here are a few ideas on how to get started with the template:</p>
-			<ul>
-				<li>Edit this page in <code>src/pages/index.astro</code></li>
-				<li>Edit the site header items in <code>src/components/Header.astro</code></li>
-				<li>Add your name to the footer in <code>src/components/Footer.astro</code></li>
-				<li>Check out the included blog posts in <code>src/content/blog/</code></li>
-				<li>Customize the blog post page layout in <code>src/layouts/BlogPost.astro</code></li>
-			</ul>
-			<p>
-				Have fun! If you get stuck, remember to
-				<a href="https://docs.astro.build/">read the docs</a>
-				or <a href="https://astro.build/chat">join us on Discord</a> to ask questions.
-			</p>
-			<p>
-				Looking for a blog template with a bit more personality? Check out
-				<a href="https://github.com/Charca/astro-blog-template">astro-blog-template</a>
-				by <a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-			</p>
+			<div class="content">
+				<p>Hi, I'm Jadden Picardal. <span class="email">jadden [at] jam [dot] ms</span></p>
+				
+				<p>I'm a programmer and designer, currently finishing up my BSCompeE at <a href="https://www.purdue.edu/" target="_blank">Purdue</a> (Fall 2026).</p>
+
+				<p>Currently working on experimental designs and works for startups at <a href="https://lowercase.club/" target="_blank">lowercase club</a> & XR simulations at the <a href="https://envision.center" target="_blank">Envision Center</a>.</p>
+
+				<p>I also make <a href="https://jam.ms" target="_blank">games</a> with friends and edit <a href="https://tiktok.com/@okigarakii" target="_blank">videos</a>.</p>
+
+				<p>Links... <a href="https://github.com/" target="_blank">GitHub</a>, <a href="https://www.linkedin.com/in/jadden-picardal" target="_blank">LinkedIn</a>, <a href="https://www.are.na/jadden-picardal/jadden-picardal-4h2pfujye8i" target="_blank">Are.na</a>, <a href="https://x.com/igarakii" target="_blank">Twitter</a>.<br />Just wanna chat? <a href="https://cal.com/jadden" target="_blank">Let's find a time</a>.</p>
+			</div>
 		</main>
-		<Footer />
 	</body>
 </html>
