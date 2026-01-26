@@ -1,6 +1,6 @@
 @font-face {
 	font-family: "Redaction";
-	src: url("/fonts/Redaction-Regular.woff2") format("woff2");
+	src: url("/fonts/Redaction_20-Regular.woff2") format("woff2");
 	font-weight: 400;
 	font-style: normal;
 }
@@ -25,15 +25,18 @@ body {
 	background: white;
 	color: black;
 	overflow: hidden;
+	display: flex;
+	flex-direction: column;
 }
 
 main {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	height: 100vh;
+	flex: 1;
 	padding: 2rem;
 	box-sizing: border-box;
+	min-height: 0;
 }
 
 .content {
@@ -58,4 +61,19 @@ a:hover {
 
 p {
 	margin-bottom: 1em;
+}
+
+footer {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	padding: 1rem 2rem;
+	text-align: center;
+	font-size: 12px;
+	background: white;
+}
+
+footer p {
+	margin: 0;
 }
