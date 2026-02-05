@@ -101,19 +101,21 @@ const projects = [
 
 			<section class="projects-gallery">
 				<div class="gallery-grid">
-					{projects.map((project) => {
+					{projects.map((project, i) => {
 						const isWide = project.aspectRatio === '19/6' || project.aspectRatio === '16/9';
 						const isSquare = project.aspectRatio === '1/1';
 						const gridSpan = isWide ? 'grid-column: span 2;' : '';
 						const squareClass = isSquare ? 'gallery-item-square' : '';
+						const isFirstRow = i < 4;
 						return project.hasPage ? (
 							<a href={project.hasPage} class={squareClass} style={`--aspect-ratio: ${project.aspectRatio}; ${gridSpan}`}>
 								<img
 									src={project.image}
 									alt={project.title}
-									loading="lazy"
+									loading={isFirstRow ? "eager" : "lazy"}
 									class="gallery-image"
 									decoding="async"
+									fetchpriority={isFirstRow ? "high" : "auto"}
 								/>
 							</a>
 						) : (
@@ -121,10 +123,11 @@ const projects = [
 								<img
 									src={project.image}
 									alt={project.title}
-									loading="lazy"
+									loading={isFirstRow ? "eager" : "lazy"}
 									class="gallery-image"
 									style={`aspect-ratio: ${project.aspectRatio};`}
 									decoding="async"
+									fetchpriority={isFirstRow ? "high" : "auto"}
 								/>
 							</div>
 						);
@@ -145,5 +148,14 @@ const projects = [
 				</a>
 			</nav>
 		</footer>
+	<script>
+	document.querySelectorAll<HTMLImageElement>('.gallery-image').forEach((img) => {
+		if (img.complete) {
+			img.classList.add('loaded');
+		} else {
+			img.addEventListener('load', () => img.classList.add('loaded'), { once: true });
+		}
+	});
+	</script>
 	</body>
 </html>
