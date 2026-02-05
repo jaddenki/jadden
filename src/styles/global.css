@@ -12,7 +12,7 @@
 
 *::selection {
 	background-color: black;
-	color: #fcfcfc;
+	color: white;
 }
 
 html, body {
@@ -22,7 +22,7 @@ html, body {
 }
 
 body {
-	background: #fcfcfc;
+	background: white;
 	color: black;
 	overflow: hidden;
 	display: flex;
@@ -96,7 +96,7 @@ a {
 
 a:hover {
 	background-color: black;
-	color: #fcfcfc;
+	color: white;
 	text-decoration: none;
 }
 
@@ -125,7 +125,7 @@ footer {
 	left: 0;
 	right: 0;
 	padding: 1rem 2rem;
-	background: #fcfcfc;
+	background: white;
 	display: flex;
 	align-items: center;
 }
@@ -149,7 +149,7 @@ footer {
 
 .webring-link:hover {
 	background-color: black;
-	color: #fcfcfc;
+	color: white;
 }
 
 .webring-logo {
