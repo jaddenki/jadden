@@ -83,12 +83,6 @@ const projects = [
 	<head>
 		<BaseHead title="jadden picardal" description="jadden picardal" />
 		<link rel="preload" as="image" href="https://github.com/jaddenki.png" fetchpriority="high" />
-		<link rel="preload" as="image" href="https://github.com/lowercaseclub.png" />
-		<link rel="preload" as="image" href="https://github.com/fruitjamms.png" />
-		<link rel="preload" as="image" href="https://www.google.com/s2/favicons?domain=envision.center&sz=64" />
-		{projects.slice(0, 6).map((project) => (
-			<link rel="preload" as="image" href={project.image} />
-		))}
 	</head>
 	<body>
 		<main class="homepage-container">
@@ -107,21 +101,19 @@ const projects = [
 
 			<section class="projects-gallery">
 				<div class="gallery-grid">
-					{projects.map((project, i) => {
+					{projects.map((project) => {
 						const isWide = project.aspectRatio === '19/6' || project.aspectRatio === '16/9';
 						const isSquare = project.aspectRatio === '1/1';
 						const gridSpan = isWide ? 'grid-column: span 2;' : '';
 						const squareClass = isSquare ? 'gallery-item-square' : '';
-						const isAboveFold = i < 6;
 						return project.hasPage ? (
 							<a href={project.hasPage} class={squareClass} style={`--aspect-ratio: ${project.aspectRatio}; ${gridSpan}`}>
 								<img
 									src={project.image}
 									alt={project.title}
-									loading={isAboveFold ? "eager" : "lazy"}
+									loading="lazy"
 									class="gallery-image"
-									decoding={isAboveFold ? "sync" : "async"}
-									fetchpriority={isAboveFold ? "high" : "low"}
+									decoding="async"
 								/>
 							</a>
 						) : (
@@ -129,11 +121,10 @@ const projects = [
 								<img
 									src={project.image}
 									alt={project.title}
-									loading={isAboveFold ? "eager" : "lazy"}
+									loading="lazy"
 									class="gallery-image"
 									style={`aspect-ratio: ${project.aspectRatio};`}
-									decoding={isAboveFold ? "sync" : "async"}
-									fetchpriority={isAboveFold ? "high" : "low"}
+									decoding="async"
 								/>
 							</div>
 						);
