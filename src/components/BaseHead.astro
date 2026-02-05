@@ -36,12 +36,12 @@ const { title, description } = Astro.props;
 <meta property="og:url" content={Astro.url} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content="/img/page.png" />
+<meta property="og:image" content={new URL('/img/page.png', Astro.site)} />
 
 <!-- Twitter -->
-<meta property="twitter:card" content="summary" />
+<meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:url" content={Astro.url} />
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
-<meta property="twitter:image" content="/img/page.png" />
+<meta property="twitter:image" content={new URL('/img/page.png', Astro.site)} />
 <script defer src="https://umami.purduehackers.com/script.js" data-website-id="685a1d18-887b-466a-8bf1-204a65db316e"></script>

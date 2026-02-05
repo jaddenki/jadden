@@ -149,12 +149,15 @@ const projects = [
 			</nav>
 		</footer>
 	<script>
-	document.querySelectorAll<HTMLImageElement>('.gallery-image').forEach((img) => {
-		if (img.complete) {
-			img.classList.add('loaded');
-		} else {
-			img.addEventListener('load', () => img.classList.add('loaded'), { once: true });
-		}
+	const images = document.querySelectorAll<HTMLImageElement>('.gallery-image');
+	const loadPromises = Array.from(images).map((img) =>
+		img.complete
+			? Promise.resolve()
+			: new Promise<void>((resolve) => img.addEventListener('load', () => resolve(), { once: true }))
+	);
+
+	Promise.all(loadPromises).then(() => {
+		images.forEach((img) => img.classList.add('loaded'));
 	});
 	</script>
 	</body>
