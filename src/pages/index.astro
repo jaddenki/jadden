@@ -83,6 +83,10 @@ const projects = [
 	<head>
 		<BaseHead title="jadden picardal" description="jadden picardal" />
 		<link rel="preload" as="image" href="https://github.com/jaddenki.png" fetchpriority="high" />
+		{/* Preload all gallery images so they start loading immediately */}
+		{projects.map((project) => (
+			<link rel="preload" as="image" href={project.image} />
+		))}
 	</head>
 	<body>
 		<main class="homepage-container">
@@ -101,21 +105,20 @@ const projects = [
 
 			<section class="projects-gallery">
 				<div class="gallery-grid">
-					{projects.map((project, i) => {
+					{projects.map((project) => {
 						const isWide = project.aspectRatio === '19/6' || project.aspectRatio === '16/9';
 						const isSquare = project.aspectRatio === '1/1';
 						const gridSpan = isWide ? 'grid-column: span 2;' : '';
 						const squareClass = isSquare ? 'gallery-item-square' : '';
-						const isFirstRow = i < 4;
 						return project.hasPage ? (
 							<a href={project.hasPage} class={squareClass} style={`--aspect-ratio: ${project.aspectRatio}; ${gridSpan}`}>
 								<img
 									src={project.image}
 									alt={project.title}
-									loading={isFirstRow ? "eager" : "lazy"}
+									loading="eager"
 									class="gallery-image"
 									decoding="async"
-									fetchpriority={isFirstRow ? "high" : "auto"}
+									fetchpriority="high"
 								/>
 							</a>
 						) : (
@@ -123,11 +126,11 @@ const projects = [
 								<img
 									src={project.image}
 									alt={project.title}
-									loading={isFirstRow ? "eager" : "lazy"}
+									loading="eager"
 									class="gallery-image"
 									style={`aspect-ratio: ${project.aspectRatio};`}
 									decoding="async"
-									fetchpriority={isFirstRow ? "high" : "auto"}
+									fetchpriority="high"
 								/>
 							</div>
 						);
@@ -149,15 +152,14 @@ const projects = [
 			</nav>
 		</footer>
 	<script>
+	// Show each image immediately as it loads (no waiting for all)
 	const images = document.querySelectorAll<HTMLImageElement>('.gallery-image');
-	const loadPromises = Array.from(images).map((img) =>
-		img.complete
-			? Promise.resolve()
-			: new Promise<void>((resolve) => img.addEventListener('load', () => resolve(), { once: true }))
-	);
-
-	Promise.all(loadPromises).then(() => {
-		images.forEach((img) => img.classList.add('loaded'));
+	images.forEach((img) => {
+		if (img.complete) {
+			img.classList.add('loaded');
+		} else {
+			img.addEventListener('load', () => img.classList.add('loaded'), { once: true });
+		}
 	});
 	</script>
 	</body>
