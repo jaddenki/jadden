@@ -82,17 +82,22 @@ const projects = [
 <html lang="en">
 	<head>
 		<BaseHead title="jadden picardal" description="jadden picardal" />
+		<!-- Preload critical above-the-fold images -->
+		<link rel="preload" as="image" href="https://github.com/jaddenki.png" fetchpriority="high" />
+		<link rel="preload" as="image" href="https://github.com/lowercaseclub.png" />
+		<link rel="preload" as="image" href="https://github.com/fruitjamms.png" />
+		<link rel="preload" as="image" href="https://www.google.com/s2/favicons?domain=envision.center&sz=64" />
 	</head>
 	<body>
 		<main class="homepage-container">
 			<div class="content">
-				<p>Hi, I'm Jadden Picardal. <span class="email">jadden [at] jam [dot] ms</span></p>
+				<p>Hi, I'm <img src="https://github.com/jaddenki.png" alt="jaddens gh" class="inline-avatar" fetchpriority="high" width="16" height="16" /> Jadden Picardal. <span class="email">jadden [at] jam [dot] ms</span></p>
 				
 				<p>I'm a programmer and designer, currently finishing up my BSCompeE at <a href="https://www.purdue.edu/" target="_blank">Purdue</a> (Fall 2026)</p>
 
-				<p>Currently creating experimental work for startups at <a href="https://lowercase.club/" target="_blank">lowercase</a> & XR simulations at the <a href="https://envision.center" target="_blank">Envision Center</a></p>
+				<p>Currently creating experimental work for startups at <img src="https://github.com/lowercaseclub.png" alt="lowercase gh" class="inline-avatar" width="16" height="16" /> <a href="https://lowercase.club/" target="_blank">lowercase</a> & XR sims at the <img src="https://www.google.com/s2/favicons?domain=envision.center&sz=64" alt="ec favicon" class="inline-avatar" width="16" height="16" /> <a href="https://envision.center" target="_blank">Envision Center</a></p>
 
-				<p>I also make <a href="https://jam.ms" target="_blank">games</a> with friends and edit <a href="https://tiktok.com/@okigarakii" target="_blank">videos</a></p>
+				<p>I also make <img src="https://github.com/fruitjamms.png" alt="jamms gh" class="inline-avatar" width="16" height="16" /> <a href="https://jam.ms" target="_blank">games</a> with friends and edit <a href="https://tiktok.com/@okigarakii" target="_blank">videos</a></p>
 
 				<p>Links... <a href="https://github.com/jaddenki" target="_blank">GitHub</a>, <a href="https://www.linkedin.com/in/jadden-picardal" target="_blank">LinkedIn</a>, <a href="https://www.are.na/jadden-picardal/jadden-picardal-4h2pfujye8i" target="_blank">Are.na</a>, <a href="https://x.com/igarakii" target="_blank">Twitter</a><br />Just wanna chat? <a href="https://cal.com/jadden" target="_blank">Let's find a time</a></p>
 				<p>Populating this page... Stay tuned</p>
@@ -112,6 +117,7 @@ const projects = [
 									alt={project.title}
 									loading="lazy"
 									class="gallery-image"
+									decoding="async"
 								/>
 							</a>
 						) : (
@@ -122,6 +128,7 @@ const projects = [
 									loading="lazy"
 									class="gallery-image"
 									style={`aspect-ratio: ${project.aspectRatio};`}
+									decoding="async"
 								/>
 							</div>
 						);

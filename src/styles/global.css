@@ -12,7 +12,7 @@
 
 *::selection {
 	background-color: black;
-	color: white;
+	color: #fcfcfc;
 }
 
 html, body {
@@ -22,7 +22,7 @@ html, body {
 }
 
 body {
-	background: white;
+	background: #fcfcfc;
 	color: black;
 	overflow: hidden;
 	display: flex;
@@ -56,6 +56,7 @@ main {
 	min-width: 0;
 	display: flex;
 	align-items: flex-start;
+	content-visibility: auto;
 }
 
 .gallery-grid {
@@ -95,8 +96,19 @@ a {
 
 a:hover {
 	background-color: black;
-	color: white;
+	color: #fcfcfc;
 	text-decoration: none;
+}
+
+.inline-avatar {
+	height: 1em;
+	width: 1em;
+	border-radius: 0;
+	object-fit: cover;
+	vertical-align: middle;
+	display: inline-block;
+	position: relative;
+	top: -1px;
 }
 
 .email {
@@ -113,7 +125,7 @@ footer {
 	left: 0;
 	right: 0;
 	padding: 1rem 2rem;
-	background: white;
+	background: #fcfcfc;
 	display: flex;
 	align-items: center;
 }
@@ -137,7 +149,7 @@ footer {
 
 .webring-link:hover {
 	background-color: black;
-	color: white;
+	color: #fcfcfc;
 }
 
 .webring-logo {

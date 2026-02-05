@@ -19,6 +19,11 @@ const { title, description } = Astro.props;
 <link rel="icon" href="/favicon.ico" />
 <meta name="generator" content={Astro.generator} />
 
+<!-- DNS Prefetch for external domains -->
+<link rel="dns-prefetch" href="https://github.com" />
+<link rel="dns-prefetch" href="https://www.google.com" />
+<link rel="dns-prefetch" href="https://d2w9rnfcy7mm78.cloudfront.net" />
+
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
 
