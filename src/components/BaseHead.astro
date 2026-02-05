@@ -19,10 +19,11 @@ const { title, description } = Astro.props;
 <link rel="icon" href="/favicon.ico" />
 <meta name="generator" content={Astro.generator} />
 
-<!-- DNS Prefetch for external domains -->
-<link rel="dns-prefetch" href="https://github.com" />
+<!-- Preconnect/prefetch for domains we load resources from -->
+<link rel="preconnect" href="https://d2w9rnfcy7mm78.cloudfront.net" crossorigin />
+<link rel="preconnect" href="https://github.com" crossorigin />
 <link rel="dns-prefetch" href="https://www.google.com" />
-<link rel="dns-prefetch" href="https://d2w9rnfcy7mm78.cloudfront.net" />
+<link rel="dns-prefetch" href="https://umami.purduehackers.com" />
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />

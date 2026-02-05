@@ -82,11 +82,13 @@ const projects = [
 <html lang="en">
 	<head>
 		<BaseHead title="jadden picardal" description="jadden picardal" />
-		<!-- Preload critical above-the-fold images -->
 		<link rel="preload" as="image" href="https://github.com/jaddenki.png" fetchpriority="high" />
 		<link rel="preload" as="image" href="https://github.com/lowercaseclub.png" />
 		<link rel="preload" as="image" href="https://github.com/fruitjamms.png" />
 		<link rel="preload" as="image" href="https://www.google.com/s2/favicons?domain=envision.center&sz=64" />
+		{projects.slice(0, 6).map((project) => (
+			<link rel="preload" as="image" href={project.image} />
+		))}
 	</head>
 	<body>
 		<main class="homepage-container">
@@ -105,19 +107,21 @@ const projects = [
 
 			<section class="projects-gallery">
 				<div class="gallery-grid">
-					{projects.map((project) => {
+					{projects.map((project, i) => {
 						const isWide = project.aspectRatio === '19/6' || project.aspectRatio === '16/9';
 						const isSquare = project.aspectRatio === '1/1';
 						const gridSpan = isWide ? 'grid-column: span 2;' : '';
 						const squareClass = isSquare ? 'gallery-item-square' : '';
+						const isAboveFold = i < 6;
 						return project.hasPage ? (
 							<a href={project.hasPage} class={squareClass} style={`--aspect-ratio: ${project.aspectRatio}; ${gridSpan}`}>
 								<img
 									src={project.image}
 									alt={project.title}
-									loading="lazy"
+									loading={isAboveFold ? "eager" : "lazy"}
 									class="gallery-image"
-									decoding="async"
+									decoding={isAboveFold ? "sync" : "async"}
+									fetchpriority={isAboveFold ? "high" : "low"}
 								/>
 							</a>
 						) : (
@@ -125,10 +129,11 @@ const projects = [
 								<img
 									src={project.image}
 									alt={project.title}
-									loading="lazy"
+									loading={isAboveFold ? "eager" : "lazy"}
 									class="gallery-image"
 									style={`aspect-ratio: ${project.aspectRatio};`}
-									decoding="async"
+									decoding={isAboveFold ? "sync" : "async"}
+									fetchpriority={isAboveFold ? "high" : "low"}
 								/>
 							</div>
 						);
@@ -138,13 +143,13 @@ const projects = [
 		</main>
 		<footer>
 			<nav class="webring-nav">
-				<a href="https://ring.purduehackers.com/previous?host=https://jaddens.page" class="webring-link" title="Previous site">
+				<a href="https://ring.purduehackers.com/previous?host=https://www.jaddens.page" class="webring-link" title="Previous site">
 					&lt;
 				</a>
 				<a href="https://ring.purduehackers.com/" class="webring-link webring-logo" title="Purdue Hackers Webring">
 					Purdue Hackers
 				</a>
-				<a href="https://ring.purduehackers.com/next?host=https://jaddens.page" class="webring-link" title="Next site">
+				<a href="https://ring.purduehackers.com/next?host=https://www.jaddens.page" class="webring-link" title="Next site">
 					&gt;
 				</a>
 			</nav>
