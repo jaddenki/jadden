@@ -86,12 +86,6 @@ main {
 	aspect-ratio: var(--aspect-ratio, 1);
 	display: block;
 	object-fit: cover;
-	opacity: 0;
-	transition: opacity 0.4s ease-out;
-}
-
-.gallery-image.loaded {
-	opacity: 1;
 }
 
 a {

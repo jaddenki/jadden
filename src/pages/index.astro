@@ -151,16 +151,5 @@ const projects = [
 				</a>
 			</nav>
 		</footer>
-	<script>
-	// Show each image immediately as it loads (no waiting for all)
-	const images = document.querySelectorAll<HTMLImageElement>('.gallery-image');
-	images.forEach((img) => {
-		if (img.complete) {
-			img.classList.add('loaded');
-		} else {
-			img.addEventListener('load', () => img.classList.add('loaded'), { once: true });
-		}
-	});
-	</script>
 	</body>
 </html>
