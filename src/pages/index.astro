@@ -3,32 +3,33 @@ import BaseHead from '../components/BaseHead.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 import '../styles/global.css';
 
-// Projects array with external image URLs
+const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
+
 const projects = [
 	{
-		title: 'morp',
-		image: 'https://d2w9rnfcy7mm78.cloudfront.net/42350831/original_5411931bb85aca65ae00985c73eedfdb.gif?1767599954',
+		title: 'infrared',
+		image: '/img/front/infrared.webm',
 		description: 'morp',
 		hasPage: '',
 		aspectRatio: '1/1'
 	},
 	{
-		title: 'morp',
-		image: 'https://d2w9rnfcy7mm78.cloudfront.net/41922877/original_16525de997cc426722f330e24acf73cb.gif?1766194662',
-		description: 'morp',
+		title: 'hello world',
+		image: '/img/front/hello_world.webm',
+		description: 'hello world',
 		hasPage: '',
 		aspectRatio: '1/1'
 	},
 	{
 		title: 'fish',
-		image: 'https://d2w9rnfcy7mm78.cloudfront.net/41923094/original_34bb43327bdda68792dc7669c3ff34fa.gif?1766195787',
+		image: '/img/front/fish.webm',
 		description: 'fish',
 		hasPage: '',
 		aspectRatio: '1/1'
 	},
 	{
 		title: 'go loco',
-		image: 'https://d2w9rnfcy7mm78.cloudfront.net/41922874/original_a0502c24981ba1f36ddb9d8e292ba479.gif?1766194658?bc=0',
+		image: '/img/front/loco.webm',
 		description: 'you make me go loco',
 		hasPage: '',
 		aspectRatio: '1/1'
@@ -36,42 +37,42 @@ const projects = [
 	
 	{
 		title: 'capy text',
-		image: 'https://d2w9rnfcy7mm78.cloudfront.net/43342889/original_6b9db25c231fae0d9c6db62c485243c3.gif?1770310998',
+		image: '/img/front/capy-text.webm',
 		description: 'morp',
 		hasPage: '',
 		aspectRatio: '16/9'
 	},
 	{
 		title: 'capy ui',
-		image: 'https://d2w9rnfcy7mm78.cloudfront.net/43342887/original_2e1fd8206449610cb7ceb3fd8c4cf0c8.gif?1770310998',
+		image: '/img/front/capy-ui.webm',
 		description: 'capy ui',
 		hasPage: '',
 		aspectRatio: '16/9'
 	},
 	{
 		title: 'indigo',
-		image: 'https://d2w9rnfcy7mm78.cloudfront.net/41922762/original_dacb9db76db129dd63c0f32fc28386c0.gif?1766194212',
+		image: '/img/front/indigo.webm',
 		description: 'you make me go loco',
 		hasPage: '',
 		aspectRatio: '1/1'
 	},
 	{
 		title: 'ankyosaur',
-		image: 'https://d2w9rnfcy7mm78.cloudfront.net/41923062/original_cd51d11b22975af7ad338255a9720c2c.gif?1766195583',
+		image: '/img/front/anklyosaur.webm',
 		description: 'you make me go loco',
 		hasPage: '',
 		aspectRatio: '1/1'
 	},
 	{
 		title: 'glass',
-		image: 'https://d2w9rnfcy7mm78.cloudfront.net/41923147/original_dfc64692327f4734a7e93ae57b721580.gif?1766196085',
+		image: '/img/front/glass.webm',
 		description: 'liquid glass',
 		hasPage: '',
 		aspectRatio: '1/1'
 	},
 	{
 		title: 'drop it',
-		image: 'https://d2w9rnfcy7mm78.cloudfront.net/43345938/original_140c92adb084c1112e2fd2bc30ba0f4a.gif?1770315986',
+		image: '/img/front/ridelikebike.webm',
 		description: 'drop it',
 		hasPage: '',
 		aspectRatio: '1/1'
@@ -84,9 +85,8 @@ const projects = [
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 		<link rel="preload" as="image" href="https://github.com/jaddenki.png" fetchpriority="high" />
-		{/* Preload all gallery images so they start loading immediately */}
 		{projects.map((project) => (
-			<link rel="preload" as="image" href={project.image} />
+			<link rel="preload" as={isVideoUrl(project.image) ? 'video' : 'image'} href={project.image} />
 		))}
 	</head>
 	<body>
@@ -111,28 +111,36 @@ const projects = [
 						const isSquare = project.aspectRatio === '1/1';
 						const gridSpan = isWide ? 'grid-column: span 2;' : '';
 						const squareClass = isSquare ? 'gallery-item-square' : '';
+						const isVideo = isVideoUrl(project.image);
+						const mediaEl = isVideo ? (
+							<video
+								src={project.image}
+								class="gallery-image"
+								style={project.hasPage ? '' : `aspect-ratio: ${project.aspectRatio};`}
+								loop
+								muted
+								autoplay
+								playsinline
+								aria-label={project.title}
+							/>
+						) : (
+							<img
+								src={project.image}
+								alt={project.title}
+								loading="eager"
+								class="gallery-image"
+								style={project.hasPage ? '' : `aspect-ratio: ${project.aspectRatio};`}
+								decoding="async"
+								fetchpriority="high"
+							/>
+						);
 						return project.hasPage ? (
 							<a href={project.hasPage} class={squareClass} style={`--aspect-ratio: ${project.aspectRatio}; ${gridSpan}`}>
-								<img
-									src={project.image}
-									alt={project.title}
-									loading="eager"
-									class="gallery-image"
-									decoding="async"
-									fetchpriority="high"
-								/>
+								{mediaEl}
 							</a>
 						) : (
 							<div class={squareClass} style={gridSpan}>
-								<img
-									src={project.image}
-									alt={project.title}
-									loading="eager"
-									class="gallery-image"
-									style={`aspect-ratio: ${project.aspectRatio};`}
-									decoding="async"
-									fetchpriority="high"
-								/>
+								{mediaEl}
 							</div>
 						);
 					})}
