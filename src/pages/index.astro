@@ -1,83 +1,64 @@
 ---
 import BaseHead from '../components/BaseHead.astro';
+import ImageGrid from '../components/ImageGrid.astro';
+import ThemeToggle from '../components/ThemeToggle.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 import '../styles/global.css';
 
-const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
-
 const projects = [
 	{
-		title: 'infrared',
-		image: '/img/front/infrared.webm',
-		description: 'morp',
-		hasPage: '',
-		aspectRatio: '1/1'
+		src: '/img/front/infrared.webm',
+		alt: 'infrared',
+		aspectRatio: '1/1',
 	},
 	{
-		title: 'hello world',
-		image: '/img/front/hello_world.webm',
-		description: 'hello world',
-		hasPage: '',
-		aspectRatio: '1/1'
+		src: '/img/front/hello_world.webm',
+		alt: 'hello world',
+		aspectRatio: '1/1',
 	},
 	{
-		title: 'fish',
-		image: '/img/front/fish.webm',
-		description: 'fish',
-		hasPage: '',
-		aspectRatio: '1/1'
+		src: '/img/front/fish.webm',
+		alt: 'fish',
+		aspectRatio: '1/1',
 	},
 	{
-		title: 'go loco',
-		image: '/img/front/loco.webm',
-		description: 'you make me go loco',
-		hasPage: '',
-		aspectRatio: '1/1'
-	},
-	
-	{
-		title: 'capy text',
-		image: '/img/front/capy-text.webm',
-		description: 'morp',
-		hasPage: '',
-		aspectRatio: '16/9'
+		src: '/img/front/loco.webm',
+		alt: 'go loco',
+		aspectRatio: '1/1',
 	},
 	{
-		title: 'capy ui',
-		image: '/img/front/capy-ui.webm',
-		description: 'capy ui',
-		hasPage: '',
-		aspectRatio: '16/9'
+		src: '/img/front/capy-text.webm',
+		alt: 'capy text',
+		aspectRatio: '16/9',
 	},
 	{
-		title: 'indigo',
-		image: '/img/front/indigo.webm',
-		description: 'you make me go loco',
-		hasPage: '',
-		aspectRatio: '1/1'
+		src: '/img/front/capy-ui.webm',
+		alt: 'capy ui',
+		aspectRatio: '16/9',
 	},
 	{
-		title: 'ankyosaur',
-		image: '/img/front/anklyosaur.webm',
-		description: 'you make me go loco',
-		hasPage: '',
-		aspectRatio: '1/1'
+		src: '/img/front/indigo.webm',
+		alt: 'indigo',
+		aspectRatio: '1/1',
 	},
 	{
-		title: 'glass',
-		image: '/img/front/glass.webm',
-		description: 'liquid glass',
-		hasPage: '',
-		aspectRatio: '1/1'
+		src: '/img/front/anklyosaur.webm',
+		alt: 'ankyosaur',
+		aspectRatio: '1/1',
 	},
 	{
-		title: 'drop it',
-		image: '/img/front/ridelikebike.webm',
-		description: 'drop it',
-		hasPage: '',
-		aspectRatio: '1/1'
+		src: '/img/front/glass.webm',
+		alt: 'glass',
+		aspectRatio: '1/1',
+	},
+	{
+		src: '/img/front/ridelikebike.webm',
+		alt: 'drop it',
+		aspectRatio: '1/1',
 	},
 ];
+
+const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
 ---
 
 <!doctype html>
@@ -86,68 +67,28 @@ const projects = [
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 		<link rel="preload" as="image" href="https://github.com/jaddenki.png" fetchpriority="high" />
 		{projects.map((project) => (
-			<link rel="preload" as={isVideoUrl(project.image) ? 'video' : 'image'} href={project.image} />
+			<link rel="preload" as={isVideoUrl(project.src) ? 'video' : 'image'} href={project.src} />
 		))}
 	</head>
 	<body>
 		<main class="homepage-container">
 			<div class="content">
-				<p>Hi, I'm <img src="https://github.com/jaddenki.png" alt="jaddens gh" class="inline-avatar" fetchpriority="high" width="16" height="16" /> Jadden Picardal. <span class="email">jadden [at] jam [dot] ms</span>
-				
+				<p>Hi, I'm Jadden Picardal <img src="https://github.com/jaddenki.png" alt="jaddens gh" class="inline-avatar" fetchpriority="high" width="16" height="16" /> 
+				</p>
+				<!-- span class="email">jadden [at] jam [dot] ms</span> -->
 				<p>I'm a programmer and designer, currently finishing up my BSCompeE at <a href="https://www.purdue.edu/" target="_blank">Purdue</a> (Fall 2026)</p>
 
 				<p>Currently creating experimental work for startups at <img src="https://github.com/lowercaseclub.png" alt="lowercase gh" class="inline-avatar" width="16" height="16" /> <a href="https://lowercase.club/" target="_blank">lowercase</a> & XR sims at the <img src="https://www.google.com/s2/favicons?domain=envision.center&sz=64" alt="ec favicon" class="inline-avatar" width="16" height="16" /> <a href="https://envision.center" target="_blank">Envision Center</a></p>
 
-				<p>I also make <img src="https://github.com/fruitjamms.png" alt="jamms gh" class="inline-avatar" width="16" height="16" /> <a href="https://jam.ms" target="_blank">games</a> with friends and edit <a href="https://tiktok.com/@okigarakii" target="_blank">videos</a></p>
-
-				<p>Links... <a href="https://github.com/jaddenki" target="_blank">GitHub</a>, <a href="https://www.linkedin.com/in/jadden-picardal" target="_blank">LinkedIn</a>, <a href="https://www.are.na/jadden-picardal/jadden-picardal-4h2pfujye8i" target="_blank">Are.na</a>, <a href="https://x.com/igarakii" target="_blank">Twitter</a><br />Just wanna chat? <a href="https://cal.com/jadden" target="_blank">Let's find a time</a></p>
-				<p>Populating this page... Stay tuned</p>
+				<p>Links... <a href="https://github.com/jaddenki" target="_blank">GitHub</a>, <a href="https://www.linkedin.com/in/jadden-picardal" target="_blank">LinkedIn</a>, <a href="https://www.are.na/jadden-picardal/jadden-picardal-4h2pfujye8i" target="_blank">Are.na</a>, <a href="https://x.com/igarakii" target="_blank">Twitter</a></p>
+			
+			<p>Currently populating this space...</br>Read more <a href="/about">about me</a> in the meantime</p>
 			</div>
 
-			<section class="projects-gallery">
-				<div class="gallery-grid">
-					{projects.map((project) => {
-						const isWide = project.aspectRatio === '19/6' || project.aspectRatio === '16/9';
-						const isSquare = project.aspectRatio === '1/1';
-						const gridSpan = isWide ? 'grid-column: span 2;' : '';
-						const squareClass = isSquare ? 'gallery-item-square' : '';
-						const isVideo = isVideoUrl(project.image);
-						const mediaEl = isVideo ? (
-							<video
-								src={project.image}
-								class="gallery-image"
-								style={project.hasPage ? '' : `aspect-ratio: ${project.aspectRatio};`}
-								loop
-								muted
-								autoplay
-								playsinline
-								aria-label={project.title}
-							/>
-						) : (
-							<img
-								src={project.image}
-								alt={project.title}
-								loading="eager"
-								class="gallery-image"
-								style={project.hasPage ? '' : `aspect-ratio: ${project.aspectRatio};`}
-								decoding="async"
-								fetchpriority="high"
-							/>
-						);
-						return project.hasPage ? (
-							<a href={project.hasPage} class={squareClass} style={`--aspect-ratio: ${project.aspectRatio}; ${gridSpan}`}>
-								{mediaEl}
-							</a>
-						) : (
-							<div class={squareClass} style={gridSpan}>
-								{mediaEl}
-							</div>
-						);
-					})}
-				</div>
-			</section>
+			<ImageGrid items={projects} eager />
 		</main>
 		<footer>
+			<ThemeToggle />
 			<nav class="webring-nav">
 				<a href="https://ring.purduehackers.com/previous?host=https://www.jaddens.page" class="webring-link" title="Previous site">
 					&lt;

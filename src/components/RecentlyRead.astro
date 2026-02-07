@@ -1,0 +1,74 @@
+---
+interface CuriusTopic {
+  topic: string;
+}
+
+interface CuriusLink {
+  link: string;
+  title: string;
+  createdDate: string;
+  topics: CuriusTopic[];
+}
+
+let recent: CuriusLink[] = [];
+
+try {
+  const res = await fetch('https://curius.app/api/users/5584/links');
+  const { userSaved } = (await res.json()) as { userSaved: CuriusLink[] };
+  recent = userSaved.slice(0, 3);
+} catch {
+  // fail silently
+}
+---
+
+<section class="recently-read">
+  <p class="section-heading">Recently read: <a href="https://curius.app/jadden-picardal" target="_blank" rel="noopener noreferrer">Curius</a></p>
+  <ul class="section-list section-skeleton" id="recently-read-list" aria-hidden="true">
+    {[1, 2, 3].map(() => (
+      <li class="section-item">
+        <div class="section-row">
+          <span class="skeleton-line skeleton-title" />
+          <span class="skeleton-line skeleton-meta" />
+        </div>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<script define:vars={{ recent }}>
+  const list = document.getElementById('recently-read-list');
+  if (!list || !recent?.length) return;
+
+  const esc = (s) => {
+    const div = document.createElement('div');
+    div.textContent = s ?? '';
+    return div.innerHTML;
+  };
+
+  const items = recent.slice(0, 3);
+  const fill = () => {
+    list.classList.remove('section-skeleton');
+    list.removeAttribute('aria-hidden');
+    list.innerHTML = items
+    .map((item) => {
+      const date = new Date(item.createdDate).toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+      });
+      const tags = (item.topics || [])
+        .map((t) => `<span class="section-tag">#${esc(t.topic)}</span>`)
+        .join('');
+      const tagsHtml = tags ? `` : '';
+      return `<li class="section-item">
+        <div class="section-row">
+          <a href="${esc(item.link)}" target="_blank" rel="noopener noreferrer" class="section-link">${esc(item.title)}</a>
+          <span class="section-date">${date}</span>
+        </div>
+        ${tagsHtml}
+      </li>`;
+    })
+    .join('');
+  };
+  setTimeout(fill, 150);
+</script>

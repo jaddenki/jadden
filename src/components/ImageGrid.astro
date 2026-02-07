@@ -1,0 +1,59 @@
+---
+interface ImageItem {
+	src: string;
+	alt: string;
+	aspectRatio: string;
+	href?: string;
+}
+
+interface Props {
+	items: ImageItem[];
+	eager?: boolean;
+}
+
+const { items, eager = false } = Astro.props;
+const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
+---
+
+<section class="projects-gallery">
+	<div class="gallery-grid">
+		{items.map((item) => {
+			const isWide = item.aspectRatio === '19/6' || item.aspectRatio === '16/9';
+			const isSquare = item.aspectRatio === '1/1';
+			const gridSpan = isWide ? 'grid-column: span 2;' : '';
+			const squareClass = isSquare ? 'gallery-item-square' : '';
+			const isVideo = isVideoUrl(item.src);
+			const mediaEl = isVideo ? (
+				<video
+					src={item.src}
+					class="gallery-image"
+					style={`aspect-ratio: ${item.aspectRatio};`}
+					loop
+					muted
+					autoplay
+					playsinline
+					aria-label={item.alt}
+				/>
+			) : (
+				<img
+					src={item.src}
+					alt={item.alt}
+					loading={eager ? 'eager' : 'lazy'}
+					class="gallery-image"
+					style={`aspect-ratio: ${item.aspectRatio};`}
+					decoding="async"
+					fetchpriority={eager ? 'high' : 'auto'}
+				/>
+			);
+			return item.href ? (
+				<a href={item.href} class={squareClass} style={`--aspect-ratio: ${item.aspectRatio}; ${gridSpan}`}>
+					{mediaEl}
+				</a>
+			) : (
+				<div class={squareClass} style={gridSpan}>
+					{mediaEl}
+				</div>
+			);
+		})}
+	</div>
+</section>

@@ -1,0 +1,103 @@
+---
+interface LetterboxdFilm {
+  title: string;
+  link: string;
+  watchedDate: string;
+  filmTitle: string;
+  filmYear: string;
+  memberRating: string;
+}
+
+let films: LetterboxdFilm[] = [];
+
+try {
+  const res = await fetch('https://letterboxd.com/jaddenki/rss/');
+  const xml = await res.text();
+
+  const itemRegex = /<item>([\s\S]*?)<\/item>/g;
+  let match;
+
+  while ((match = itemRegex.exec(xml)) !== null) {
+    const itemXml = match[1];
+
+    const getTag = (tag: string): string => {
+      const cdataMatch = itemXml.match(
+        new RegExp(`<${tag}><!\\[CDATA\\[([\\s\\S]*?)\\]\\]></${tag}>`)
+      );
+      if (cdataMatch) return cdataMatch[1].trim();
+      const plainMatch = itemXml.match(
+        new RegExp(`<${tag}>([\\s\\S]*?)</${tag}>`)
+      );
+      return plainMatch ? plainMatch[1].trim() : '';
+    };
+
+    const watchedDate = getTag('letterboxd:watchedDate');
+    if (!watchedDate) continue;
+
+    films.push({
+      title: getTag('title'),
+      link: getTag('link'),
+      watchedDate,
+      filmTitle: getTag('letterboxd:filmTitle'),
+      filmYear: getTag('letterboxd:filmYear'),
+      memberRating: getTag('letterboxd:memberRating'),
+    });
+
+    if (films.length >= 3) break;
+  }
+} catch {
+  // fail silently
+}
+---
+
+<section class="recently-watched">
+  <p class="section-heading">Recently watched: <a href="https://letterboxd.com/jaddenki/" target="_blank" rel="noopener noreferrer">Letterboxd</a></p>
+  <ul class="section-list section-skeleton" id="recently-watched-list" aria-hidden="true">
+    {[1, 2, 3].map(() => (
+      <li class="section-item">
+        <div class="section-row">
+          <span class="skeleton-line skeleton-title" />
+          <span class="skeleton-line skeleton-meta" />
+        </div>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<script define:vars={{ films }}>
+  const list = document.getElementById('recently-watched-list');
+  if (!list || !films?.length) return;
+
+  const esc = (s) => {
+    const div = document.createElement('div');
+    div.textContent = s ?? '';
+    return div.innerHTML;
+  };
+
+  function starsFromRating(rating) {
+    const num = parseFloat(rating);
+    if (isNaN(num) || num <= 0) return '';
+    const full = Math.floor(num);
+    const half = num % 1 >= 0.5;
+    return '★'.repeat(full) + (half ? '½' : '');
+  }
+
+  const items = films.slice(0, 3);
+  const fill = () => {
+    list.classList.remove('section-skeleton');
+    list.removeAttribute('aria-hidden');
+    list.innerHTML = items
+    .map((film) => {
+      const title = (film.filmTitle || film.title) + (film.filmYear ? ` (${film.filmYear})` : '');
+      const stars = film.memberRating ? starsFromRating(film.memberRating) : '';
+      return `<li class="section-item">
+        <div class="section-row">
+          <a href="${esc(film.link)}" target="_blank" rel="noopener noreferrer" class="section-link">${esc(title)}</a>
+          ${stars ? `<span class="section-meta">${stars}</span>` : ''}
+        </div>
+      </li>`;
+    })
+    .join('');
+  };
+  setTimeout(fill, 150);
+</script>
