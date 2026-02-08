@@ -1,6 +1,6 @@
 @font-face {
-	font-family: "Redaction";
-	src: url("/fonts/Redaction_20-Regular.woff2") format("woff2");
+	font-family: "GeistPixel";
+	src: url("/fonts/GeistPixel-Square.woff2") format("woff2");
 	font-weight: 400;
 	font-style: normal;
 }
@@ -33,8 +33,8 @@
 }
 
 * {
-	font-family: "Redaction", 'Times New Roman', serif;
-	font-size: 16px;
+	font-family: "GeistPixel", 'Arial', sans-serif;
+	font-size: 18px;
 }
 
 *::selection {
@@ -184,7 +184,7 @@ footer {
 	color: var(--muted);
 	text-decoration: none;
 	font-size: 16px;
-	font-family: "Redaction", 'Times New Roman', serif;
+	font-family: "GeistPixel", 'Arial', sans-serif;
 }
 
 .webring-link:hover {
@@ -196,7 +196,7 @@ footer {
 	padding: 0 0.25rem;
 }
 
-/* About page */
+
 .back-link {
 	color: var(--muted);
 	text-decoration: none;
@@ -212,7 +212,7 @@ footer {
 	margin-bottom: 0;
 }
 
-/* About layout: content | sidebar (favorites, recently read/watched) | gallery (3 cols) */
+
 .about-layout .content-sidebar {
 	width: 280px;
 	max-width: 280px;
@@ -348,7 +348,7 @@ footer {
 	white-space: nowrap;
 }
 
-/* Minimal skeleton for unloaded links */
+
 .section-skeleton .skeleton-line {
 	display: block;
 	height: 1em;
@@ -356,14 +356,13 @@ footer {
 	border-radius: 2px;
 }
 
-/* Theme toggle: text only, same size as webring, follows highlight scheme */
 .theme-toggle {
 	display: flex;
 	align-items: center;
 	color: var(--muted);
 	text-decoration: none;
 	font-size: 16px;
-	font-family: "Redaction", 'Times New Roman', serif;
+	font-family: "GeistPixel", 'Arial', sans-serif;
 	padding: 0;
 	margin-right: 0.5rem;
 	background: none;
