@@ -37,6 +37,16 @@ const projects = [
 	// 	aspectRatio: '16/9',
 	// },
 	{
+		src: '/img/front/respellai.webm',
+		alt: 'respell ai video',
+		aspectRatio: '16/9',
+	},
+	{
+		src: '/img/front/stl.webm',
+		alt: 'spread the love video',
+		aspectRatio: '16/9',
+	},
+	{
 		src: '/img/front/indigo.webm',
 		alt: 'indigo',
 		aspectRatio: '1/1',
@@ -71,6 +81,12 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
 		))}
 	</head>
 	<body>
+		<script is:inline>
+			if (sessionStorage.getItem('hasVisited')) document.body.classList.add('loading-skip');
+		</script>
+		<div id="loading-screen">
+			<div class="content">Let's take a deep breath...</div>
+		</div>
 		<main class="homepage-container">
 			<div class="content">
 				<p>Hi, I'm Jadden Picardal <img src="https://github.com/jaddenki.png" alt="jaddens gh" class="inline-avatar" fetchpriority="high" width="16" height="16" /> 
@@ -101,5 +117,23 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
 				</a>
 			</nav>
 		</footer>
+		<script>
+			const hasVisited = sessionStorage.getItem('hasVisited');
+			const loadingScreen = document.getElementById('loading-screen');
+			if (hasVisited && loadingScreen) {
+				loadingScreen.remove();
+			} else {
+				// only for first vidit
+				window.addEventListener('load', () => {
+					if (loadingScreen) {
+						sessionStorage.setItem('hasVisited', 'true');
+						loadingScreen.classList.add('fade-out');
+						setTimeout(() => {
+							loadingScreen.remove();
+						}, 600);
+					}
+				});
+			}
+		</script>
 	</body>
 </html>
