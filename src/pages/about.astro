@@ -1,6 +1,7 @@
 ---
 import BaseHead from '../components/BaseHead.astro';
 import ImageGrid from '../components/ImageGrid.astro';
+import InlineAvatar from '../components/InlineAvatar.astro';
 import RecentlyRead from '../components/RecentlyRead.astro';
 import RecentlyWatched from '../components/RecentlyWatched.astro';
 import ThemeToggle from '../components/ThemeToggle.astro';
@@ -81,7 +82,7 @@ const favorites: FavoriteEntry[] = [
 	<body>
 		<main class="homepage-container about-layout">
 			<div class="content">
-				<p><a href="/" class="back-link">&lt back</a></p>
+				<p><a href="/" class="back-link" data-astro-prefetch>&lt back</a></p>
 
 				<section class="about-bio">
 					<p>A little bit about me:</p>
@@ -89,11 +90,11 @@ const favorites: FavoriteEntry[] = [
 
 					
 
-					<p>Currently, I'm making unconventional branding for startups at <img src="https://github.com/lowercaseclub.png" alt="" class="inline-avatar" width="20" height="20" /> <a href="https://lowercase.club/" target="_blank">lowercase</a>, focusing on motion design and web design/development</p>
+					<p>Currently, I'm making unconventional branding for startups at <InlineAvatar src="https://github.com/lowercaseclub.png" alt="" width={20} height={20} class="inline-avatar" /> <a href="https://lowercase.club/" target="_blank">lowercase</a>, focusing on motion design and web design/development</p>
 
-					<p>I'm also the Communications Division Lead and a Designer at <img src="https://www.google.com/s2/favicons?domain=purduehackers.com&sz=64" alt="" class="inline-avatar inline-avatar-invert-dark" width="20" height="20" /> <a href="https://purduehackers.com/" target="_blank">Purdue Hackers</a>, where I help create community for the coolest group of builders on campus</p>
+					<p>I'm also the Communications Division Lead and a Designer at <InlineAvatar src="https://www.google.com/s2/favicons?domain=purduehackers.com&sz=64" alt="" width={20} height={20} class="inline-avatar inline-avatar-invert-dark" /> <a href="https://purduehackers.com/" target="_blank">Purdue Hackers</a>, where I help create community for the coolest group of builders on campus</p>
 				
-					<p>I also make <img src="https://github.com/fruitjamms.png" alt="jamms gh" class="inline-avatar" width="20" height="20" /> <a href="https://jam.ms" target="_blank">games</a> with friends and edit <a href="https://tiktok.com/@okigarakii" target="_blank">videos</a></p>
+					<p>I also make <InlineAvatar src="https://github.com/fruitjamms.png" alt="jamms gh" width={20} height={20} class="inline-avatar" /> <a href="https://jam.ms" target="_blank">games</a> with friends and edit <a href="https://tiktok.com/@okigarakii" target="_blank">videos</a></p>
 
 					<p>I adore games and films that linger, like work that invites reflection or makes familiar ideas feel strange again. I spend a lot of time studying how other people’s work does this & experimenting with those ideas in my own projects</p>
 					<p>I'm also very inspired by bold projects and ideas. Everything's a bit samey these days, especially in a world of AI-generated everything. That makes taste and originality more important than ever</p>
