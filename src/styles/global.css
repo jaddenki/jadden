@@ -33,7 +33,7 @@ body.loading-skip #loading-screen {
 :root {
 	--bg: white;
 	--text: black;
-	--muted: #838383;
+	--muted: #676767;
 	--highlight-bg: black;
 	--highlight-text: white;
 	--skeleton-bg: #e8e8e8;
