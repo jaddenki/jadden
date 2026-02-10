@@ -8,6 +8,9 @@ import { defineConfig, fontProviders } from 'astro/config';
 export default defineConfig({
 	site: 'https://www.jaddens.page',
 	integrations: [mdx(), sitemap()],
+	build: {
+		inlineStylesheets: 'auto',
+	},
 	prefetch: true,
 	image: {
 		remotePatterns: [
