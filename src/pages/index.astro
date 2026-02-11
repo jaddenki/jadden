@@ -1,72 +1,72 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import ImageGrid from '../components/ImageGrid.astro';
-import InlineAvatar from '../components/InlineAvatar.astro';
-import ThemeToggle from '../components/ThemeToggle.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
-import '../styles/global.css';
+import BaseHead from "../components/BaseHead.astro";
+import ImageGrid from "../components/ImageGrid.astro";
+import InlineAvatar from "../components/InlineAvatar.astro";
+import ThemeToggle from "../components/ThemeToggle.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import "../styles/global.css";
 
 const projects = [
-	{
-		src: '/img/front/infrared.webm',
-		alt: 'infrared',
-		aspectRatio: '1/1',
-	},
-	{
-		src: '/img/front/hello_world.webm',
-		alt: 'hello world',
-		aspectRatio: '1/1',
-	},
-	{
-		src: '/img/front/fish.webm',
-		alt: 'fish',
-		aspectRatio: '1/1',
-	},
-	{
-		src: '/img/front/loco.webm',
-		alt: 'go loco',
-		aspectRatio: '1/1',
-	},
-	// {
-	// 	src: '/img/front/capy-text.webm', not spoiling
-	// 	alt: 'capy text',
-	// 	aspectRatio: '16/9',
-	// },
-	// {
-	// 	src: '/img/front/capy-ui.webm',
-	// 	alt: 'capy ui',
-	// 	aspectRatio: '16/9',
-	// },
-	{
-		src: '/img/front/respellai.webm',
-		alt: 'respell ai video',
-		aspectRatio: '16/9',
-	},
-	{
-		src: '/img/front/stl.webm',
-		alt: 'spread the love video',
-		aspectRatio: '16/9',
-	},
-	{
-		src: '/img/front/indigo.webm',
-		alt: 'indigo',
-		aspectRatio: '1/1',
-	},
-	{
-		src: '/img/front/anklyosaur.webm',
-		alt: 'ankyosaur',
-		aspectRatio: '1/1',
-	},
-	{
-		src: '/img/front/glass.webm',
-		alt: 'glass',
-		aspectRatio: '1/1',
-	},
-	{
-		src: '/img/front/ridelikebike.webm',
-		alt: 'drop it',
-		aspectRatio: '1/1',
-	},
+    {
+        src: "/img/front/infrared.webm",
+        alt: "infrared",
+        aspectRatio: "1/1",
+    },
+    {
+        src: "/img/front/hello_world.webm",
+        alt: "hello world",
+        aspectRatio: "1/1",
+    },
+    {
+        src: "/img/front/fish.webm",
+        alt: "fish",
+        aspectRatio: "1/1",
+    },
+    {
+        src: "/img/front/loco.webm",
+        alt: "go loco",
+        aspectRatio: "1/1",
+    },
+    // {
+    // 	src: '/img/front/capy-text.webm', not spoiling
+    // 	alt: 'capy text',
+    // 	aspectRatio: '16/9',
+    // },
+    // {
+    // 	src: '/img/front/capy-ui.webm',
+    // 	alt: 'capy ui',
+    // 	aspectRatio: '16/9',
+    // },
+    {
+        src: "/img/front/respellai.webm",
+        alt: "respell ai video",
+        aspectRatio: "16/9",
+    },
+    {
+        src: "/img/front/stl.webm",
+        alt: "spread the love video",
+        aspectRatio: "16/9",
+    },
+    {
+        src: "/img/front/indigo.webm",
+        alt: "indigo",
+        aspectRatio: "1/1",
+    },
+    {
+        src: "/img/front/anklyosaur.webm",
+        alt: "ankyosaur",
+        aspectRatio: "1/1",
+    },
+    {
+        src: "/img/front/glass.webm",
+        alt: "glass",
+        aspectRatio: "1/1",
+    },
+    {
+        src: "/img/front/ridelikebike.webm",
+        alt: "drop it",
+        aspectRatio: "1/1",
+    },
 ];
 
 const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
@@ -74,64 +74,133 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-		<link rel="preload" as={isVideoUrl(projects[0].src) ? 'video' : 'image'} href={projects[0].src} />
-	</head>
-	<body>
-		<script is:inline>
-			if (sessionStorage.getItem('hasVisited')) document.body.classList.add('loading-skip');
-		</script>
-		<div id="loading-screen">
-			<div class="content">Let's take a deep breath before we dive in...</div>
-		</div>
-		<main class="homepage-container">
-			<div class="content">
-				<p>Hi, I'm Jadden Picardal <InlineAvatar src="https://github.com/jaddenki.png" alt="jaddens gh" width={16} height={16} class="inline-avatar" priority /> 
-				</p>
-				<!-- span class="email">jadden [at] jam [dot] ms</span> -->
-				<p>I'm a programmer and designer, finishing up my BSCompeE at <a href="https://www.purdue.edu/" target="_blank">Purdue</a> (Fall 2026)</p>
+    <head>
+        <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+        <link
+            rel="preload"
+            as={isVideoUrl(projects[0].src) ? "video" : "image"}
+            href={projects[0].src}
+        />
+    </head>
+    <body>
+        <script is:inline>
+            if (sessionStorage.getItem("hasVisited"))
+                document.body.classList.add("loading-skip");
+        </script>
+        <div id="loading-screen">
+            <div class="content">
+                Let's take a deep breath before we dive in...
+            </div>
+        </div>
+        <main class="homepage-container">
+            <div class="content">
+                <p>
+                    Hi, I'm Jadden Picardal <InlineAvatar
+                        src="https://github.com/jaddenki.png"
+                        alt="jaddens gh"
+                        width={16}
+                        height={16}
+                        class="inline-avatar"
+                        priority
+                    />
+                </p>
+                <!-- span class="email">jadden [at] jam [dot] ms</span> -->
+                <p>
+                    I'm a programmer and designer, finishing up my BSCompeE at <a
+                        href="https://www.purdue.edu/"
+                        target="_blank">Purdue</a
+                    > (Fall 2026)
+                </p>
 
-				<p>Currently creating experimental work for startups at <InlineAvatar src="https://github.com/lowercaseclub.png" alt="lowercase gh" width={16} height={16} class="inline-avatar" /> <a href="https://lowercase.club/" target="_blank">lowercase</a> & XR sims at the <InlineAvatar src="https://www.google.com/s2/favicons?domain=envision.center&sz=64" alt="ec favicon" width={16} height={16} class="inline-avatar" /> <a href="https://envision.center" target="_blank">Envision Center</a></p>
+                <p>
+                    Currently creating experimental work for startups at <InlineAvatar
+                        src="https://github.com/lowercaseclub.png"
+                        alt="lowercase gh"
+                        width={16}
+                        height={16}
+                        class="inline-avatar"
+                    />
+                    <a href="https://lowercase.club/" target="_blank"
+                        >lowercase</a
+                    > & XR sims at the <InlineAvatar
+                        src="https://www.google.com/s2/favicons?domain=envision.center&sz=64"
+                        alt="ec favicon"
+                        width={16}
+                        height={16}
+                        class="inline-avatar"
+                    />
+                    <a href="https://envision.center" target="_blank"
+                        >Envision Center</a
+                    >
+                </p>
 
-				<p>Links... <a href="https://github.com/jaddenki" target="_blank">GitHub</a>, <a href="https://www.linkedin.com/in/jadden-picardal" target="_blank">LinkedIn</a>, <a href="https://www.are.na/jadden-picardal/jadden-picardal-4h2pfujye8i" target="_blank">Are.na</a>, <a href="https://x.com/igarakii" target="_blank">Twitter</a></p>
-			
-			<p>Currently populating this space...</br>Read more <a href="/about" data-astro-prefetch>about me</a> in the meantime</p>
-			</div>
+                <p>
+                    Links... <a
+                        href="https://github.com/jaddenki"
+                        target="_blank">GitHub</a
+                    >, <a
+                        href="https://www.linkedin.com/in/jadden-picardal"
+                        target="_blank">LinkedIn</a
+                    >, <a
+                        href="https://www.are.na/jadden-picardal/jadden-picardal-s0qvounprtc"
+                        target="_blank">Are.na</a
+                    >, <a href="https://x.com/igarakii" target="_blank"
+                        >Twitter</a
+                    >
+                </p>
 
-			<ImageGrid items={projects} eager />
-		</main>
-		<footer>
-			<ThemeToggle />
-			<nav class="webring-nav">
-				<a href="https://ring.purduehackers.com/previous?host=https://www.jaddens.page" class="webring-link" title="Previous site">
-					&lt;
-				</a>
-				<a href="https://ring.purduehackers.com/" class="webring-link webring-logo" title="Purdue Hackers Webring">
-					Purdue Hackers
-				</a>
-				<a href="https://ring.purduehackers.com/next?host=https://www.jaddens.page" class="webring-link" title="Next site">
-					&gt;
-				</a>
-			</nav>
-		</footer>
-		<script>
-			const hasVisited = sessionStorage.getItem('hasVisited');
-			const loadingScreen = document.getElementById('loading-screen');
-			if (hasVisited && loadingScreen) {
-				loadingScreen.remove();
-			} else {
-				// only for first vidit
-				window.addEventListener('load', () => {
-					if (loadingScreen) {
-						sessionStorage.setItem('hasVisited', 'true');
-						loadingScreen.classList.add('fade-out');
-						setTimeout(() => {
-							loadingScreen.remove();
-						}, 600);
-					}
-				});
-			}
-		</script>
-	</body>
+                <p>Currently populating this space...</p>Read more <a
+                    href="/about"
+                    data-astro-prefetch>about me</a
+                > in the meantime
+            </div>
+        </main>
+
+        <ImageGrid items={projects} eager />
+
+        <footer>
+            <ThemeToggle />
+            <nav class="webring-nav">
+                <a
+                    href="https://ring.purduehackers.com/previous?host=https://www.jaddens.page"
+                    class="webring-link"
+                    title="Previous site"
+                >
+                    &lt;
+                </a>
+                <a
+                    href="https://ring.purduehackers.com/"
+                    class="webring-link webring-logo"
+                    title="Purdue Hackers Webring"
+                >
+                    Purdue Hackers
+                </a>
+                <a
+                    href="https://ring.purduehackers.com/next?host=https://www.jaddens.page"
+                    class="webring-link"
+                    title="Next site"
+                >
+                    &gt;
+                </a>
+            </nav>
+        </footer>
+        <script>
+            const hasVisited = sessionStorage.getItem("hasVisited");
+            const loadingScreen = document.getElementById("loading-screen");
+            if (hasVisited && loadingScreen) {
+                loadingScreen.remove();
+            } else {
+                // only for first vidit
+                window.addEventListener("load", () => {
+                    if (loadingScreen) {
+                        sessionStorage.setItem("hasVisited", "true");
+                        loadingScreen.classList.add("fade-out");
+                        setTimeout(() => {
+                            loadingScreen.remove();
+                        }, 600);
+                    }
+                });
+            }
+        </script>
+    </body>
 </html>

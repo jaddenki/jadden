@@ -1,143 +1,220 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import ImageGrid from '../components/ImageGrid.astro';
-import InlineAvatar from '../components/InlineAvatar.astro';
-import RecentlyRead from '../components/RecentlyRead.astro';
-import RecentlyWatched from '../components/RecentlyWatched.astro';
-import ThemeToggle from '../components/ThemeToggle.astro';
-import { SITE_TITLE } from '../consts';
-import '../styles/global.css';
+import BaseHead from "../components/BaseHead.astro";
+import ImageGrid from "../components/ImageGrid.astro";
+import InlineAvatar from "../components/InlineAvatar.astro";
+import RecentlyRead from "../components/RecentlyRead.astro";
+import RecentlyWatched from "../components/RecentlyWatched.astro";
+import ThemeToggle from "../components/ThemeToggle.astro";
+import { SITE_TITLE } from "../consts";
+import "../styles/global.css";
 
 const photos = [
-	{
-		src: '/img/about/_-1.webp',
-		alt: 'me on beach',
-		aspectRatio: '1/1',
-	},
-	{
-		src: '/img/about/23.webp',
-		alt: 'sf',
-		aspectRatio: '1/1',
-	},
-	{
-		src: '/img/about/IMG_0958.webp',
-		alt: 'me looknig',
-		aspectRatio: '1/1',
-	},
-	{
-		src: '/img/about/IMG_3631.webp',
-		alt: 'me and alicia <3',
-		aspectRatio: '1/1',
-	},
-	{
-		src: '/img/about/IMG_3634.webp',
-		alt: 'me  and fam <3',
-		aspectRatio: '1/1',
-	},
-	{
-		src: '/img/about/IMG_3632.webp',
-		alt: 'my old gh pfp <3',
-		aspectRatio: '1/1',
-	},
-
-
+    {
+        src: "/img/about/_-1.webp",
+        alt: "me on beach",
+        aspectRatio: "1/1",
+    },
+    {
+        src: "/img/about/23.webp",
+        alt: "sf",
+        aspectRatio: "1/1",
+    },
+    {
+        src: "/img/about/IMG_0958.webp",
+        alt: "me looknig",
+        aspectRatio: "1/1",
+    },
+    {
+        src: "/img/about/IMG_3631.webp",
+        alt: "me and alicia <3",
+        aspectRatio: "1/1",
+    },
+    {
+        src: "/img/about/IMG_3634.webp",
+        alt: "me  and fam <3",
+        aspectRatio: "1/1",
+    },
+    {
+        src: "/img/about/IMG_3632.webp",
+        alt: "my old gh pfp <3",
+        aspectRatio: "1/1",
+    },
 ];
 
-
 interface FavoriteEntryItem {
-	label: string;
-	href?: string;
+    label: string;
+    href?: string;
 }
 interface FavoriteEntry {
-	topic: string;
-	items: FavoriteEntryItem[];
+    topic: string;
+    items: FavoriteEntryItem[];
 }
 const favorites: FavoriteEntry[] = [
-	{
-		topic: 'Game',
-		items: [
-			{ label: 'Signalis', href: 'https://store.steampowered.com/app/1262350/SIGNALIS/' },
-		],
-	},
-	{
-		topic: 'Artist',
-		items: [
-			{ label: 'The Marías', href: 'https://www.themarias.us' },
-		],
-	},
-	{
-		topic: 'Movie',
-		items: [
-			{ label: 'Look Back', href: 'https://en.wikipedia.org/wiki/Look_Back_(2024_film)' },
-		],
-	},
+    {
+        topic: "Game",
+        items: [
+            {
+                label: "Signalis",
+                href: "https://store.steampowered.com/app/1262350/SIGNALIS/",
+            },
+        ],
+    },
+    {
+        topic: "Artist",
+        items: [{ label: "The Marías", href: "https://www.themarias.us" }],
+    },
+    {
+        topic: "Movie",
+        items: [
+            {
+                label: "Look Back",
+                href: "https://en.wikipedia.org/wiki/Look_Back_(2024_film)",
+            },
+        ],
+    },
 ];
 ---
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<BaseHead title={`about ${SITE_TITLE}`} description="what i'm up to." />
-	</head>
-	<body>
-		<main class="homepage-container about-layout">
-			<div class="content">
-				<p><a href="/" class="back-link" data-astro-prefetch>&lt back</a></p>
+    <head>
+        <BaseHead title={`about ${SITE_TITLE}`} description="what i'm up to." />
+    </head>
+    <body>
+        <main class="homepage-container about-layout">
+            <div class="content">
+                <p>
+                    <a href="/" class="back-link" data-astro-prefetch
+                        >&lt back</a>
+                </p>
 
-				<section class="about-bio">
-					<p>A little bit about me:</p>
-					<p>I was born in the Philippines and raised in Las Vegas, with periodic visits back that shaped my sense of identity and belonging over time</p>
+                <section class="about-bio">
+                    <p>A little bit about me:</p>
+                    <p>
+                        I was born in the Philippines and raised in Las Vegas,
+                        with periodic visits back that shaped my sense of
+                        identity and belonging over time
+                    </p>
 
-					
+                    <p>
+                        Currently, I'm making unconventional branding for
+                        startups at <InlineAvatar
+                            src="https://github.com/lowercaseclub.png"
+                            alt=""
+                            width={20}
+                            height={20}
+                            class="inline-avatar"
+                        />
+                        <a href="https://lowercase.club/" target="_blank"
+                            >lowercase</a
+                        >, focusing on motion design and web design/development
+                    </p>
 
-					<p>Currently, I'm making unconventional branding for startups at <InlineAvatar src="https://github.com/lowercaseclub.png" alt="" width={20} height={20} class="inline-avatar" /> <a href="https://lowercase.club/" target="_blank">lowercase</a>, focusing on motion design and web design/development</p>
+                    <p>
+                        I'm also the Communications Division Lead and a Designer
+                        at <InlineAvatar
+                            src="https://www.google.com/s2/favicons?domain=purduehackers.com&sz=64"
+                            alt=""
+                            width={20}
+                            height={20}
+                            class="inline-avatar inline-avatar-invert-dark"
+                        />
+                        <a href="https://purduehackers.com/" target="_blank"
+                            >Purdue Hackers</a
+                        >, where I help create community for the coolest group
+                        of builders on campus
+                    </p>
 
-					<p>I'm also the Communications Division Lead and a Designer at <InlineAvatar src="https://www.google.com/s2/favicons?domain=purduehackers.com&sz=64" alt="" width={20} height={20} class="inline-avatar inline-avatar-invert-dark" /> <a href="https://purduehackers.com/" target="_blank">Purdue Hackers</a>, where I help create community for the coolest group of builders on campus</p>
-				
-					<p>I also make <InlineAvatar src="https://github.com/fruitjamms.png" alt="jamms gh" width={20} height={20} class="inline-avatar" /> <a href="https://jam.ms" target="_blank">games</a> with friends and edit <a href="https://tiktok.com/@okigarakii" target="_blank">videos</a></p>
+                    <p>
+                        I also make <InlineAvatar
+                            src="https://github.com/fruitjamms.png"
+                            alt="jamms gh"
+                            width={20}
+                            height={20}
+                            class="inline-avatar"
+                        />
+                        <a href="https://jam.ms" target="_blank">games</a> with friends
+                        and edit <a
+                            href="https://tiktok.com/@okigarakii"
+                            target="_blank">videos</a>
+                    </p>
 
-					<p>I adore games and films that linger, like work that invites reflection or makes familiar ideas feel strange again. I spend a lot of time studying how other people’s work does this & experimenting with those ideas in my own projects</p>
-					<p>I'm also very inspired by bold projects and ideas. Everything's a bit samey these days, especially in a world of AI-generated everything. That makes taste and originality more important than ever</p>
-					<p>Hope you enjoy your stay here!</p><p>Feel free to reach out at: <br/><span class="email">jadden [at] jam [dot] ms</span></p>
-				</section>
-			</div>
+                    <p>
+                        I adore games and films that linger, like work that
+                        invites reflection or makes familiar ideas feel strange
+                        again. I spend a lot of time studying how other people’s
+                        work does this & experimenting with those ideas in my
+                        own projects
+                    </p>
+                    <p>
+                        I'm also very inspired by bold projects and ideas.
+                        Everything's a bit samey these days, especially in a
+                        world of AI-generated everything. That makes taste and
+                        originality more important than ever
+                    </p>
+                    <p>Hope you enjoy your stay here!</p><p>
+                        Feel free to reach out at: <br /><span class="email"
+                            >jadden [at] jam [dot] ms</span>
+                    </p>
+                </section>
+            </div>
 
-			<aside class="content-sidebar">
-				<section class="favorites-section">
-					<p class="section-heading">Things I like:</p>
-					<ul class="section-list">
-						{favorites.length > 0 ? (
-							favorites.map((entry) => (
-								<li class="section-item">
-									<div class="section-row section-row-favorites">
-										<span class="favorite-topic">{entry.topic}</span>
-										<span class="favorite-dots" aria-hidden="true"></span>
-										<span class="favorite-items">
-											{entry.items.map((item) => (
-												item.href ? (
-													<a href={item.href} target="_blank" rel="noopener noreferrer" class="section-link">{item.label}</a>
-												) : (
-													<span class="section-meta">{item.label}</span>
-												)
-											))}
-										</span>
-									</div>
-								</li>
-							))
-						) : (
-							<li class="section-item"><span class="section-meta">i love nothing</span></li>
-						)}
-					</ul>
-				</section>
+            <aside class="content-sidebar">
+                <section class="favorites-section">
+                    <p class="section-heading">Things I like:</p>
+                    <ul class="section-list">
+                        {
+                            favorites.length > 0 ? (
+                                favorites.map((entry) => (
+                                    <li class="section-item">
+                                        <div class="section-row section-row-favorites">
+                                            <span class="favorite-topic">
+                                                {entry.topic}
+                                            </span>
+                                            <span
+                                                class="favorite-dots"
+                                                aria-hidden="true"
+                                            />
+                                            <span class="favorite-items">
+                                                {entry.items.map((item) =>
+                                                    item.href ? (
+                                                        <a
+                                                            href={item.href}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            class="section-link"
+                                                        >
+                                                            {item.label}
+                                                        </a>
+                                                    ) : (
+                                                        <span class="section-meta">
+                                                            {item.label}
+                                                        </span>
+                                                    ),
+                                                )}
+                                            </span>
+                                        </div>
+                                    </li>
+                                ))
+                            ) : (
+                                <li class="section-item">
+                                    <span class="section-meta">
+                                        i love nothing
+                                    </span>
+                                </li>
+                            )
+                        }
+                    </ul>
+                </section>
 
-				<RecentlyRead />
-				<RecentlyWatched />
-			</aside>
+                <RecentlyRead />
+                <RecentlyWatched />
+            </aside>
 
-			<ImageGrid items={photos} />
-		</main>
-		<footer>
-			<ThemeToggle />
-		</footer>
-	</body>
+            <ImageGrid items={photos} />
+        </main>
+        <footer>
+            <ThemeToggle />
+        </footer>
+    </body>
 </html>
