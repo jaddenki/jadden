@@ -4,6 +4,7 @@ interface ImageItem {
 	alt: string;
 	aspectRatio: string;
 	href?: string;
+	freezeTime?: number;
 }
 
 interface Props {
@@ -17,23 +18,31 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
 
 <section class="projects-gallery">
 	<div class="gallery-grid">
-		{items.map((item) => {
+		{items.map((item, index) => {
 			const isWide = item.aspectRatio === '19/6' || item.aspectRatio === '16/9';
 			const isSquare = item.aspectRatio === '1/1';
 			const gridSpan = isWide ? 'grid-column: span 2;' : '';
 			const squareClass = isSquare ? 'gallery-item-square' : '';
+			const videoTileClass = isSquare ? 'gallery-item-square gallery-video-tile' : 'gallery-video-tile';
 			const isVideo = isVideoUrl(item.src);
+			const showHint = isVideo && index === 0;
 			const mediaEl = isVideo ? (
-				<video
-					src={item.src}
-					class="gallery-image"
-					style={`aspect-ratio: ${item.aspectRatio};`}
-					loop
-					muted
-					autoplay
-					playsinline
-					aria-label={item.alt}
-				/>
+				<>
+					<video
+						src={item.src}
+						class="gallery-image"
+						style={`aspect-ratio: ${item.aspectRatio};`}
+						data-freeze-time={item.freezeTime ?? 0}
+						loop
+						muted
+						preload="metadata"
+						playsinline
+						aria-label={item.alt}
+					/>
+					{showHint && (
+						<span class="gallery-video-hint" aria-hidden="true">Hover/Tap to play</span>
+					)}
+				</>
 			) : (
 				<img
 					src={item.src}
@@ -46,14 +55,74 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
 				/>
 			);
 			return item.href ? (
-				<a href={item.href} class={squareClass} style={`--aspect-ratio: ${item.aspectRatio}; ${gridSpan}`}>
+				<a href={item.href} class={isVideo ? videoTileClass : squareClass} style={`--aspect-ratio: ${item.aspectRatio}; ${gridSpan}`}>
 					{mediaEl}
 				</a>
 			) : (
-				<div class={squareClass} style={gridSpan}>
+				<div class={isVideo ? videoTileClass : squareClass} style={gridSpan}>
 					{mediaEl}
 				</div>
 			);
 		})}
 	</div>
 </section>
+
+<script>
+	const hintKey = "galleryVideoHintDismissed";
+	const videoTiles = document.querySelectorAll(".gallery-video-tile");
+	const dismissHints = () => {
+		for (const tile of videoTiles) tile.classList.add("gallery-hint-dismissed");
+		sessionStorage.setItem(hintKey, "true");
+	};
+	if (sessionStorage.getItem(hintKey) === "true") {
+		for (const tile of videoTiles) tile.classList.add("gallery-hint-dismissed");
+	}
+
+	const videos = document.querySelectorAll("video.gallery-image[data-freeze-time]");
+
+	for (const node of videos) {
+		if (!(node instanceof HTMLVideoElement)) continue;
+		const isLinkTile = !!node.closest("a[href]");
+		const freezeTime = Number(node.dataset.freezeTime ?? "0");
+		const setFreezeFrame = () => {
+			const duration = Number.isFinite(node.duration) ? node.duration : 0;
+			const clampedTime = duration > 0
+				? Math.min(Math.max(freezeTime, 0), Math.max(duration - 0.001, 0))
+				: Math.max(freezeTime, 0);
+			if (Math.abs(node.currentTime - clampedTime) > 0.03) {
+				node.currentTime = clampedTime;
+			}
+			node.pause();
+		};
+
+		node.addEventListener("loadedmetadata", () => {
+			setFreezeFrame();
+		});
+		node.addEventListener("mouseenter", () => {
+			dismissHints();
+			void node.play().catch(() => {});
+		});
+		node.addEventListener("mouseleave", () => {
+			setFreezeFrame();
+		});
+		node.addEventListener("focusin", () => {
+			dismissHints();
+			void node.play().catch(() => {});
+		});
+		node.addEventListener("focusout", () => {
+			setFreezeFrame();
+		});
+		node.addEventListener("click", (event) => {
+			dismissHints();
+			if (isLinkTile) return;
+			event.preventDefault();
+			if (node.paused) {
+				void node.play().catch(() => {});
+				return;
+			}
+			setFreezeFrame();
+		});
+
+		if (node.readyState >= 1) setFreezeFrame();
+	}
+</script>

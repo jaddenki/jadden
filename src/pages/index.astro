@@ -11,21 +11,25 @@ const projects = [
         src: "/img/front/infrared.webm",
         alt: "infrared",
         aspectRatio: "1/1",
+        freezeTime: 0.6,
     },
     {
         src: "/img/front/hello_world.webm",
         alt: "hello world",
         aspectRatio: "1/1",
+        freezeTime: 1,
     },
     {
         src: "/img/front/fish.webm",
         alt: "fish",
         aspectRatio: "1/1",
+        freezeTime: 0.8,
     },
     {
         src: "/img/front/loco.webm",
         alt: "go loco",
         aspectRatio: "1/1",
+        freezeTime: 3.4,
     },
     // {
     // 	src: '/img/front/capy-text.webm', not spoiling
@@ -41,35 +45,42 @@ const projects = [
         src: "/img/front/respellai.webm",
         alt: "respell ai video",
         aspectRatio: "16/9",
+        freezeTime: 0.88,
     },
     {
         src: "/img/front/stl.webm",
         alt: "spread the love video",
         aspectRatio: "16/9",
+        freezeTime: 2.7,
     },
     {
         src: "/img/front/indigo.webm",
         alt: "indigo",
         aspectRatio: "1/1",
+        freezeTime: 0.5,
     },
     {
         src: "/img/front/anklyosaur.webm",
         alt: "ankyosaur",
         aspectRatio: "1/1",
+        freezeTime: 2.5,
     },
     {
         src: "/img/front/glass.webm",
         alt: "glass",
         aspectRatio: "1/1",
+        freezeTime: 3.5,
     },
     {
         src: "/img/front/ridelikebike.webm",
         alt: "drop it",
         aspectRatio: "1/1",
+        freezeTime: 1.75,
     },
 ];
 
 const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
+// `freezeTime` is in seconds: tweak per video to pick its idle frame.
 ---
 
 <!doctype html>

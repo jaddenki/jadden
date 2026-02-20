@@ -35,7 +35,7 @@ try {
   </ul>
 </section>
 
-<script define:vars={{ recent }}>
+<script is:inline define:vars={{ recent }}>
   const list = document.getElementById('recently-read-list');
   if (!list || !recent?.length) return;
 
