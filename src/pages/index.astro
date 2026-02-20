@@ -2,6 +2,7 @@
 import BaseHead from "../components/BaseHead.astro";
 import ImageGrid from "../components/ImageGrid.astro";
 import InlineAvatar from "../components/InlineAvatar.astro";
+import { Signature } from "../components/Signature";
 import ThemeToggle from "../components/ThemeToggle.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import "../styles/global.css";
@@ -105,8 +106,11 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
         </div>
         <main class="homepage-container">
             <div class="content">
+                <Signature client:load />
                 <p>
-                    Hi, I'm Jadden Picardal <InlineAvatar
+                    Hi, I'm <a href="/about" data-astro-prefetch
+                        >Jadden Picardal</a
+                    > <InlineAvatar
                         src="https://github.com/jaddenki.png"
                         alt="jaddens gh"
                         width={16}
@@ -160,12 +164,7 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
                     >
                 </p>
 
-                <p>Currently populating this space...<br />
-                Read more <a
-                    href="/about"
-                    data-astro-prefetch>about me</a
-                > in the meantime
-                </p>
+                <p>Currently populating this space...</p>
             </div>
 
             <ImageGrid items={projects} eager />
