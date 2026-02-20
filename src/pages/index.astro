@@ -2,7 +2,6 @@
 import BaseHead from "../components/BaseHead.astro";
 import ImageGrid from "../components/ImageGrid.astro";
 import InlineAvatar from "../components/InlineAvatar.astro";
-import { Signature } from "../components/Signature";
 import ThemeToggle from "../components/ThemeToggle.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import "../styles/global.css";
@@ -18,19 +17,19 @@ const projects = [
         src: "/img/front/hello_world.webm",
         alt: "hello world",
         aspectRatio: "1/1",
-        freezeTime: 1,
+        freezeTime: 1.1,
     },
     {
         src: "/img/front/fish.webm",
         alt: "fish",
         aspectRatio: "1/1",
-        freezeTime: 0.8,
+        freezeTime: .8,
     },
     {
         src: "/img/front/loco.webm",
         alt: "go loco",
         aspectRatio: "1/1",
-        freezeTime: 3.4,
+        freezeTime: 0.75,
     },
     // {
     // 	src: '/img/front/capy-text.webm', not spoiling
@@ -46,7 +45,7 @@ const projects = [
         src: "/img/front/respellai.webm",
         alt: "respell ai video",
         aspectRatio: "16/9",
-        freezeTime: 0.88,
+        freezeTime: .5,
     },
     {
         src: "/img/front/stl.webm",
@@ -70,18 +69,17 @@ const projects = [
         src: "/img/front/glass.webm",
         alt: "glass",
         aspectRatio: "1/1",
-        freezeTime: 3.5,
+        freezeTime: 3.3,
     },
     {
         src: "/img/front/ridelikebike.webm",
         alt: "drop it",
         aspectRatio: "1/1",
-        freezeTime: 1.75,
+        freezeTime: 1.8,
     },
 ];
 
 const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
-// `freezeTime` is in seconds: tweak per video to pick its idle frame.
 ---
 
 <!doctype html>
@@ -106,7 +104,6 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
         </div>
         <main class="homepage-container">
             <div class="content">
-                <Signature client:load />
                 <p>
                     Hi, I'm <a href="/about" data-astro-prefetch
                         >Jadden Picardal</a
@@ -207,9 +204,14 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
                     if (loadingScreen) {
                         sessionStorage.setItem("hasVisited", "true");
                         loadingScreen.classList.add("fade-out");
-                        setTimeout(() => {
+                        loadingScreen.addEventListener("transitionend", () => {
                             loadingScreen.remove();
-                        }, 600);
+                        }, {
+                            once: true,
+                        });
+                        setTimeout(() => {
+                            if (loadingScreen.isConnected) loadingScreen.remove();
+                        }, 700);
                     }
                 });
             }

@@ -4,6 +4,7 @@ import ImageGrid from "../components/ImageGrid.astro";
 import InlineAvatar from "../components/InlineAvatar.astro";
 import RecentlyRead from "../components/RecentlyRead.astro";
 import RecentlyWatched from "../components/RecentlyWatched.astro";
+import { SignatureMotion } from "../components/SignatureMotion";
 import ThemeToggle from "../components/ThemeToggle.astro";
 import { SITE_TITLE } from "../consts";
 import "../styles/global.css";
@@ -87,7 +88,6 @@ const favorites: FavoriteEntry[] = [
                     <a href="/" class="back-link" data-astro-prefetch
                         >&lt back</a>
                 </p>
-
                 <section class="about-bio">
                     <p>A little bit about me:</p>
                     <p>
@@ -117,7 +117,7 @@ const favorites: FavoriteEntry[] = [
                             alt=""
                             width={20}
                             height={20}
-                            class="inline-avatar inline-avatar-invert-dark"
+                            class="inline-avatar"
                         />
                         <a href="https://purduehackers.com/" target="_blank"
                             >Purdue Hackers</a
@@ -149,13 +149,13 @@ const favorites: FavoriteEntry[] = [
                     <p>
                         I'm also very inspired by bold projects and ideas.
                         Everything's a bit samey these days, especially in a
-                        world of AI-generated everything. That makes taste and
-                        originality more important than ever
+                        world of AI-generated everything
                     </p>
-                    <p>Hope you enjoy your stay here!</p><p>
-                        Feel free to reach out at: <br /><span class="email"
+                    <p class="mb-8">Hope you enjoy your stay here!<br />
+                        Reach me: <span class="email"
                             >jadden [at] jam [dot] ms</span>
                     </p>
+                <SignatureMotion client:only="react" style={{ marginTop: "1rem" }} />
                 </section>
             </div>
 
