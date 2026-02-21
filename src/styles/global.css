@@ -110,12 +110,14 @@ main {
 }
 
 .projects-gallery,
+.about-layout .content,
 .about-layout .content-sidebar {
 	scrollbar-width: none;
 	-ms-overflow-style: none;
 }
 
 .projects-gallery::-webkit-scrollbar,
+.about-layout .content::-webkit-scrollbar,
 .about-layout .content-sidebar::-webkit-scrollbar {
 	display: none;
 }
