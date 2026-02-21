@@ -4,6 +4,7 @@ import ImageGrid from "../components/ImageGrid.astro";
 import InlineAvatar from "../components/InlineAvatar.astro";
 import RecentlyRead from "../components/RecentlyRead.astro";
 import RecentlyWatched from "../components/RecentlyWatched.astro";
+import { HoverPreviewLink } from "../components/HoverPreviewLink";
 import { SignatureMotion } from "../components/SignatureMotion";
 import ThemeToggle from "../components/ThemeToggle.astro";
 import { SITE_TITLE } from "../consts";
@@ -96,48 +97,9 @@ const favorites: FavoriteEntry[] = [
                         identity and belonging over time
                     </p>
 
-                    <p>
-                        Currently, I'm making unconventional branding for
-                        startups at <InlineAvatar
-                            src="https://github.com/lowercaseclub.png"
-                            alt=""
-                            width={20}
-                            height={20}
-                            class="inline-avatar"
-                        />
-                        <a href="https://lowercase.club/" target="_blank"
-                            >lowercase</a
-                        >, focusing on motion design and web design/development
-                    </p>
+ 
 
-                    <p>
-                        I'm also the Communications Division Lead and a Designer
-                        at <InlineAvatar
-                            src="https://www.google.com/s2/favicons?domain=purduehackers.com&sz=64"
-                            alt=""
-                            width={20}
-                            height={20}
-                            class="inline-avatar"
-                        />
-                        <a href="https://purduehackers.com/" target="_blank"
-                            >Purdue Hackers</a
-                        >, where I help create community for the coolest group
-                        of builders on campus
-                    </p>
 
-                    <p>
-                        I also make <InlineAvatar
-                            src="https://github.com/fruitjamms.png"
-                            alt="jamms gh"
-                            width={20}
-                            height={20}
-                            class="inline-avatar"
-                        />
-                        <a href="https://jam.ms" target="_blank">games</a> with friends
-                        and edit <a
-                            href="https://tiktok.com/@okigarakii"
-                            target="_blank">videos</a>
-                    </p>
 
                     <p>
                         I adore games and films that linger, like work that
@@ -146,11 +108,36 @@ const favorites: FavoriteEntry[] = [
                         work does this & experimenting with those ideas in my
                         own projects
                     </p>
-                    <!-- <p>
-                        I'm also very inspired by bold projects and ideas.
+                    <p>
+                        In fact, I make my own<InlineAvatar
+                            src="https://github.com/fruitjamms.png"
+                            alt="jamms gh"
+                            width={20}
+                            height={20}
+                            class="inline-avatar"
+                        />
+                        <HoverPreviewLink
+                            client:visible
+                            href="https://jam.ms"
+                            target="_blank"
+                            previewSrc="/img/previews/jamms.webp"
+                            previewAlt="jam.ms preview"
+                        >games</HoverPreviewLink>
+                        with friends
+                        and edit <HoverPreviewLink
+                            client:visible
+                            href="https://tiktok.com/@okigarakii"
+                            target="_blank"
+                            previewText="TikTok @okigarakii ↗"
+                        >videos</HoverPreviewLink> as well
+                    </p>
+                    <p>
+                        I'm very inspired by bold projects and ideas.
                         Everything's a bit samey these days, especially in a
                         world of AI-generated everything
-                    </p> -->
+                    </p>
+
+
                     <p class="mb-8">Hope you enjoy your stay here!<br />
                         Reach me: <span class="email"
                             >jadden [at] jam [dot] ms</span>

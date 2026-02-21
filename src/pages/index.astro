@@ -1,5 +1,6 @@
 ---
 import BaseHead from "../components/BaseHead.astro";
+import { HoverPreviewLink } from "../components/HoverPreviewLink";
 import ImageGrid from "../components/ImageGrid.astro";
 import InlineAvatar from "../components/InlineAvatar.astro";
 import ThemeToggle from "../components/ThemeToggle.astro";
@@ -105,9 +106,12 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
         <main class="homepage-container">
             <div class="content">
                 <p>
-                    Hi, I'm <a href="/about" data-astro-prefetch
-                        >Jadden Picardal</a
-                    > <InlineAvatar
+                    Hi, I'm <HoverPreviewLink
+                        client:visible
+                        href="/about"
+                        data-astro-prefetch
+                        previewText="about me >"
+                    >Jadden Picardal</HoverPreviewLink> <InlineAvatar
                         src="https://github.com/jaddenki.png"
                         alt="jaddens gh"
                         width={16}
@@ -118,47 +122,75 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
                 </p>
                 <!-- span class="email">jadden [at] jam [dot] ms</span> -->
                 <p>
-                    I'm a programmer and designer, finishing up my BSCompeE at <a
+                    I'm a programmer and designer, finishing up my BSCompeE at 
+                    <HoverPreviewLink
+                        client:visible
                         href="https://www.purdue.edu/"
-                        target="_blank">Purdue</a
-                    > (Fall 2026)
+                        target="_blank"
+                        previewSrc="/img/previews/purdue.webp"
+                        previewAlt="Purdue"
+                    >Purdue</HoverPreviewLink> <span class="inline-text">(Fall 2026)</span>
                 </p>
 
                 <p>
-                    Currently creating experimental work for startups at <InlineAvatar
+                    Currently, I'm making unconventional branding for
+                    startups at <InlineAvatar
                         src="https://github.com/lowercaseclub.png"
-                        alt="lowercase gh"
-                        width={16}
-                        height={16}
+                        alt=""
+                        width={20}
+                        height={20}
                         class="inline-avatar"
                     />
-                    <a href="https://lowercase.club/" target="_blank"
-                        >lowercase</a
-                    > & XR sims at the <InlineAvatar
-                        src="https://www.google.com/s2/favicons?domain=envision.center&sz=64"
-                        alt="ec favicon"
-                        width={16}
-                        height={16}
-                        class="inline-avatar"
-                    />
-                    <a href="https://envision.center" target="_blank"
-                        >Envision Center</a
-                    >
+                    <HoverPreviewLink
+                        client:visible
+                        href="https://lowercase.club/"
+                        target="_blank"
+                        previewSrc="/img/previews/lowercase.webp"
+                        previewAlt="lowercase.club preview"
+                    >lowercase</HoverPreviewLink>, focusing on motion + web design
                 </p>
 
                 <p>
-                    Links... <a
+                    I'm also the Comms Lead and a Designer
+                    at <InlineAvatar
+                        src="https://www.google.com/s2/favicons?domain=purduehackers.com&sz=64"
+                        alt=""
+                        width={20}
+                        height={20}
+                        class="inline-avatar inline-avatar-invert-dark"
+                    />
+                    <HoverPreviewLink
+                        client:visible
+                        href="https://purduehackers.com/"
+                        target="_blank"
+                        previewSrc="/img/previews/ph.webp"
+                        previewAlt="purduehackers.com preview"
+                    >Purdue Hackers</HoverPreviewLink>, where I help create community for the coolest group
+                    of builders
+                </p>
+
+                <p>
+                    Links... <HoverPreviewLink
+                        client:visible
                         href="https://github.com/jaddenki"
-                        target="_blank">GitHub</a
-                    >, <a
+                        target="_blank"
+                        previewText="@jaddenki ↗"
+                    >GitHub</HoverPreviewLink>, <HoverPreviewLink
+                        client:visible
                         href="https://www.linkedin.com/in/jadden-picardal"
-                        target="_blank">LinkedIn</a
-                    >, <a
+                        target="_blank"
+                        previewText="jadden-picardal ↗"
+                    >LinkedIn</HoverPreviewLink>, <HoverPreviewLink
+                        client:visible
                         href="https://www.are.na/jadden-picardal/jadden-picardal-s0qvounprtc"
-                        target="_blank">Are.na</a
-                    >, <a href="https://x.com/igarakii" target="_blank"
-                        >Twitter</a
-                    >
+                        target="_blank"
+                        previewText="Jadden Picardal ↗"
+                    >Are.na</HoverPreviewLink>, <HoverPreviewLink
+                        client:visible
+                        href="https://x.com/igarakii"
+                        target="_blank"
+                        previewText="@igarakii ↗"
+                    >Twitter</HoverPreviewLink>
                 </p>
 
                 <p>Currently populating this space...</p>
