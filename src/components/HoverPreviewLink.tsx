@@ -1,7 +1,7 @@
 'use client'
 
 import { AnimatePresence, motion, useMotionValue, useSpring } from 'motion/react'
-import { type AnchorHTMLAttributes, type MouseEvent, useCallback, useRef, useState } from 'react'
+import { type AnchorHTMLAttributes, type MouseEvent, useCallback, useEffect, useRef, useState } from 'react'
 
 type HoverPreviewLinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
 	previewSrc?: string
@@ -32,6 +32,12 @@ export function HoverPreviewLink({
 }: HoverPreviewLinkProps) {
 	const [hovered, setHovered] = useState(false)
 	const prevX = useRef(0)
+
+	useEffect(() => {
+		if (!previewSrc) return
+		const img = new Image()
+		img.src = previewSrc
+	}, [previewSrc])
 
 	const x = useMotionValue(0)
 	const y = useMotionValue(0)
@@ -107,7 +113,7 @@ export function HoverPreviewLink({
 								alt={previewAlt}
 								width={previewWidth}
 								height={previewHeight}
-								loading="lazy"
+								loading="eager"
 								draggable={false}
 								style={{
 									width: '100%',
