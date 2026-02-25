@@ -1,6 +1,6 @@
 'use client'
 
-import { AnimatePresence, motion, useMotionValue, useSpring } from 'motion/react'
+import { AnimatePresence, motion, useMotionValue, useReducedMotion, useSpring } from 'motion/react'
 import { type AnchorHTMLAttributes, type MouseEvent, useCallback, useEffect, useRef, useState } from 'react'
 
 type HoverPreviewLinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
@@ -11,12 +11,14 @@ type HoverPreviewLinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
 	previewHeight?: number
 }
 
-const SPRING = { type: 'spring' as const, visualDuration: 0.5, bounce: 0.5 }
-const TILT_SPRING = { type: 'spring' as const, visualDuration: 0, bounce: 0.25 }
+const SPRING = { type: 'spring' as const, visualDuration: 0.4, bounce: 0.5 }
+const TILT_SPRING = { type: 'spring' as const, visualDuration: 0, bounce: 0.15 }
 const OFFSET = { x: 8, y: 24 }
 const FOLLOW_STRENGTH = 0.02
-const TILT_SENSITIVITY = 1.5
-const TILT_MAX_DEG = 14
+const TILT_SENSITIVITY = 0.6
+const TILT_MAX_DEG = 5
+
+const HOVER_MEDIA = '(hover: hover) and (pointer: fine)'
 
 export function HoverPreviewLink({
 	previewSrc,
@@ -31,13 +33,25 @@ export function HoverPreviewLink({
 	...anchorProps
 }: HoverPreviewLinkProps) {
 	const [hovered, setHovered] = useState(false)
+	const [hasHoverCapability, setHasHoverCapability] = useState(false)
+	const [touchPosition, setTouchPosition] = useState({ x: 0, y: 0 })
 	const prevX = useRef(0)
+
+	const shouldReduceMotion = useReducedMotion()
 
 	useEffect(() => {
 		if (!previewSrc) return
 		const img = new Image()
 		img.src = previewSrc
 	}, [previewSrc])
+
+	useEffect(() => {
+		const mq = window.matchMedia(HOVER_MEDIA)
+		setHasHoverCapability(mq.matches)
+		const handler = () => setHasHoverCapability(mq.matches)
+		mq.addEventListener('change', handler)
+		return () => mq.removeEventListener('change', handler)
+	}, [])
 
 	const x = useMotionValue(0)
 	const y = useMotionValue(0)
@@ -46,6 +60,7 @@ export function HoverPreviewLink({
 
 	const track = useCallback(
 		(e: MouseEvent<HTMLAnchorElement>) => {
+			if (!hasHoverCapability) return
 			const rect = e.currentTarget.getBoundingClientRect()
 			const halfW = rect.width / 2
 			const halfH = rect.height / 2
@@ -59,8 +74,10 @@ export function HoverPreviewLink({
 			x.set(e.clientX + OFFSET.x + (e.clientX - rect.left - halfW) * FOLLOW_STRENGTH)
 			y.set(e.clientY + OFFSET.y + (e.clientY - rect.top - halfH) * FOLLOW_STRENGTH)
 		},
-		[x, y, tilt],
+		[x, y, tilt, hasHoverCapability],
 	)
+
+	const noAnimation = shouldReduceMotion === true
 
 	return (
 		<>
@@ -68,7 +85,11 @@ export function HoverPreviewLink({
 				{...anchorProps}
 				onMouseEnter={(e) => {
 					prevX.current = e.clientX
-					track(e)
+					if (!hasHoverCapability) {
+						setTouchPosition({ x: e.clientX + OFFSET.x, y: e.clientY + OFFSET.y })
+					} else {
+						track(e)
+					}
 					setHovered(true)
 					onMouseEnter?.(e)
 				}}
@@ -88,20 +109,24 @@ export function HoverPreviewLink({
 			<AnimatePresence>
 				{hovered && (
 					<motion.div
-						initial={{ opacity: 0, scale: 0.8 }}
+						initial={noAnimation ? false : { opacity: 0, scale: 0.87 }}
 						animate={{ opacity: 1, scale: 1 }}
-						exit={{ opacity: 0, scale: 0.8 }}
-						transition={{ ...SPRING, opacity: { duration: 0.1 } }}
+						exit={
+							noAnimation
+								? { opacity: 0, scale: 0.8, transition: { duration: 0 } }
+								: { opacity: 0, scale: 0.95, transition: {duration : 0.1} }
+						}
+						transition={noAnimation ? { duration: 0 } : SPRING}
 						style={{
 							position: 'fixed',
-							left: x,
-							top: y,
+							...(hasHoverCapability
+								? { left: x, top: y, rotate: smoothTilt }
+								: { left: touchPosition.x, top: touchPosition.y, rotate: 0 }),
 							zIndex: 90,
 							...(previewSrc
 								? { width: previewWidth, height: previewHeight, border: '2px solid var(--bg)', background: 'var(--bg)' }
 								: { maxWidth: previewWidth }),
 							transformOrigin: 'top left',
-							rotate: smoothTilt,
 							boxShadow: '2px 2px 4px rgba(0,0,0,0.12)',
 							overflow: 'hidden',
 							pointerEvents: 'none',
