@@ -40,12 +40,6 @@ export function HoverPreviewLink({
 	const shouldReduceMotion = useReducedMotion()
 
 	useEffect(() => {
-		if (!previewSrc) return
-		const img = new Image()
-		img.src = previewSrc
-	}, [previewSrc])
-
-	useEffect(() => {
 		const mq = window.matchMedia(HOVER_MEDIA)
 		setHasHoverCapability(mq.matches)
 		const handler = () => setHasHoverCapability(mq.matches)
@@ -109,6 +103,7 @@ export function HoverPreviewLink({
 			<AnimatePresence>
 				{hovered && (
 					<motion.div
+						className="hover-preview-float"
 						initial={noAnimation ? false : { opacity: 0, scale: 0.87 }}
 						animate={{ opacity: 1, scale: 1 }}
 						exit={
@@ -122,7 +117,6 @@ export function HoverPreviewLink({
 							...(hasHoverCapability
 								? { left: x, top: y, rotate: smoothTilt }
 								: { left: touchPosition.x, top: touchPosition.y, rotate: 0 }),
-							zIndex: 90,
 							...(previewSrc
 								? { width: previewWidth, height: previewHeight, border: '2px solid var(--bg)', background: 'var(--bg)' }
 								: { maxWidth: previewWidth }),

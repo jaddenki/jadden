@@ -1,10 +1,9 @@
-@keyframes fadeIn {
-	from {
-		opacity: 0;
-	}
-	to {
-		opacity: 1;
-	}
+@font-face {
+	font-family: 'PixelHackers';
+	src: url('/fonts/PixelHackers.woff2') format('woff2');
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
 }
 
 body.loading-skip #loading-screen {
@@ -21,7 +20,7 @@ body.loading-skip #loading-screen {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	z-index: 9999;
+	z-index: var(--z-loading);
 	transition: opacity 0.6s ease-out;
 }
 
@@ -37,6 +36,8 @@ body.loading-skip #loading-screen {
 	--highlight-bg: black;
 	--highlight-text: white;
 	--skeleton-bg: #e8e8e8;
+	--z-preview: 90;
+	--z-loading: 9999;
 }
 
 [data-theme="dark"] {
@@ -49,8 +50,10 @@ body.loading-skip #loading-screen {
 }
 
 * {
-	font-family: var(--font-geist-pixel), Arial, sans-serif;
-	font-size: 18px;
+	font-family: 'PixelHackers', Arial, sans-serif;
+	font-size: 20px;
+	-webkit-font-smoothing: none;
+	-moz-osx-font-smoothing: unset;
 }
 
 *::selection {
@@ -223,6 +226,9 @@ footer {
 	left: 0;
 	right: 0;
 	padding: 1rem 2rem;
+	padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+	padding-left: calc(2rem + env(safe-area-inset-left));
+	padding-right: calc(2rem + env(safe-area-inset-right));
 	background: transparent;
 	display: flex;
 	align-items: center;
@@ -276,9 +282,6 @@ footer {
 	grid-template-columns: repeat(3, 1fr);
 }
 
-.about-layout .gallery-image {
-	animation: fadeIn 0.8s ease-out both;
-}
 
 .section-heading {
 	margin: 0 0 0.75rem 0;
@@ -386,6 +389,10 @@ footer {
 
 .section-skeleton .skeleton-meta {
 	width: 6ch;
+}
+
+.hover-preview-float {
+	z-index: var(--z-preview);
 }
 
 .theme-toggle {

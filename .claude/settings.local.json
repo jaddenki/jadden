@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(xxd -l 16 \"c:/Users/jadde/Documents/coding/jadden/public/fonts/PixelHackers.woff2\")",
+      "Bash(xxd -l 16 \"c:/Users/jadde/Documents/coding/jadden/src/assets/fonts/PixelHackers.woff2\")"
+    ]
+  }
+}
