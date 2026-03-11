@@ -22,11 +22,61 @@ body.loading-skip #loading-screen {
 	justify-content: center;
 	z-index: var(--z-loading);
 	transition: opacity 0.6s ease-out;
+	padding-left: 2rem;
+	padding-right: 2rem;
+	box-sizing: border-box;
 }
 
 #loading-screen.fade-out {
 	opacity: 0;
 	pointer-events: none;
+}
+
+#loading-screen .loading-content {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 1rem;
+	text-align: center;
+}
+
+.loading-pixels {
+	display: flex;
+	align-items: flex-end;
+	justify-content: center;
+	gap: 12px;
+	height: 36px;
+	min-width: 84px;
+}
+
+.loading-pixel {
+	width: 12px;
+	height: 12px;
+	background: var(--text);
+	animation: loading-pixel-grid 0.8s steps(4, end) infinite;
+}
+
+.loading-pixel:nth-child(1) { animation-delay: 0s; }
+.loading-pixel:nth-child(2) { animation-delay: 0.15s; }
+.loading-pixel:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes loading-pixel-grid {
+	0%   { transform: translate(0, 0); }
+	25%  { transform: translate(12px, 0); }
+	50%  { transform: translate(12px, -12px); }
+	75%  { transform: translate(0, -12px); }
+	100% { transform: translate(0, 0); }
+}
+
+#loading-screen .loading-text {
+	margin: 0;
+}
+
+@media (max-width: 768px) {
+	#loading-screen {
+		padding-left: 1.5rem;
+		padding-right: 1.5rem;
+	}
 }
 
 :root {
@@ -51,7 +101,7 @@ body.loading-skip #loading-screen {
 
 * {
 	font-family: 'PixelHackers', Arial, sans-serif;
-	font-size: 20px;
+	font-size: 18px;
 	-webkit-font-smoothing: none;
 	-moz-osx-font-smoothing: unset;
 }
@@ -95,6 +145,39 @@ main {
 	flex-shrink: 0;
 	display: flex;
 	flex-direction: column;
+}
+
+.project-list {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+}
+
+.project-list li {
+	color: var(--muted);
+	padding: 0.125rem 0;
+}
+
+.project-list li::before {
+	content: '— ';
+}
+
+.project-list a {
+	color: var(--text);
+}
+
+.gallery-grid > * {
+	transition: opacity 150ms ease-out;
+}
+
+.grid-dimmed > * {
+	opacity: 0.2;
+}
+
+.grid-dimmed > .grid-highlight {
+	opacity: 1;
 }
 
 .about-layout .content {

@@ -9,10 +9,25 @@ import "../styles/global.css";
 
 const projects = [
     {
+        src: "/img/front/capytitle.webm",
+        alt: "capy title",
+        aspectRatio: "16/9",
+        freezeTime: 0.6,
+        playContinuously: true,
+    },
+    {
+        src: "/img/front/capycapy.webm",
+        alt: "capys jumping out",
+        aspectRatio: "16/9",
+        freezeTime: 0.6,
+        playContinuously: true,
+    },
+    {
         src: "/img/front/infrared.webm",
         alt: "infrared",
         aspectRatio: "1/1",
         freezeTime: 0.6,
+        // playContinuously: true,
     },
     {
         src: "/img/front/hello_world.webm",
@@ -47,6 +62,7 @@ const projects = [
         alt: "respell ai video",
         aspectRatio: "16/9",
         freezeTime: .5,
+        // playContinuously: true,
     },
     {
         src: "/img/front/stl.webm",
@@ -59,6 +75,7 @@ const projects = [
         alt: "indigo",
         aspectRatio: "1/1",
         freezeTime: 0.5,
+        // playContinuously: true,
     },
     {
         src: "/img/front/anklyosaur.webm",
@@ -80,6 +97,23 @@ const projects = [
     },
 ];
 
+interface ProjectListItem {
+    name: string;
+    href?: string;
+    gridIndex?: number[];
+    previewSrc?: string;
+    previewAlt?: string;
+    previewText?: string;
+}
+
+const projectList: ProjectListItem[] = [
+    { name: "Capy", gridIndex: [0, 1], href: "https://x.com/capydotai/status/2031430074940195126", previewText: "Launch Video ↗", previewAlt: "capy" },
+    { name: "PixelHackers (This font!)", href: "https://x.com/igarakii/status/2029082607711863007?s=20", previewText: "Still working on it...↗" },
+    { name: "etea.cafe", href: "https://etea.cafe", previewText: "Daily Web Game ↗" },
+    // { name: "etea.cafe", href: "https://etea.cafe", previewSrc: "/img/previews/lowercase.webp", previewAlt: "etea.cafe" },
+    { name: "Spread the Love", href: "https://store.steampowered.com/app/3852520/Spread_The_Love/", previewText: "Steam ↗" },
+];
+
 const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
 ---
 
@@ -99,8 +133,13 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
                 document.body.classList.add("loading-skip");
         </script>
         <div id="loading-screen">
-            <div class="content">
-                Let's take a deep breath before we dive in...
+            <div class="loading-content">
+                <div class="loading-pixels" aria-hidden="true">
+                    <span class="loading-pixel"></span>
+                    <span class="loading-pixel"></span>
+                    <span class="loading-pixel"></span>
+                </div>
+                <p class="loading-text">Let's take a deep breath...</p>
             </div>
         </div>
         <main class="homepage-container">
@@ -192,7 +231,33 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
                     >Twitter</HoverPreviewLink>
                 </p>
 
-                <p>I made this typeface by the way  &gt:D</p>
+                <p>Some things I've worked on...</p>
+
+                <ul class="project-list">
+                    {projectList.map((p) => {
+                        const hasPreview = p.previewSrc || p.previewText;
+                        return (
+                            <li data-grid-index={p.gridIndex?.join(',')}>
+                                {hasPreview && p.href ? (
+                                    <HoverPreviewLink
+                                        client:visible
+                                        href={p.href}
+                                        target={p.href.startsWith('/') ? undefined : '_blank'}
+                                        previewSrc={p.previewSrc}
+                                        previewAlt={p.previewAlt}
+                                        previewText={p.previewText}
+                                    >{p.name}</HoverPreviewLink>
+                                ) : p.href ? (
+                                    <a href={p.href}>{p.name}</a>
+                                ) : (
+                                    <span>{p.name}</span>
+                                )}
+                            </li>
+                        );
+                    })}
+                </ul>
+                <p>And more! Currently populating this space...<br />
+                    Hover over my other videos in the meantime</p>
             </div>
 
             <ImageGrid items={projects} eager />
@@ -244,6 +309,34 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
                             if (loadingScreen.isConnected) loadingScreen.remove();
                         }, 700);
                     }
+                });
+            }
+        </script>
+        <script>
+            const listItems = document.querySelectorAll<HTMLElement>(".project-list li[data-grid-index]");
+            const gridTiles = document.querySelectorAll(".gallery-grid > *");
+            const gallery = document.querySelector(".gallery-grid");
+            let leaveTimer: ReturnType<typeof setTimeout> | null = null;
+
+            const clearGrid = () => {
+                gallery?.classList.remove("grid-dimmed");
+                for (const tile of gridTiles) tile.classList.remove("grid-highlight");
+            };
+
+            for (const li of listItems) {
+                li.addEventListener("mouseenter", () => {
+                    if (leaveTimer) { clearTimeout(leaveTimer); leaveTimer = null; }
+                    const indices = new Set(
+                        li.dataset.gridIndex!.split(",").map(Number)
+                    );
+                    gallery?.classList.add("grid-dimmed");
+                    for (let i = 0; i < gridTiles.length; i++) {
+                        gridTiles[i].classList.toggle("grid-highlight", indices.has(i));
+                    }
+                });
+                li.addEventListener("mouseleave", () => {
+                    if (leaveTimer) clearTimeout(leaveTimer);
+                    leaveTimer = setTimeout(clearGrid, 75);
                 });
             }
         </script>

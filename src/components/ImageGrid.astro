@@ -4,7 +4,10 @@ interface ImageItem {
 	alt: string;
 	aspectRatio: string;
 	href?: string;
+	/** When set, video pauses on this time (seconds) when idle. Omit or set playContinuously for looping. */
 	freezeTime?: number;
+	/** When true, video loops continuously when idle instead of pausing on a frame. */
+	playContinuously?: boolean;
 }
 
 interface Props {
@@ -33,6 +36,7 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
 						class="gallery-image"
 						style={`aspect-ratio: ${item.aspectRatio};`}
 						data-freeze-time={item.freezeTime ?? 0}
+						data-play-continuously={item.playContinuously ?? false}
 						loop
 						muted
 						preload="metadata"
@@ -78,12 +82,14 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
 		for (const tile of videoTiles) tile.classList.add("gallery-hint-dismissed");
 	}
 
-	const videos = document.querySelectorAll("video.gallery-image[data-freeze-time]");
+	const videos = document.querySelectorAll("video.gallery-image");
 
 	for (const node of videos) {
 		if (!(node instanceof HTMLVideoElement)) continue;
 		const isLinkTile = !!node.closest("a[href]");
+		const playContinuously = node.dataset.playContinuously === "true";
 		const freezeTime = Number(node.dataset.freezeTime ?? "0");
+
 		const setFreezeFrame = () => {
 			const duration = Number.isFinite(node.duration) ? node.duration : 0;
 			const clampedTime = duration > 0
@@ -95,23 +101,31 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
 			node.pause();
 		};
 
+		const onIdle = () => {
+			if (playContinuously) {
+				// keep looping; do nothing (video stays playing)
+			} else {
+				setFreezeFrame();
+			}
+		};
+
 		node.addEventListener("loadedmetadata", () => {
-			setFreezeFrame();
+			if (playContinuously) {
+				void node.play().catch(() => {});
+			} else {
+				setFreezeFrame();
+			}
 		});
 		node.addEventListener("mouseenter", () => {
 			dismissHints();
 			void node.play().catch(() => {});
 		});
-		node.addEventListener("mouseleave", () => {
-			setFreezeFrame();
-		});
+		node.addEventListener("mouseleave", onIdle);
 		node.addEventListener("focusin", () => {
 			dismissHints();
 			void node.play().catch(() => {});
 		});
-		node.addEventListener("focusout", () => {
-			setFreezeFrame();
-		});
+		node.addEventListener("focusout", onIdle);
 		node.addEventListener("click", (event) => {
 			dismissHints();
 			if (isLinkTile) return;
@@ -120,9 +134,19 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
 				void node.play().catch(() => {});
 				return;
 			}
-			setFreezeFrame();
+			if (playContinuously) {
+				node.pause();
+			} else {
+				setFreezeFrame();
+			}
 		});
 
-		if (node.readyState >= 1) setFreezeFrame();
+		if (node.readyState >= 1) {
+			if (playContinuously) {
+				void node.play().catch(() => {});
+			} else {
+				setFreezeFrame();
+			}
+		}
 	}
 </script>
