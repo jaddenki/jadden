@@ -130,6 +130,7 @@ html, body {
 	height: 100%;
 	margin: 0;
 	padding: 0;
+	scroll-behavior: smooth;
 }
 
 body {
@@ -173,14 +174,35 @@ main {
 .project-list li {
 	color: var(--muted);
 	padding: 0.125rem 0;
+	display: flex;
+	align-items: baseline;
+	gap: 0.25rem;
 }
 
 .project-list li::before {
 	content: '— ';
+	flex-shrink: 0;
 }
 
 .project-list a {
 	color: var(--muted);
+}
+
+.project-list-row {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 0.25rem;
+}
+
+.project-list-main {
+	min-width: 0;
+}
+
+.project-tag {
+	color: color-mix(in srgb, var(--muted) 50%, transparent);
+	white-space: nowrap;
+	text-align: right;
 }
 
 .gallery-grid > * {
@@ -326,7 +348,6 @@ p {
 	margin-bottom: 0.25em;
 }
 
-/* Text reveal: entering content — ease-out, opacity + transform only */
 .text-reveal > * {
 	--reveal-order: 0;
 	opacity: 0;
@@ -348,18 +369,6 @@ p {
 		opacity: 1;
 		transform: none;
 	}
-}
-
-/* Fade towards bottom of viewport */
-.bottom-fade {
-	position: fixed;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	height: 40vh;
-	pointer-events: none;
-	z-index: 0;
-	background: linear-gradient(to top, var(--bg), transparent);
 }
 
 footer {

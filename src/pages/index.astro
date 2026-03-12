@@ -10,14 +10,14 @@ import "../styles/global.css";
 const projects = [
     {
         src: "/img/front/capytitle.webm",
-        alt: "Capy AI",
+        alt: "Capy",
         aspectRatio: "16/9",
         freezeTime: 0.6,
         playContinuously: true,
     },
     {
         src: "/img/front/capycapy.webm",
-        alt: "Capy AI",
+        alt: "Capy",
         aspectRatio: "16/9",
         freezeTime: 0.6,
         playContinuously: true,
@@ -33,7 +33,7 @@ const projects = [
         src: "/img/front/hello_world.webm",
         alt: "Hello World - Personal",
         aspectRatio: "1/1",
-        freezeTime: 1.1,
+        freezeTime: 3.5,
     },
     {
         src: "/img/front/fish.webm",
@@ -104,14 +104,46 @@ interface ProjectListItem {
     previewSrc?: string;
     previewAlt?: string;
     previewText?: string;
+    tag?: string;
 }
 
 const projectList: ProjectListItem[] = [
-    { name: "Capy", gridIndex: [0, 1], href: "https://x.com/capydotai/status/2031430074940195126", previewText: "Launch Video ↗", previewAlt: "capy" },
-    { name: "PixelHackers", href: "https://x.com/igarakii/status/2029082607711863007?s=20", previewText: "Still working on it...↗" },
-    { name: "etea.cafe", href: "https://etea.cafe", previewText: "Daily Web Game ↗" },
+    {
+        name: "Capy",
+        gridIndex: [0, 1],
+        href: "https://x.com/capydotai/status/2031430074940195126",
+        previewText: "Launch Video ↗",
+        previewAlt: "Link to Twt",
+        tag: "Branding Video",
+    },
+    {
+        name: "PixelHackers",
+        href: "https://x.com/igarakii/status/2029082607711863007?s=20",
+        previewText: "Still working on it...↗",
+        tag: "Typeface",
+    },
+    {
+        name: "etea.cafe",
+        href: "https://etea.cafe",
+        previewText: "Daily Web Game ↗",
+        tag: "Game",
+    },
     // { name: "etea.cafe", href: "https://etea.cafe", previewSrc: "/img/previews/lowercase.webp", previewAlt: "etea.cafe" },
-    { name: "Spread the Love", href: "https://store.steampowered.com/app/3852520/Spread_The_Love/", previewText: "Steam ↗" },
+    {
+        name: "Spread the Love",
+        gridIndex: [7],
+        href: "https://store.steampowered.com/app/3852520/Spread_The_Love/",
+        previewText: "Steam ↗",
+        tag: "Game",
+    },
+    {
+        name: "Respell AI",
+        gridIndex: [6],
+        href: "https://respell.ai",
+        previewText: "Site ↗",
+        previewAlt: "Link to Respell AI",
+        tag: "Video",
+    },
 ];
 
 const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
@@ -238,20 +270,27 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
                         const hasPreview = p.previewSrc || p.previewText;
                         return (
                             <li data-grid-index={p.gridIndex?.join(',')}>
-                                {hasPreview && p.href ? (
-                                    <HoverPreviewLink
-                                        client:visible
-                                        href={p.href}
-                                        target={p.href.startsWith('/') ? undefined : '_blank'}
-                                        previewSrc={p.previewSrc}
-                                        previewAlt={p.previewAlt}
-                                        previewText={p.previewText}
-                                    >{p.name}</HoverPreviewLink>
-                                ) : p.href ? (
-                                    <a href={p.href}>{p.name}</a>
-                                ) : (
-                                    <span>{p.name}</span>
-                                )}
+                                <div class="project-list-row">
+                                    <span class="project-list-main">
+                                        {hasPreview && p.href ? (
+                                            <HoverPreviewLink
+                                                client:visible
+                                                href={p.href}
+                                                target={p.href.startsWith('/') ? undefined : '_blank'}
+                                                previewSrc={p.previewSrc}
+                                                previewAlt={p.previewAlt}
+                                                previewText={p.previewText}
+                                            >{p.name}</HoverPreviewLink>
+                                        ) : p.href ? (
+                                            <a href={p.href}>{p.name}</a>
+                                        ) : (
+                                            <span>{p.name}</span>
+                                        )}
+                                    </span>
+                                    {p.tag && (
+                                        <span class="project-tag">{p.tag}</span>
+                                    )}
+                                </div>
                             </li>
                         );
                     })}
@@ -262,7 +301,6 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
             <ImageGrid items={projects} eager />
         </main>
 
-        <div class="bottom-fade" aria-hidden="true"></div>
 
         <footer>
             <ThemeToggle />
@@ -315,27 +353,58 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
         </script>
         <script>
             const listItems = document.querySelectorAll<HTMLElement>(".project-list li[data-grid-index]");
-            const gridTiles = document.querySelectorAll(".gallery-grid > *");
+            const gridTiles = document.querySelectorAll<HTMLElement>(".gallery-grid > *");
             const gallery = document.querySelector(".gallery-grid");
             let leaveTimer: ReturnType<typeof setTimeout> | null = null;
 
+            const dispatchToTileVideos = (tile: HTMLElement, type: "mouseenter" | "mouseleave") => {
+                const videos = tile.querySelectorAll<HTMLVideoElement>("video.gallery-image");
+                for (const video of videos) {
+                    video.dispatchEvent(new Event(type, { bubbles: false }));
+                }
+            };
+
             const clearGrid = () => {
                 gallery?.classList.remove("grid-dimmed");
-                for (const tile of gridTiles) tile.classList.remove("grid-highlight");
+                for (const tile of gridTiles) {
+                    tile.classList.remove("grid-highlight");
+                    // Let videos return to their idle / freeze frame state
+                    dispatchToTileVideos(tile, "mouseleave");
+                }
             };
 
             for (const li of listItems) {
-                li.addEventListener("mouseenter", () => {
+                const trigger = li.querySelector<HTMLAnchorElement>("a");
+                if (!trigger) continue;
+
+                trigger.addEventListener("mouseenter", () => {
                     if (leaveTimer) { clearTimeout(leaveTimer); leaveTimer = null; }
-                    const indices = new Set(
-                        li.dataset.gridIndex!.split(",").map(Number)
-                    );
+                    const indicesArray = li.dataset.gridIndex!.split(",").map(Number);
+                    const indices = new Set(indicesArray);
                     gallery?.classList.add("grid-dimmed");
+                    // Smooth-scroll the first matching tile into view
+                    const firstIndex = Math.min(...indicesArray);
+                    const targetTile = gridTiles[firstIndex];
+                    if (targetTile) {
+                        targetTile.scrollIntoView({
+                            behavior: "smooth",
+                            block: "center",
+                            inline: "nearest",
+                        });
+                    }
                     for (let i = 0; i < gridTiles.length; i++) {
-                        gridTiles[i].classList.toggle("grid-highlight", indices.has(i));
+                        const tile = gridTiles[i];
+                        const shouldHighlight = indices.has(i);
+                        tile.classList.toggle("grid-highlight", shouldHighlight);
+                        if (shouldHighlight) {
+                            // Trigger the same behavior as hovering the video tile directly
+                            dispatchToTileVideos(tile, "mouseenter");
+                        } else {
+                            dispatchToTileVideos(tile, "mouseleave");
+                        }
                     }
                 });
-                li.addEventListener("mouseleave", () => {
+                trigger.addEventListener("mouseleave", () => {
                     if (leaveTimer) clearTimeout(leaveTimer);
                     leaveTimer = setTimeout(clearGrid, 75);
                 });
