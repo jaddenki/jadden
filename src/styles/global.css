@@ -258,7 +258,7 @@ main {
 	cursor: pointer;
 }
 
-.gallery-video-hint {
+.gallery-item-tooltip {
 	position: absolute;
 	right: 0.5rem;
 	bottom: 0.5rem;
@@ -270,12 +270,6 @@ main {
 	pointer-events: none;
 	opacity: 0.9;
 	transition: opacity 140ms ease;
-}
-
-.gallery-video-tile:hover .gallery-video-hint,
-.gallery-video-tile:focus-within .gallery-video-hint,
-.gallery-video-tile.gallery-hint-dismissed .gallery-video-hint {
-	opacity: 0;
 }
 
 a {

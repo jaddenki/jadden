@@ -22,13 +22,12 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
 <section class="projects-gallery">
 	<div class="gallery-grid">
 		{items.map((item, index) => {
-			const isWide = item.aspectRatio === '19/6' || item.aspectRatio === '16/9';
-			const isSquare = item.aspectRatio === '1/1';
-			const gridSpan = isWide ? 'grid-column: span 2;' : '';
-			const squareClass = isSquare ? 'gallery-item-square' : '';
-			const videoTileClass = isSquare ? 'gallery-item-square gallery-video-tile' : 'gallery-video-tile';
-			const isVideo = isVideoUrl(item.src);
-			const showHint = isVideo && index === 0;
+		const isWide = item.aspectRatio === '19/6' || item.aspectRatio === '16/9';
+		const isSquare = item.aspectRatio === '1/1';
+		const gridSpan = isWide ? 'grid-column: span 2;' : '';
+		const squareClass = isSquare ? 'gallery-item-square' : '';
+		const videoTileClass = isSquare ? 'gallery-item-square gallery-video-tile' : 'gallery-video-tile';
+		const isVideo = isVideoUrl(item.src);
 			const mediaEl = isVideo ? (
 				<>
 					<video
@@ -42,12 +41,11 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
 						preload="metadata"
 						playsinline
 						aria-label={item.alt}
-					/>
-					{showHint && (
-						<span class="gallery-video-hint" aria-hidden="true">Hover on any image to play</span>
-					)}
+				/>
+				<span class="gallery-item-tooltip" aria-hidden="true">{item.alt}</span>
 				</>
 			) : (
+			<>
 				<img
 					src={item.src}
 					alt={item.alt}
@@ -57,31 +55,23 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
 					decoding="async"
 					fetchpriority={eager ? 'high' : 'auto'}
 				/>
+				<span class="gallery-item-tooltip" aria-hidden="true">{item.alt}</span>
+			</>
 			);
-			return item.href ? (
-				<a href={item.href} class={isVideo ? videoTileClass : squareClass} style={`--aspect-ratio: ${item.aspectRatio}; ${gridSpan}`}>
-					{mediaEl}
-				</a>
-			) : (
-				<div class={isVideo ? videoTileClass : squareClass} style={gridSpan}>
-					{mediaEl}
-				</div>
-			);
+	return item.href ? (
+		<a href={item.href} class={isVideo ? videoTileClass : squareClass} style={`--aspect-ratio: ${item.aspectRatio}; ${gridSpan}`}>
+			{mediaEl}
+		</a>
+	) : (
+		<div class={isVideo ? videoTileClass : squareClass} style={gridSpan}>
+			{mediaEl}
+		</div>
+	);
 		})}
 	</div>
 </section>
 
 <script>
-	const hintKey = "galleryVideoHintDismissed";
-	const videoTiles = document.querySelectorAll(".gallery-video-tile");
-	const dismissHints = () => {
-		for (const tile of videoTiles) tile.classList.add("gallery-hint-dismissed");
-		sessionStorage.setItem(hintKey, "true");
-	};
-	if (sessionStorage.getItem(hintKey) === "true") {
-		for (const tile of videoTiles) tile.classList.add("gallery-hint-dismissed");
-	}
-
 	const videos = document.querySelectorAll("video.gallery-image");
 
 	for (const node of videos) {
@@ -117,17 +107,14 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
 			}
 		});
 		node.addEventListener("mouseenter", () => {
-			dismissHints();
 			void node.play().catch(() => {});
 		});
 		node.addEventListener("mouseleave", onIdle);
 		node.addEventListener("focusin", () => {
-			dismissHints();
 			void node.play().catch(() => {});
 		});
 		node.addEventListener("focusout", onIdle);
 		node.addEventListener("click", (event) => {
-			dismissHints();
 			if (isLinkTile) return;
 			event.preventDefault();
 			if (node.paused) {
