@@ -108,7 +108,7 @@ interface ProjectListItem {
 
 const projectList: ProjectListItem[] = [
     { name: "Capy", gridIndex: [0, 1], href: "https://x.com/capydotai/status/2031430074940195126", previewText: "Launch Video ↗", previewAlt: "capy" },
-    { name: "PixelHackers (This font!)", href: "https://x.com/igarakii/status/2029082607711863007?s=20", previewText: "Still working on it...↗" },
+    { name: "PixelHackers", href: "https://x.com/igarakii/status/2029082607711863007?s=20", previewText: "Still working on it...↗" },
     { name: "etea.cafe", href: "https://etea.cafe", previewText: "Daily Web Game ↗" },
     // { name: "etea.cafe", href: "https://etea.cafe", previewSrc: "/img/previews/lowercase.webp", previewAlt: "etea.cafe" },
     { name: "Spread the Love", href: "https://store.steampowered.com/app/3852520/Spread_The_Love/", previewText: "Steam ↗" },
@@ -143,8 +143,8 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
             </div>
         </div>
         <main class="homepage-container">
-            <div class="content">
-                <p>
+            <div class="content text-reveal">
+                <p style="--reveal-order: 0">
                     Hi, I'm <HoverPreviewLink
                         client:visible
                         href="/about"
@@ -160,7 +160,7 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
                     />
                 </p>
                 <!-- span class="email">jadden [at] jam [dot] ms</span> -->
-                <p>
+                <p style="--reveal-order: 1">
                     I'm a programmer and designer, finishing up my BSCompeE at 
                     <HoverPreviewLink
                         client:visible
@@ -171,7 +171,7 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
                     >Purdue</HoverPreviewLink> <span class="inline-text">(Fall 2026)</span>
                 </p>
 
-                <p>
+                <p style="--reveal-order: 2">
                     Currently, I'm making unconventional branding for
                     startups at <InlineAvatar
                         src="https://github.com/lowercaseclub.png"
@@ -189,7 +189,7 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
                     >lowercase</HoverPreviewLink>, focusing on motion + web design
                 </p>
 
-                <p>
+                <!-- <p>
                     I'm also the Comms Lead and a Designer
                     at <InlineAvatar
                         src="https://www.google.com/s2/favicons?domain=purduehackers.com&sz=64"
@@ -205,9 +205,9 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
                         previewSrc="/img/previews/ph.webp"
                         previewAlt="purduehackers.com preview"
                     >Purdue Hackers</HoverPreviewLink>, a the coolest community of makers on campus
-                </p>
+                </p> -->
 
-                <p>
+                <p style="--reveal-order: 3">
                     Links... <HoverPreviewLink
                         client:visible
                         href="https://github.com/jaddenki"
@@ -231,9 +231,9 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
                     >Twitter</HoverPreviewLink>
                 </p>
 
-                <p>Some things I've worked on...</p>
+                <p style="--reveal-order: 4">Some things I've worked on...</p>
 
-                <ul class="project-list">
+                <ul class="project-list" style="--reveal-order: 5">
                     {projectList.map((p) => {
                         const hasPreview = p.previewSrc || p.previewText;
                         return (
@@ -256,11 +256,13 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
                         );
                     })}
                 </ul>
-                <p>And more! Currently populating this space...</p>
+                <p style="--reveal-order: 6">And more! Currently populating this space...</p>
             </div>
 
             <ImageGrid items={projects} eager />
         </main>
+
+        <div class="bottom-fade" aria-hidden="true"></div>
 
         <footer>
             <ThemeToggle />

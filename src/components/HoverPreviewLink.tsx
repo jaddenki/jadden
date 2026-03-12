@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion, useMotionValue, useReducedMotion, useSpring } from 'motion/react'
 import { type AnchorHTMLAttributes, type MouseEvent, useCallback, useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 
 type HoverPreviewLinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
 	previewSrc?: string
@@ -73,10 +74,18 @@ export function HoverPreviewLink({
 
 	const noAnimation = shouldReduceMotion === true
 
+	const existingRel = (anchorProps.rel ?? '').split(/\s+/).filter(Boolean)
+	const needsNoopener = anchorProps.target === '_blank'
+	const safeRel =
+		needsNoopener
+			? [...new Set([...existingRel, 'noopener', 'noreferrer'])].join(' ')
+			: anchorProps.rel
+
 	return (
 		<>
 			<a
 				{...anchorProps}
+				rel={safeRel}
 				onMouseEnter={(e) => {
 					prevX.current = e.clientX
 					if (!hasHoverCapability) {
@@ -100,63 +109,67 @@ export function HoverPreviewLink({
 				{children}
 			</a>
 
-			<AnimatePresence>
-				{hovered && (
-					<motion.div
-						className="hover-preview-float"
-						initial={noAnimation ? false : { opacity: 0, scale: 0.87 }}
-						animate={{ opacity: 1, scale: 1 }}
-						exit={
-							noAnimation
-								? { opacity: 0, scale: 0.8, transition: { duration: 0 } }
-								: { opacity: 0, scale: 0.95, transition: {duration : 0.1} }
-						}
-						transition={noAnimation ? { duration: 0 } : SPRING}
-						style={{
-							position: 'fixed',
-							...(hasHoverCapability
-								? { left: x, top: y, rotate: smoothTilt }
-								: { left: touchPosition.x, top: touchPosition.y, rotate: 0 }),
-							...(previewSrc
-								? { width: previewWidth, height: previewHeight, border: '2px solid var(--bg)', background: 'var(--bg)' }
-								: { maxWidth: previewWidth }),
-							transformOrigin: 'top left',
-							boxShadow: '2px 2px 4px rgba(0,0,0,0.12)',
-							overflow: 'hidden',
-							pointerEvents: 'none',
-						}}
-					>
-						{previewSrc ? (
-							<img
-								src={previewSrc}
-								alt={previewAlt}
-								width={previewWidth}
-								height={previewHeight}
-								loading="eager"
-								draggable={false}
+			{typeof document !== 'undefined' &&
+				createPortal(
+					<AnimatePresence>
+						{hovered && (
+							<motion.div
+								className="hover-preview-float"
+								initial={noAnimation ? false : { opacity: 0, scale: 0.87 }}
+								animate={{ opacity: 1, scale: 1 }}
+								exit={
+									noAnimation
+										? { opacity: 0, scale: 0.8, transition: { duration: 0 } }
+										: { opacity: 0, scale: 0.95, transition: { duration: 0.1 } }
+								}
+								transition={noAnimation ? { duration: 0 } : SPRING}
 								style={{
-									width: '100%',
-									height: '100%',
-									objectFit: 'cover',
-									display: 'block',
-								}}
-							/>
-						) : previewText ? (
-							<span
-								style={{
-									display: 'block',
-									padding: '0px 4px',
-									background: 'var(--text)',
-									color: 'var(--bg)',
-									whiteSpace: 'pre-wrap',
+									position: 'fixed',
+									...(hasHoverCapability
+										? { left: x, top: y, rotate: smoothTilt }
+										: { left: touchPosition.x, top: touchPosition.y, rotate: 0 }),
+									...(previewSrc
+										? { width: previewWidth, height: previewHeight, border: '2px solid var(--bg)', background: 'var(--bg)' }
+										: { maxWidth: previewWidth }),
+									transformOrigin: 'top left',
+									boxShadow: '2px 2px 4px rgba(0,0,0,0.12)',
+									overflow: 'hidden',
+									pointerEvents: 'none',
 								}}
 							>
-								{previewText}
-							</span>
-						) : null}
-					</motion.div>
+								{previewSrc ? (
+									<img
+										src={previewSrc}
+										alt={previewAlt}
+										width={previewWidth}
+										height={previewHeight}
+										loading="eager"
+										draggable={false}
+										style={{
+											width: '100%',
+											height: '100%',
+											objectFit: 'cover',
+											display: 'block',
+										}}
+									/>
+								) : previewText ? (
+									<span
+										style={{
+											display: 'block',
+											padding: '0 4px 3px 4px',
+											background: 'var(--text)',
+											color: 'var(--bg)',
+											whiteSpace: 'pre-wrap',
+										}}
+									>
+										{previewText}
+									</span>
+								) : null}
+							</motion.div>
+						)}
+					</AnimatePresence>,
+					document.body,
 				)}
-			</AnimatePresence>
 		</>
 	)
 }
