@@ -20,14 +20,37 @@ const { title, description } = Astro.props;
 		var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 		document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
 	}
+
+	// Prevent transition flash when switching back to this tab
+	document.addEventListener('visibilitychange', function() {
+		if (!document.hidden) {
+			document.body.classList.add('tab-refocus');
+			requestAnimationFrame(function() {
+				requestAnimationFrame(function() {
+					document.body.classList.remove('tab-refocus');
+				});
+			});
+		}
+	});
+
+	// Free GPU layers once text-reveal animations are done
+	document.addEventListener('animationend', function(e) {
+		if (e.animationName === 'text-reveal-in') {
+			e.target.style.willChange = 'auto';
+		}
+	}, true);
 })();
 </script>
 <!-- Global Metadata -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
 <link rel="icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <link rel="preload" href="/fonts/PixelHackers.woff2" as="font" type="font/woff2" crossorigin />
 <meta name="generator" content={Astro.generator} />
+<meta name="robots" content="index, follow" />
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
 
 <!-- Preconnect/prefetch for domains we load resources from -->
 <link rel="preconnect" href="https://d2w9rnfcy7mm78.cloudfront.net" crossorigin />
@@ -40,22 +63,24 @@ const { title, description } = Astro.props;
 
 <!-- Primary Meta Tags -->
 <title>{title}</title>
-<meta name="title" content={title} />
 <meta name="description" content={description} />
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:site_name" content="jaddens.page" />
 <meta property="og:url" content={canonicalURL.href} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={shareImageURL.href} />
-<meta property="og:image:alt" content={title} />
+<meta property="og:image:alt" content="Jadden's portfolio preview" />
 
 <!-- Twitter / X -->
 <meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:creator" content="@igarakii" />
 <meta name="twitter:url" content={canonicalURL.href} />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={shareImageURL.href} />
-<meta name="twitter:image:alt" content={title} />
+<meta name="twitter:image:alt" content="Jadden's portfolio preview" />
 <script defer src="https://umami.purduehackers.com/script.js" data-website-id="685a1d18-887b-466a-8bf1-204a65db316e"></script>

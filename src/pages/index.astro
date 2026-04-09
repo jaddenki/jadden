@@ -174,12 +174,13 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
                 <p class="loading-text">Let's take a deep breath...</p>
             </div>
         </div>
+        <div id="page-ready" aria-live="polite" class="sr-only"></div>
         <main class="homepage-container">
             <div class="content text-reveal">
                 <p style="--reveal-order: 0">
                     Hi, I'm <InlineAvatar
                         src="https://github.com/jaddenki.png"
-                        alt="jaddens gh"
+                        alt="Jadden's GitHub profile picture"
                         width={16}
                         height={16}
                         class="inline-avatar"
@@ -320,25 +321,25 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
 
         <footer>
             <ThemeToggle />
-            <nav class="webring-nav">
+            <nav class="webring-nav" aria-label="Purdue Hackers webring">
                 <a
                     href="https://ring.purduehackers.com/previous?host=https://www.jaddens.page"
                     class="webring-link"
-                    title="Previous site"
+                    aria-label="Previous site in Purdue Hackers webring"
                 >
                     &lt;
                 </a>
                 <a
                     href="https://ring.purduehackers.com/"
                     class="webring-link webring-logo"
-                    title="Purdue Hackers Webring"
+                    aria-label="Purdue Hackers webring home"
                 >
                     Purdue Hackers
                 </a>
                 <a
                     href="https://ring.purduehackers.com/next?host=https://www.jaddens.page"
                     class="webring-link"
-                    title="Next site"
+                    aria-label="Next site in Purdue Hackers webring"
                 >
                     &gt;
                 </a>
@@ -359,6 +360,8 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
                             "transitionend",
                             () => {
                                 loadingScreen.remove();
+                                const liveRegion = document.getElementById("page-ready");
+                                if (liveRegion) liveRegion.textContent = "Page loaded";
                             },
                             {
                                 once: true,
@@ -420,8 +423,11 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
                     const firstIndex = Math.min(...indicesArray);
                     const targetTile = gridTiles[firstIndex];
                     if (targetTile) {
+                        const prefersReduced = window.matchMedia(
+                            "(prefers-reduced-motion: reduce)"
+                        ).matches;
                         targetTile.scrollIntoView({
-                            behavior: "smooth",
+                            behavior: prefersReduced ? "instant" : "smooth",
                             block: "center",
                             inline: "nearest",
                         });

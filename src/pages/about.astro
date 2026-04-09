@@ -28,7 +28,7 @@ const photos = [
     },
     {
         src: "/img/about/IMG_3631.webp",
-        alt: "me and alicia <3",
+        alt: "me and alicia!",
         aspectRatio: "1/1",
     },
     {
@@ -87,12 +87,13 @@ const favorites: FavoriteEntry[] = [
             <div class="content text-reveal">
                 <p style="--reveal-order: 0">
                     <a href="/" class="back-link" data-astro-prefetch
-                        >&lt back</a
+                        ><span aria-hidden="true">&lt;</span> back</a
                     >
                 </p>
                 <section
                     class="about-bio text-reveal"
                     style="--reveal-order: 1"
+                    aria-label="About me"
                 >
                     <p style="--reveal-order: 0">A little bit about me:</p>
                     <p style="--reveal-order: 1">
@@ -211,5 +212,21 @@ const favorites: FavoriteEntry[] = [
         <footer>
             <ThemeToggle />
         </footer>
+        <script>
+            const images = document.querySelectorAll<HTMLImageElement>(
+                ".about-layout .gallery-image"
+            );
+            images.forEach((img, i) => {
+                const reveal = () => {
+                    img.style.transitionDelay = `${i * 60}ms`;
+                    img.classList.add("img-loaded");
+                };
+                if (img.complete) {
+                    reveal();
+                } else {
+                    img.addEventListener("load", reveal, { once: true });
+                }
+            });
+        </script>
     </body>
 </html>

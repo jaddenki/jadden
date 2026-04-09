@@ -19,7 +19,7 @@ const { items, eager = false } = Astro.props;
 const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
 ---
 
-<section class="projects-gallery">
+<section class="projects-gallery" aria-label="Projects gallery">
 	<div class="gallery-grid">
 		{items.map((item, index) => {
 		const isWide = item.aspectRatio === '19/6' || item.aspectRatio === '16/9';
@@ -30,6 +30,7 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
 		const isVideo = isVideoUrl(item.src);
 			const mediaEl = isVideo ? (
 				<>
+					<span class="sr-only">{item.alt}</span>
 					<video
 						src={item.src}
 						class="gallery-image"
@@ -40,7 +41,7 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
 						muted
 						preload="metadata"
 						playsinline
-						aria-label={item.alt}
+						aria-hidden="true"
 				/>
 				<span class="gallery-item-tooltip" aria-hidden="true">{item.alt}</span>
 				</>
