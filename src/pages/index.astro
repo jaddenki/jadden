@@ -39,7 +39,7 @@ const projects = [
         src: "/img/front/fish.webm",
         alt: "Fish - Personal",
         aspectRatio: "1/1",
-        freezeTime: .8,
+        freezeTime: 0.8,
     },
     {
         src: "/img/front/loco.webm",
@@ -61,7 +61,7 @@ const projects = [
         src: "/img/front/respellai.webm",
         alt: "Respell AI",
         aspectRatio: "16/9",
-        freezeTime: .5,
+        freezeTime: 0.5,
         // playContinuously: true,
     },
     {
@@ -177,12 +177,7 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
         <main class="homepage-container">
             <div class="content text-reveal">
                 <p style="--reveal-order: 0">
-                    Hi, I'm <HoverPreviewLink
-                        client:visible
-                        href="/about"
-                        data-astro-prefetch
-                        previewText="about me >"
-                    >Jadden Picardal</HoverPreviewLink> <InlineAvatar
+                    Hi, I'm <InlineAvatar
                         src="https://github.com/jaddenki.png"
                         alt="jaddens gh"
                         width={16}
@@ -190,22 +185,30 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
                         class="inline-avatar"
                         priority
                     />
+                    Jadden Picardal (she/her) <br />Read more <HoverPreviewLink
+                        client:visible
+                        href="/about"
+                        data-astro-prefetch
+                        previewText="about me >">about me</HoverPreviewLink
+                    >
                 </p>
                 <!-- span class="email">jadden [at] jam [dot] ms</span> -->
                 <p style="--reveal-order: 1">
-                    I'm a programmer and designer, studying computer engineering at
+                    I'm a programmer and designer, studying computer engineering
+                    at
                     <HoverPreviewLink
                         client:visible
                         href="https://www.purdue.edu/"
                         target="_blank"
                         previewSrc="/img/previews/purdue.webp"
-                        previewAlt="Purdue"
-                    >Purdue</HoverPreviewLink> <span class="inline-text">(Fall 2026)</span>
+                        previewAlt="Purdue">Purdue</HoverPreviewLink
+                    >
+                    <span class="inline-text">(Fall 2026)</span>
                 </p>
 
                 <p style="--reveal-order: 2">
-                    Currently, I'm making unconventional branding for
-                    startups at <InlineAvatar
+                    Currently, I'm making unconventional branding for startups
+                    at <InlineAvatar
                         src="https://github.com/lowercaseclub.png"
                         alt=""
                         width={20}
@@ -218,7 +221,8 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
                         target="_blank"
                         previewSrc="/img/previews/lowercase.webp"
                         previewAlt="lowercase.club preview"
-                    >lowercase</HoverPreviewLink>, focusing on motion + web design
+                        >lowercase</HoverPreviewLink
+                    >, focusing on motion + web design
                 </p>
 
                 <!-- <p>
@@ -244,63 +248,75 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
                         client:visible
                         href="https://github.com/jaddenki"
                         target="_blank"
-                        previewText="@jaddenki ↗"
-                    >GitHub</HoverPreviewLink>, <HoverPreviewLink
+                        previewText="@jaddenki ↗">GitHub</HoverPreviewLink
+                    >, <HoverPreviewLink
                         client:visible
                         href="https://www.linkedin.com/in/jadden-picardal"
                         target="_blank"
                         previewText="jadden-picardal ↗"
-                    >LinkedIn</HoverPreviewLink>, <HoverPreviewLink
+                        >LinkedIn</HoverPreviewLink
+                    >, <HoverPreviewLink
                         client:visible
                         href="https://www.are.na/jadden-picardal/jadden-picardal-s0qvounprtc"
                         target="_blank"
-                        previewText="Jadden Picardal ↗"
-                    >Are.na</HoverPreviewLink>, <HoverPreviewLink
+                        previewText="Jadden Picardal ↗">Are.na</HoverPreviewLink
+                    >, <HoverPreviewLink
                         client:visible
                         href="https://x.com/igarakii"
                         target="_blank"
-                        previewText="@igarakii ↗"
-                    >Twitter</HoverPreviewLink>
+                        previewText="@igarakii ↗">Twitter</HoverPreviewLink
+                    >
                 </p>
 
                 <p style="--reveal-order: 4">Some things I've worked on...</p>
 
                 <ul class="project-list" style="--reveal-order: 5">
-                    {projectList.map((p) => {
-                        const hasPreview = p.previewSrc || p.previewText;
-                        return (
-                            <li data-grid-index={p.gridIndex?.join(',')}>
-                                <div class="project-list-row">
-                                    <span class="project-list-main">
-                                        {hasPreview && p.href ? (
-                                            <HoverPreviewLink
-                                                client:visible
-                                                href={p.href}
-                                                target={p.href.startsWith('/') ? undefined : '_blank'}
-                                                previewSrc={p.previewSrc}
-                                                previewAlt={p.previewAlt}
-                                                previewText={p.previewText}
-                                            >{p.name}</HoverPreviewLink>
-                                        ) : p.href ? (
-                                            <a href={p.href}>{p.name}</a>
-                                        ) : (
-                                            <span>{p.name}</span>
+                    {
+                        projectList.map((p) => {
+                            const hasPreview = p.previewSrc || p.previewText;
+                            return (
+                                <li data-grid-index={p.gridIndex?.join(",")}>
+                                    <div class="project-list-row">
+                                        <span class="project-list-main">
+                                            {hasPreview && p.href ? (
+                                                <HoverPreviewLink
+                                                    client:visible
+                                                    href={p.href}
+                                                    target={
+                                                        p.href.startsWith("/")
+                                                            ? undefined
+                                                            : "_blank"
+                                                    }
+                                                    previewSrc={p.previewSrc}
+                                                    previewAlt={p.previewAlt}
+                                                    previewText={p.previewText}
+                                                >
+                                                    {p.name}
+                                                </HoverPreviewLink>
+                                            ) : p.href ? (
+                                                <a href={p.href}>{p.name}</a>
+                                            ) : (
+                                                <span>{p.name}</span>
+                                            )}
+                                        </span>
+                                        {p.tag && (
+                                            <span class="project-tag">
+                                                {p.tag}
+                                            </span>
                                         )}
-                                    </span>
-                                    {p.tag && (
-                                        <span class="project-tag">{p.tag}</span>
-                                    )}
-                                </div>
-                            </li>
-                        );
-                    })}
+                                    </div>
+                                </li>
+                            );
+                        })
+                    }
                 </ul>
-                <p style="--reveal-order: 6">And more! Currently populating this space...</p>
+                <p style="--reveal-order: 6">
+                    And more! Currently populating this space...
+                </p>
             </div>
 
             <ImageGrid items={projects} eager />
         </main>
-
 
         <footer>
             <ThemeToggle />
@@ -339,26 +355,39 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
                     if (loadingScreen) {
                         sessionStorage.setItem("hasVisited", "true");
                         loadingScreen.classList.add("fade-out");
-                        loadingScreen.addEventListener("transitionend", () => {
-                            loadingScreen.remove();
-                        }, {
-                            once: true,
-                        });
+                        loadingScreen.addEventListener(
+                            "transitionend",
+                            () => {
+                                loadingScreen.remove();
+                            },
+                            {
+                                once: true,
+                            },
+                        );
                         setTimeout(() => {
-                            if (loadingScreen.isConnected) loadingScreen.remove();
+                            if (loadingScreen.isConnected)
+                                loadingScreen.remove();
                         }, 700);
                     }
                 });
             }
         </script>
         <script>
-            const listItems = document.querySelectorAll<HTMLElement>(".project-list li[data-grid-index]");
-            const gridTiles = document.querySelectorAll<HTMLElement>(".gallery-grid > *");
+            const listItems = document.querySelectorAll<HTMLElement>(
+                ".project-list li[data-grid-index]",
+            );
+            const gridTiles =
+                document.querySelectorAll<HTMLElement>(".gallery-grid > *");
             const gallery = document.querySelector(".gallery-grid");
             let leaveTimer: ReturnType<typeof setTimeout> | null = null;
 
-            const dispatchToTileVideos = (tile: HTMLElement, type: "mouseenter" | "mouseleave") => {
-                const videos = tile.querySelectorAll<HTMLVideoElement>("video.gallery-image");
+            const dispatchToTileVideos = (
+                tile: HTMLElement,
+                type: "mouseenter" | "mouseleave",
+            ) => {
+                const videos = tile.querySelectorAll<HTMLVideoElement>(
+                    "video.gallery-image",
+                );
                 for (const video of videos) {
                     video.dispatchEvent(new Event(type, { bubbles: false }));
                 }
@@ -378,8 +407,13 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
                 if (!trigger) continue;
 
                 trigger.addEventListener("mouseenter", () => {
-                    if (leaveTimer) { clearTimeout(leaveTimer); leaveTimer = null; }
-                    const indicesArray = li.dataset.gridIndex!.split(",").map(Number);
+                    if (leaveTimer) {
+                        clearTimeout(leaveTimer);
+                        leaveTimer = null;
+                    }
+                    const indicesArray = li.dataset
+                        .gridIndex!.split(",")
+                        .map(Number);
                     const indices = new Set(indicesArray);
                     gallery?.classList.add("grid-dimmed");
                     // Smooth-scroll the first matching tile into view
@@ -395,7 +429,10 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
                     for (let i = 0; i < gridTiles.length; i++) {
                         const tile = gridTiles[i];
                         const shouldHighlight = indices.has(i);
-                        tile.classList.toggle("grid-highlight", shouldHighlight);
+                        tile.classList.toggle(
+                            "grid-highlight",
+                            shouldHighlight,
+                        );
                         if (shouldHighlight) {
                             // Trigger the same behavior as hovering the video tile directly
                             dispatchToTileVideos(tile, "mouseenter");

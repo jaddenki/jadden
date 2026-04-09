@@ -87,9 +87,13 @@ const favorites: FavoriteEntry[] = [
             <div class="content text-reveal">
                 <p style="--reveal-order: 0">
                     <a href="/" class="back-link" data-astro-prefetch
-                        >&lt back</a>
+                        >&lt back</a
+                    >
                 </p>
-                <section class="about-bio text-reveal" style="--reveal-order: 1">
+                <section
+                    class="about-bio text-reveal"
+                    style="--reveal-order: 1"
+                >
                     <p style="--reveal-order: 0">A little bit about me:</p>
                     <p style="--reveal-order: 1">
                         I was born in the Philippines and raised in Las Vegas,
@@ -117,34 +121,41 @@ const favorites: FavoriteEntry[] = [
                             href="https://jam.ms"
                             target="_blank"
                             previewSrc="/img/previews/jamms.webp"
-                            previewAlt="jam.ms preview"
-                        >games</HoverPreviewLink>
-                        with friends
-                        and edit <HoverPreviewLink
+                            previewAlt="jam.ms preview">games</HoverPreviewLink
+                        >
+                        with friends and edit <HoverPreviewLink
                             client:visible
                             href="https://tiktok.com/@okigarakii"
                             target="_blank"
                             previewText="TikTok @okigarakii ↗"
-                        >videos</HoverPreviewLink> as well
+                            >videos</HoverPreviewLink
+                        > as well
                     </p>
                     <p style="--reveal-order: 4">
                         I'm very inspired by bold projects and ideas.
                         Everything's a bit samey these days, especially in a
-                        world of AI-generated everything. All that does is push us to make even better work.
+                        world of AI-generated everything. All that does is push
+                        us to make even better work.
                     </p>
 
-
-                    <p class="mb-8" style="--reveal-order: 5">Hope you enjoy your stay here!<br />
+                    <p class="mb-8" style="--reveal-order: 5">
+                        Hope you enjoy your stay here!<br />
                         Reach me: <span class="email"
-                            >jadden [at] jam [dot] ms</span>
+                            >jadden [at] jam [dot] ms</span
+                        >
                     </p>
-                <div style="--reveal-order: 6"><SignatureMotion client:only="react" style={{ marginTop: "1rem" }} /></div>
+                    <div style="--reveal-order: 6">
+                        <SignatureMotion
+                            client:only="react"
+                            style={{ marginTop: "1rem" }}
+                        />
+                    </div>
                 </section>
             </div>
 
-            <aside class="content-sidebar">
-                <section class="favorites-section">
-                    <!-- <p class="section-heading">Things I like:</p>
+            <!-- <aside class="content-sidebar"> -->
+            <!-- <section class="favorites-section"> -->
+            <!-- <p class="section-heading">Things I like:</p>
                     <ul class="section-list">
                         {
                             favorites.length > 0 ? (
@@ -188,11 +199,11 @@ const favorites: FavoriteEntry[] = [
                             )
                         }
                     </ul> -->
-                </section>
+            <!-- </section> -->
 
-                <RecentlyRead />
-                <RecentlyWatched />
-            </aside>
+            <!-- <RecentlyRead />
+                <RecentlyWatched /> -->
+            <!-- </aside> -->
 
             <ImageGrid items={photos} />
         </main>
