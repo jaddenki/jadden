@@ -861,6 +861,10 @@ footer {
         top: 1rem;
         left: 1.5rem;
         right: auto;
+        padding: 0.25rem 0.5rem;
+        background: color-mix(in srgb, var(--bg) 70%, transparent);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
     }
 
     main {
