@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { ViewTransitions } from 'astro:transitions';
 
 interface Props {
 	title: string;
@@ -39,6 +40,11 @@ const { title, description } = Astro.props;
 			e.target.style.willChange = 'auto';
 		}
 	}, true);
+
+	// Strip the loading screen from incoming pages during view transitions
+	document.addEventListener('astro:before-swap', function(e) {
+		e.newDocument.getElementById('loading-screen')?.remove();
+	});
 })();
 </script>
 <!-- Global Metadata -->
@@ -85,4 +91,5 @@ const { title, description } = Astro.props;
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={shareImageURL.href} />
 <meta name="twitter:image:alt" content="Jadden's portfolio preview" />
+<ViewTransitions />
 <script defer src="https://umami.purduehackers.com/script.js" data-website-id="685a1d18-887b-466a-8bf1-204a65db316e"></script>

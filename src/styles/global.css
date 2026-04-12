@@ -224,7 +224,9 @@ main {
 }
 
 .gallery-grid > * {
-    transition: opacity 150ms ease-out, filter 150ms ease-out;
+    transition:
+        opacity 150ms ease-out,
+        filter 150ms ease-out;
 }
 
 .grid-dimmed > * {
@@ -563,10 +565,21 @@ p {
     position: fixed;
     top: 1rem;
     right: 1.5rem;
-    font-size: 14px;
+    font-size: 16px;
     color: var(--muted);
     z-index: 10;
     pointer-events: none;
+}
+
+.corner-nav {
+    position: fixed;
+    top: calc(1rem + 1.2em + 0.25rem);
+    right: 1.5rem;
+    font-size: 16px;
+    color: var(--muted);
+    z-index: 10;
+    text-decoration: none;
+    padding: 0;
 }
 
 footer {
@@ -828,10 +841,30 @@ footer {
     }
 
     .projects-gallery {
-        position: fixed;
-        left: 50%;
-        transform: translateX(-50%);
-        width: min(400px, 100%);
+        position: static;
+        width: 100%;
+        height: auto;
+        overflow: visible;
+        padding-bottom: 4rem;
+        transform: none;
+    }
+
+    .blur-footer {
+        display: none;
+    }
+
+    #current-time {
+        display: none;
+    }
+
+    .corner-nav {
+        top: 1rem;
+        left: 1.5rem;
+        right: auto;
+    }
+
+    main {
+        padding-top: 3rem;
     }
 
     footer {

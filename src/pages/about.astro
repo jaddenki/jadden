@@ -83,13 +83,11 @@ const favorites: FavoriteEntry[] = [
         <BaseHead title={`about ${SITE_TITLE}`} description="what i'm up to." />
     </head>
     <body>
+        <time id="current-time" aria-label="Current time" transition:persist
+        ></time>
+        <a href="/" class="corner-nav" transition:name="corner-nav">Home</a>
         <main class="homepage-container about-layout">
             <div class="content text-reveal">
-                <p style="--reveal-order: 0">
-                    <a href="/" class="back-link" data-astro-prefetch
-                        ><span aria-hidden="true">&lt;</span> back</a
-                    >
-                </p>
                 <section
                     class="about-bio text-reveal"
                     style="--reveal-order: 1"
@@ -213,8 +211,21 @@ const favorites: FavoriteEntry[] = [
             <ThemeToggle />
         </footer>
         <script>
+            const timeEl = document.getElementById("current-time");
+            function updateTime() {
+                if (!timeEl) return;
+                timeEl.textContent = new Date().toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                });
+            }
+            updateTime();
+            setInterval(updateTime, 1000);
+        </script>
+        <script>
             const images = document.querySelectorAll<HTMLImageElement>(
-                ".about-layout .gallery-image"
+                ".about-layout .gallery-image",
             );
             images.forEach((img, i) => {
                 const reveal = () => {

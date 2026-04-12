@@ -175,24 +175,20 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
             </div>
         </div>
         <div id="page-ready" aria-live="polite" class="sr-only"></div>
-        <time id="current-time" aria-label="Current time"></time>
+        <time id="current-time" aria-label="Current time" transition:persist></time>
+        <a href="/about" class="corner-nav" transition:name="corner-nav">About</a>
         <main class="homepage-container">
             <div class="content text-reveal">
                 <p style="--reveal-order: 0">
                     Hi, I'm <InlineAvatar
                         src="https://avatars.githubusercontent.com/jaddenki"
-                        alt="Jadden's GitHub profile picture"
+                        alt="Jadden's GitHub profile"
                         width={16}
                         height={16}
                         class="inline-avatar"
                         priority
                     />
-                    Jadden Picardal (she/her) <br />Read more <HoverPreviewLink
-                        client:visible
-                        href="/about"
-                        data-astro-prefetch
-                        previewText="about me >">about me</HoverPreviewLink
-                    >
+                    Jadden Picardal (she/her)
                 </p>
                 <!-- span class="email">jadden [at] jam [dot] ms</span> -->
                 <p style="--reveal-order: 1">
@@ -216,6 +212,7 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
                         width={20}
                         height={20}
                         class="inline-avatar"
+                        priority
                     />
                     <HoverPreviewLink
                         client:visible
