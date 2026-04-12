@@ -16,36 +16,32 @@ const projects = [
         playContinuously: true,
     },
     {
-        src: "/img/front/capycapy.webm",
-        alt: "Capy",
-        aspectRatio: "16/9",
-        freezeTime: 0.6,
-        playContinuously: true,
-    },
-    {
         src: "/img/front/infrared.webm",
         alt: "Infrared - Personal",
         aspectRatio: "1/1",
         freezeTime: 0.6,
-        // playContinuously: true,
+        playContinuously: true,
     },
     {
         src: "/img/front/hello_world.webm",
         alt: "Hello World - Personal",
         aspectRatio: "1/1",
         freezeTime: 3.5,
+        playContinuously: true,
     },
     {
         src: "/img/front/fish.webm",
         alt: "Fish - Personal",
-        aspectRatio: "1/1",
+        aspectRatio: "3/4",
         freezeTime: 0.8,
+        playContinuously: true,
     },
     {
         src: "/img/front/loco.webm",
         alt: "Go Loco - Personal",
         aspectRatio: "1/1",
         freezeTime: 3.4,
+        playContinuously: true,
     },
     // {
     // 	src: '/img/front/capy-text.webm', not spoiling
@@ -61,7 +57,7 @@ const projects = [
         src: "/img/front/respellai.webm",
         alt: "Respell AI",
         aspectRatio: "16/9",
-        freezeTime: 0.5,
+        playContinuously: true,
         // playContinuously: true,
     },
     {
@@ -69,31 +65,35 @@ const projects = [
         alt: "Spread the Love",
         aspectRatio: "16/9",
         freezeTime: 2.7,
+        playContinuously: true,
     },
     {
         src: "/img/front/indigo.webm",
         alt: "Indigo",
         aspectRatio: "1/1",
         freezeTime: 0.5,
-        // playContinuously: true,
+        playContinuously: true,
     },
     {
         src: "/img/front/anklyosaur.webm",
         alt: "Anklyosaur - Personal",
         aspectRatio: "1/1",
         freezeTime: 3.6,
+        playContinuously: true,
     },
     {
         src: "/img/front/glass.webm",
         alt: "Glass - Personal",
         aspectRatio: "1/1",
         freezeTime: 3.3,
+        playContinuously: true,
     },
     {
         src: "/img/front/ridelikebike.webm",
         alt: "Drop It - Personal",
         aspectRatio: "1/1",
         freezeTime: 1.8,
+        playContinuously: true,
     },
 ];
 
@@ -110,7 +110,7 @@ interface ProjectListItem {
 const projectList: ProjectListItem[] = [
     {
         name: "Capy",
-        gridIndex: [0, 1],
+        gridIndex: [0],
         href: "https://x.com/capydotai/status/2031430074940195126",
         previewText: "Launch Video ↗",
         previewAlt: "Link to Twt",
@@ -131,7 +131,7 @@ const projectList: ProjectListItem[] = [
     // { name: "etea.cafe", href: "https://etea.cafe", previewSrc: "/img/previews/lowercase.webp", previewAlt: "etea.cafe" },
     {
         name: "Spread the Love",
-        gridIndex: [7],
+        gridIndex: [6],
         href: "https://store.steampowered.com/app/3852520/Spread_The_Love/",
         previewText: "Steam ↗",
         tag: "Game",
@@ -175,6 +175,7 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
             </div>
         </div>
         <div id="page-ready" aria-live="polite" class="sr-only"></div>
+        <time id="current-time" aria-label="Current time"></time>
         <main class="homepage-container">
             <div class="content text-reveal">
                 <p style="--reveal-order: 0">
@@ -346,6 +347,35 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
             </nav>
         </footer>
         <script>
+            const timeEl = document.getElementById("current-time");
+            function updateTime() {
+                if (!timeEl) return;
+                timeEl.textContent = new Date().toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                });
+            }
+            updateTime();
+            setInterval(updateTime, 1000);
+        </script>
+        <script>
+            document.addEventListener(
+                "wheel",
+                (e) => {
+                    const gallery =
+                        document.querySelector<HTMLElement>(
+                            ".projects-gallery",
+                        );
+                    if (!gallery) return;
+                    if (e.target instanceof Node && gallery.contains(e.target))
+                        return;
+                    gallery.scrollBy({ top: e.deltaY, behavior: "auto" });
+                },
+                { passive: true },
+            );
+        </script>
+        <script>
             const hasVisited = sessionStorage.getItem("hasVisited");
             const loadingScreen = document.getElementById("loading-screen");
             if (hasVisited && loadingScreen) {
@@ -360,8 +390,10 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
                             "transitionend",
                             () => {
                                 loadingScreen.remove();
-                                const liveRegion = document.getElementById("page-ready");
-                                if (liveRegion) liveRegion.textContent = "Page loaded";
+                                const liveRegion =
+                                    document.getElementById("page-ready");
+                                if (liveRegion)
+                                    liveRegion.textContent = "Page loaded";
                             },
                             {
                                 once: true,
@@ -424,7 +456,7 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
                     const targetTile = gridTiles[firstIndex];
                     if (targetTile) {
                         const prefersReduced = window.matchMedia(
-                            "(prefers-reduced-motion: reduce)"
+                            "(prefers-reduced-motion: reduce)",
                         ).matches;
                         targetTile.scrollIntoView({
                             behavior: prefersReduced ? "instant" : "smooth",

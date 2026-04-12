@@ -22,9 +22,7 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
 <section class="projects-gallery" aria-label="Projects gallery">
 	<div class="gallery-grid">
 		{items.map((item, index) => {
-		const isWide = item.aspectRatio === '19/6' || item.aspectRatio === '16/9';
 		const isSquare = item.aspectRatio === '1/1';
-		const gridSpan = isWide ? 'grid-column: span 2;' : '';
 		const squareClass = isSquare ? 'gallery-item-square' : '';
 		const videoTileClass = isSquare ? 'gallery-item-square gallery-video-tile' : 'gallery-video-tile';
 		const isVideo = isVideoUrl(item.src);
@@ -60,11 +58,11 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
 			</>
 			);
 	return item.href ? (
-		<a href={item.href} class={isVideo ? videoTileClass : squareClass} style={`--aspect-ratio: ${item.aspectRatio}; ${gridSpan}`}>
+		<a href={item.href} class={isVideo ? videoTileClass : squareClass} style={`--aspect-ratio: ${item.aspectRatio};`}>
 			{mediaEl}
 		</a>
 	) : (
-		<div class={isVideo ? videoTileClass : squareClass} style={gridSpan}>
+		<div class={isVideo ? videoTileClass : squareClass} {...(isVideo ? { tabindex: 0 } : {})}>
 			{mediaEl}
 		</div>
 	);
@@ -87,7 +85,69 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
 	</div>
 </div>
 
+<div class="gallery-cursor-tooltip" id="gallery-tooltip" aria-hidden="true"></div>
+
 <script>
+	// --- Cursor-following tooltip with spring tilt ---
+	const tooltip = document.getElementById('gallery-tooltip');
+	const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	const hasHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+	if (tooltip && hasHover) {
+		const TILT_SENSITIVITY = 0.6;
+		const TILT_MAX = 5;
+		const STIFFNESS = 0.18;
+		const DAMPING = 0.72;
+
+		let tiltTarget = 0;
+		let tiltCurrent = 0;
+		let tiltVelocity = 0;
+		let prevMouseX = 0;
+		let rafId: number | null = null;
+
+		function springTick() {
+			const force = (tiltTarget - tiltCurrent) * STIFFNESS;
+			tiltVelocity = (tiltVelocity + force) * DAMPING;
+			tiltCurrent += tiltVelocity;
+			tiltTarget *= 0.82;
+			tooltip.style.rotate = tiltCurrent + 'deg';
+			if (Math.abs(tiltCurrent) > 0.05 || Math.abs(tiltVelocity) > 0.05) {
+				rafId = requestAnimationFrame(springTick);
+			} else {
+				tiltCurrent = 0;
+				tiltVelocity = 0;
+				tooltip.style.rotate = '0deg';
+				rafId = null;
+			}
+		}
+
+		const tiles = document.querySelectorAll<HTMLElement>('.gallery-grid > *');
+
+		document.addEventListener('mousemove', (e) => {
+			tooltip.style.left = (e.clientX + 12) + 'px';
+			tooltip.style.top = (e.clientY + 16) + 'px';
+			if (reducedMotion) return;
+			const deltaX = e.clientX - prevMouseX;
+			prevMouseX = e.clientX;
+			tiltTarget = Math.max(-TILT_MAX, Math.min(TILT_MAX, deltaX * TILT_SENSITIVITY));
+			if (!rafId) rafId = requestAnimationFrame(springTick);
+		});
+
+		for (const tile of tiles) {
+			const label = tile.querySelector('.gallery-item-tooltip')?.textContent?.trim();
+			if (!label) continue;
+			tile.addEventListener('mouseenter', () => {
+				tooltip.textContent = label;
+				tooltip.classList.remove('is-exiting');
+				tooltip.classList.add('is-entering');
+			});
+			tile.addEventListener('mouseleave', () => {
+				tooltip.classList.remove('is-entering');
+				tooltip.classList.add('is-exiting');
+			});
+		}
+	}
+
 	const videos = document.querySelectorAll("video.gallery-image");
 
 	for (const node of videos) {
@@ -151,5 +211,15 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
 				setFreezeFrame();
 			}
 		}
+	}
+
+	// --- Keyboard access for non-link video tiles ---
+	for (const tile of document.querySelectorAll<HTMLElement>('.gallery-grid > [tabindex]')) {
+		tile.addEventListener('keydown', (e) => {
+			if (e.key !== 'Enter' && e.key !== ' ') return;
+			e.preventDefault();
+			tile.querySelector<HTMLVideoElement>('video.gallery-image')
+				?.dispatchEvent(new MouseEvent('click', { bubbles: false }));
+		});
 	}
 </script>
