@@ -172,6 +172,13 @@ main {
     display: flex;
     width: 100%;
     gap: 4rem;
+    /* Match main padding + .content max-width + gap so fixed gallery can size/position without overlapping text */
+    --home-main-pad: 2rem;
+    --home-content-max: 383px;
+    --home-col-gap: 4rem;
+    --gallery-safe-left: calc(
+        var(--home-main-pad) + var(--home-content-max) + var(--home-col-gap)
+    );
 }
 
 .content {
@@ -339,12 +346,18 @@ main {
 }
 
 .projects-gallery {
+    --gallery-max: 400px;
+    --gallery-w: min(
+        var(--gallery-max),
+        max(0px, calc(100vw - var(--gallery-safe-left) - var(--home-main-pad)))
+    );
     position: fixed;
     top: 1rem;
     bottom: 2.5rem;
-    left: 50%;
+    width: var(--gallery-w);
+    /* Center on the viewport when there is room; otherwise keep the left edge at the text column + gap */
+    left: max(50vw, calc(var(--gallery-safe-left) + var(--gallery-w) / 2));
     transform: translateX(-50%);
-    width: min(400px, 100%);
     overflow-y: auto;
     overflow-x: hidden;
     padding-bottom: 1rem;

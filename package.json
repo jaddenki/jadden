@@ -9,12 +9,12 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/mdx": "^4.3.13",
+    "@astrojs/mdx": "^5.0.4",
     "@astrojs/react": "^4.4.2",
     "@astrojs/rss": "^4.0.15",
     "@astrojs/sitemap": "^3.7.0",
     "@babel/helper-string-parser": "^7.27.1",
-    "astro": "^5.16.15",
+    "astro": "^6.1.9",
     "dialkit": "^0.2.2",
     "motion": "^12.34.3",
     "react": "^19.2.4",
