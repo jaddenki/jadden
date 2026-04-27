@@ -180,15 +180,7 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
         <main class="homepage-container">
             <div class="content text-reveal">
                 <p style="--reveal-order: 0">
-                    Hi, I'm <InlineAvatar
-                        src="https://avatars.githubusercontent.com/jaddenki"
-                        alt="Jadden's GitHub profile"
-                        width={16}
-                        height={16}
-                        class="inline-avatar"
-                        priority
-                    />
-                    Jadden Picardal (she/her)
+                    Hi, I'm Jadden Picardal (she/her)
                 </p>
                 <!-- span class="email">jadden [at] jam [dot] ms</span> -->
                 <p style="--reveal-order: 1">
@@ -205,6 +197,24 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
                 </p>
 
                 <p style="--reveal-order: 2">
+                    This summer, I'll be in SF at
+                    <InlineAvatar
+                        src="https://avatars.githubusercontent.com/u/107880645?v=4"
+                        alt="Infisical logo"
+                        width={20}
+                        height={20}
+                        class="inline-avatar"
+                        priority
+                    />
+
+                    <HoverPreviewLink
+                        client:visible
+                        href="https://infisical.com/"
+                        target="_blank"
+                        previewSrc="/img/previews/infisical.webp"
+                        previewAlt="Infisical">Infisical</HoverPreviewLink> as a Design Engineer (Intern #1), crafting the visuals behind security tools that matter
+                </p>
+                <p style="--reveal-order: 3">
                     Currently, I'm making unconventional branding for startups
                     at <InlineAvatar
                         src="https://avatars.githubusercontent.com/lowercaseclub"
@@ -242,7 +252,7 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
                     >Purdue Hackers</HoverPreviewLink>, a the coolest community of makers on campus
                 </p> -->
 
-                <p style="--reveal-order: 3">
+                <p style="--reveal-order: 4">
                     Links... <HoverPreviewLink
                         client:visible
                         href="https://github.com/jaddenki"
@@ -269,7 +279,7 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
 
                 <p style="--reveal-order: 4">Some things I've worked on...</p>
 
-                <ul class="project-list" style="--reveal-order: 5">
+                <ul class="project-list" style="--reveal-order: 6">
                     {
                         projectList.map((p) => {
                             const hasPreview = p.previewSrc || p.previewText;
@@ -309,7 +319,7 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
                         })
                     }
                 </ul>
-                <p style="--reveal-order: 6">
+                <p style="--reveal-order: 5">
                     And more! Currently populating this space...
                 </p>
             </div>
