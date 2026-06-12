@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Mesh gradient tool</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+    <div class="canvas-col">
+      <div class="stage-wrap">
+        <div class="stage" id="stage">
+          <canvas id="output" width="900" height="600"></canvas>
+          <canvas id="interaction" width="900" height="600"></canvas>
+        </div>
+      </div>
+      <input type="color" id="hiddenColor" style="position:absolute;opacity:0;pointer-events:none;">
+    </div>
+
+    <aside class="panel">
+      <div class="section open" data-section>
+        <button class="section-head"><span>Mesh</span><span class="chev"></span></button>
+        <div class="section-body">
+          <div class="field">
+            <label>Cols</label>
+            <input type="number" id="gridCols" value="2" min="2" max="10" style="width:60px;">
+            <label style="flex:0 0 auto;">Rows</label>
+            <input type="number" id="gridRows" value="4" min="2" max="10" style="width:60px;">
+            <button id="applyGrid" style="flex:0 0 auto;padding:6px 10px;font-size:12px;">Apply</button>
+          </div>
+          <div class="field">
+            <label>Falloff</label>
+            <input type="range" id="falloff" min="1" max="8" step="0.1" value="2.5">
+            <span class="val" id="falloffVal">2.5</span>
+          </div>
+          <div class="pair">
+            <button id="randomizeColors">Randomize</button>
+            <button id="addPoint">Add point</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" data-section>
+        <button class="section-head"><span>Blur</span><span class="chev"></span></button>
+        <div class="section-body">
+          <div class="toggle-row"><span class="label">On</span><label class="switch"><input type="checkbox" id="blurOn"></label></div>
+          <div class="field">
+            <label>Radius</label>
+            <input type="range" id="blurRadius" min="0" max="60" value="8">
+            <span class="val" id="blurRadiusVal">8</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" data-section>
+        <button class="section-head"><span>Distortion</span><span class="chev"></span></button>
+        <div class="section-body">
+          <div class="toggle-row"><span class="label">On</span><label class="switch"><input type="checkbox" id="distOn" checked></label></div>
+          <div class="field">
+            <label>X amp</label>
+            <input type="range" id="distAmpX" min="0" max="120" value="20">
+            <span class="val" id="distAmpXVal">20</span>
+          </div>
+          <div class="field">
+            <label>Y amp</label>
+            <input type="range" id="distAmpY" min="0" max="120" value="20">
+            <span class="val" id="distAmpYVal">20</span>
+          </div>
+          <div class="field">
+            <label>X freq</label>
+            <input type="range" id="distFreqX" min="0.1" max="6" step="0.1" value="1.5">
+            <span class="val" id="distFreqXVal">1.5</span>
+          </div>
+          <div class="field">
+            <label>Y freq</label>
+            <input type="range" id="distFreqY" min="0.1" max="6" step="0.1" value="1.5">
+            <span class="val" id="distFreqYVal">1.5</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" data-section>
+        <button class="section-head"><span>Displacement</span><span class="chev"></span></button>
+        <div class="section-body">
+          <div class="toggle-row"><span class="label">On</span><label class="switch"><input type="checkbox" id="dispOn" checked></label></div>
+          <div class="field">
+            <input type="file" id="dispFile" accept="image/*" class="grow">
+          </div>
+          <img id="dispThumb" alt="">
+          <div class="field">
+            <label>X</label>
+            <input type="range" id="dispStrengthX" min="-200" max="200" value="40">
+            <span class="val" id="dispStrengthXVal">40</span>
+          </div>
+          <div class="field">
+            <label>Y</label>
+            <input type="range" id="dispStrengthY" min="-200" max="200" value="40">
+            <span class="val" id="dispStrengthYVal">40</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" data-section>
+        <button class="section-head"><span>Colorama</span><span class="chev"></span></button>
+        <div class="section-body">
+          <div class="toggle-row"><span class="label">On</span><label class="switch"><input type="checkbox" id="coloramaOn" checked></label></div>
+          <div id="ramp"></div>
+          <button id="addStop">Add stop</button>
+        </div>
+      </div>
+
+      <div class="section" data-section>
+        <button class="section-head"><span>Noise</span><span class="chev"></span></button>
+        <div class="section-body">
+          <div class="toggle-row"><span class="label">On</span><label class="switch"><input type="checkbox" id="noiseOn" checked></label></div>
+          <div class="field">
+            <label>Amount</label>
+            <input type="range" id="noiseIntensity" min="0" max="100" value="13">
+            <span class="val" id="noiseIntensityVal">13</span>
+          </div>
+          <div class="field">
+            <label>Mode</label>
+            <select id="noiseBlend" class="grow">
+              <option value="overlay" selected>overlay</option>
+              <option value="screen">screen</option>
+              <option value="multiply">multiply</option>
+              <option value="soft-light">soft-light</option>
+            </select>
+          </div>
+          <button id="reseedNoise">New seed</button>
+        </div>
+      </div>
+
+      <div class="section open" data-section>
+        <button class="section-head"><span>Export</span><span class="chev"></span></button>
+        <div class="section-body">
+          <div class="field">
+            <label>W</label>
+            <input type="number" id="exportW" value="1920" min="64" max="8192">
+            <label style="flex:0 0 auto;">H</label>
+            <input type="number" id="exportH" value="1080" min="64" max="8192">
+          </div>
+          <div class="field">
+            <select id="exportPreset" class="grow">
+              <option value="">Custom</option>
+              <option value="640x480">640 × 480 (preview)</option>
+              <option value="1280x720">1280 × 720</option>
+              <option value="1920x1080" selected>1920 × 1080</option>
+              <option value="2560x1440">2560 × 1440</option>
+              <option value="3840x2160">3840 × 2160</option>
+              <option value="1080x1080">1080 × 1080</option>
+              <option value="1080x1920">1080 × 1920</option>
+            </select>
+          </div>
+          <button id="exportBtn" class="primary">Export</button>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>

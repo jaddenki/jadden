@@ -9,6 +9,9 @@ import { defineConfig } from 'astro/config';
 export default defineConfig({
 	site: 'https://www.jaddens.page',
 	integrations: [mdx(), react(), sitemap()],
+	redirects: {
+		'/gradient': '/gradient/index.html',
+	},
 	build: {
 		inlineStylesheets: 'auto',
 	},
