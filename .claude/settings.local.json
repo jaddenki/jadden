@@ -2,7 +2,12 @@
   "permissions": {
     "allow": [
       "Bash(xxd -l 16 \"c:/Users/jadde/Documents/coding/jadden/public/fonts/PixelHackers.woff2\")",
-      "Bash(xxd -l 16 \"c:/Users/jadde/Documents/coding/jadden/src/assets/fonts/PixelHackers.woff2\")"
+      "Bash(xxd -l 16 \"c:/Users/jadde/Documents/coding/jadden/src/assets/fonts/PixelHackers.woff2\")",
+      "mcp__claude-buddy__buddy_show",
+      "Bash(cwebp -q 80 /Users/jaja/Documents/coding/web/jadden/public/img/previews/purdue.webp -o /Users/jaja/Documents/coding/web/jadden/public/img/previews/purdue.webp)",
+      "Bash(cwebp -q 80 /Users/jaja/Documents/coding/web/jadden/public/img/previews/lowercase.webp -o /Users/jaja/Documents/coding/web/jadden/public/img/previews/lowercase.webp)",
+      "Bash(ffmpeg -version)",
+      "Bash(convert --version)"
     ]
   }
 }

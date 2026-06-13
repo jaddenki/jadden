@@ -37,7 +37,7 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
 						data-play-continuously={item.playContinuously ?? false}
 						loop
 						muted
-						preload="auto"
+						preload="metadata"
 						playsinline
 						aria-hidden="true"
 				/>
