@@ -134,8 +134,8 @@ body.loading-skip #loading-screen {
 * {
     font-family: "PolySans", Arial, sans-serif;
     font-size: 18px;
-    -webkit-font-smoothing: none;
-    -moz-osx-font-smoothing: unset;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     text-wrap: balance;
 }
 
@@ -536,6 +536,10 @@ a:focus-visible,
     display: inline-block;
     position: relative;
     top: -1px;
+}
+
+.inline-avatar-ring {
+    box-shadow: 0 0 0 0.5px color-mix(in srgb, currentColor 8%, transparent);
 }
 
 [data-theme="dark"] .inline-avatar-invert-dark {

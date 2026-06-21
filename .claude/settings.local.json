@@ -7,7 +7,11 @@
       "Bash(cwebp -q 80 /Users/jaja/Documents/coding/web/jadden/public/img/previews/purdue.webp -o /Users/jaja/Documents/coding/web/jadden/public/img/previews/purdue.webp)",
       "Bash(cwebp -q 80 /Users/jaja/Documents/coding/web/jadden/public/img/previews/lowercase.webp -o /Users/jaja/Documents/coding/web/jadden/public/img/previews/lowercase.webp)",
       "Bash(ffmpeg -version)",
-      "Bash(convert --version)"
+      "Bash(convert --version)",
+      "Skill(run)",
+      "Bash(npm run *)",
+      "Bash(curl -s http://localhost:4321)",
+      "Bash(node *)"
     ]
   }
 }
