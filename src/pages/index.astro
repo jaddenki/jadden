@@ -265,6 +265,23 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
                 </p> -->
 
                 <p style="--reveal-order: 4">
+                    I also run <InlineAvatar
+                        src="https://www.google.com/s2/favicons?domain=jam.ms&sz=64"
+                        alt="jamms logo"
+                        width={20}
+                        height={20}
+                        class="inline-avatar"
+                        priority
+                    />
+                    <HoverPreviewLink
+                        client:visible
+                        href="https://jam.ms"
+                        target="_blank"
+                        previewSrc="/img/previews/jamms.webp"
+                        previewAlt="jamms">jamms</HoverPreviewLink>, a creative studio doing branding, games, web, and motion work
+                </p>
+
+                <p style="--reveal-order: 4">
                     Links... <HoverPreviewLink
                         client:visible
                         href="https://github.com/jaddenki"
