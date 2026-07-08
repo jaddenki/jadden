@@ -20,6 +20,7 @@ export default defineConfig({
 		remotePatterns: [
 			{ protocol: 'https', hostname: 'github.com', pathname: '/**' },
 			{ protocol: 'https', hostname: 'www.google.com', pathname: '/**' },
+			{ protocol: 'https', hostname: 'www.jam.ms', pathname: '/**' },
 		],
 	},
 });
