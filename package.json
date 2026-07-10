@@ -3,9 +3,6 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "sync:gradient": "node scripts/sync-gradient.mjs",
-    "predev": "npm run sync:gradient",
-    "prebuild": "npm run sync:gradient",
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
