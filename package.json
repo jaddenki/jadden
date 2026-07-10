@@ -13,6 +13,7 @@
     "@astrojs/react": "^4.4.2",
     "@astrojs/rss": "^4.0.15",
     "@astrojs/sitemap": "^3.7.0",
+    "@astrojs/vercel": "^10.0.8",
     "@babel/helper-string-parser": "^7.27.1",
     "astro": "^6.1.9",
     "dialkit": "^0.2.2",

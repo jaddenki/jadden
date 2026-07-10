@@ -1,5 +1,6 @@
 ---
 import BaseHead from "../components/BaseHead.astro";
+import CornerNav from "../components/CornerNav.astro";
 import ImageGrid from "../components/ImageGrid.astro";
 import InlineAvatar from "../components/InlineAvatar.astro";
 import RecentlyRead from "../components/RecentlyRead.astro";
@@ -83,8 +84,7 @@ const favorites: FavoriteEntry[] = [
         <BaseHead title={`about ${SITE_TITLE}`} description="what i'm up to." />
     </head>
     <body>
-        <time id="current-time" aria-label="Current time"></time>
-        <a href="/" class="corner-nav">Home</a>
+        <CornerNav current="about" />
         <main class="homepage-container about-layout">
             <div class="content text-reveal">
                 <section
@@ -209,19 +209,6 @@ const favorites: FavoriteEntry[] = [
         <footer>
             <ThemeToggle />
         </footer>
-        <script>
-            const timeEl = document.getElementById("current-time");
-            function updateTime() {
-                if (!timeEl) return;
-                timeEl.textContent = new Date().toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    second: "2-digit",
-                });
-            }
-            updateTime();
-            setInterval(updateTime, 1000);
-        </script>
         <script>
             const images = document.querySelectorAll<HTMLImageElement>(
                 ".about-layout .gallery-image",

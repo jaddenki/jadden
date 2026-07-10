@@ -1,5 +1,6 @@
 ---
 import BaseHead from "../components/BaseHead.astro";
+import CornerNav from "../components/CornerNav.astro";
 import { HoverPreviewLink } from "../components/HoverPreviewLink";
 import ImageGrid from "../components/ImageGrid.astro";
 import InlineAvatar from "../components/InlineAvatar.astro";
@@ -189,8 +190,7 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
             </div>
         </div>
         <div id="page-ready" aria-live="polite" class="sr-only"></div>
-        <time id="current-time" aria-label="Current time"></time>
-        <a href="/about" class="corner-nav">About</a>
+        <CornerNav current="home" />
         <main class="homepage-container">
             <div class="content text-reveal">
                 <p style="--reveal-order: 0">
@@ -382,19 +382,6 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
                 </a>
             </nav>
         </footer>
-        <script>
-            const timeEl = document.getElementById("current-time");
-            function updateTime() {
-                if (!timeEl) return;
-                timeEl.textContent = new Date().toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    second: "2-digit",
-                });
-            }
-            updateTime();
-            setInterval(updateTime, 1000);
-        </script>
         <script>
             document.addEventListener(
                 "wheel",
