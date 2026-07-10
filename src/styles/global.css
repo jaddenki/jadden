@@ -361,7 +361,7 @@ main {
         max(0px, calc(100vw - var(--gallery-safe-left) - var(--home-main-pad)))
     );
     position: fixed;
-    top: 1rem;
+    top: 2rem;
     bottom: 2.5rem;
     width: var(--gallery-w);
     /* Center on the viewport when there is room; otherwise keep the left edge at the text column + gap */
@@ -561,6 +561,14 @@ a:focus-visible,
 
 p {
     margin-bottom: 0.25em;
+}
+
+/* Kill the browser's default top margin on the first element of a text column so
+   every column starts flush at main's 2rem padding. Inter-paragraph spacing
+   (which relies on that margin) is untouched — only the first child loses it. */
+.content > :first-child,
+.about-bio > :first-child {
+    margin-top: 0;
 }
 
 .text-reveal > *,
@@ -895,6 +903,7 @@ footer {
 .now-liking::-webkit-scrollbar {
     display: none;
 }
+
 
 .liking-source {
     color: var(--muted);

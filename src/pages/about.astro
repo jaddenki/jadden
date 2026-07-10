@@ -7,7 +7,7 @@ import RecentlyRead from "../components/RecentlyRead.astro";
 import RecentlyWatched from "../components/RecentlyWatched.astro";
 import { HoverPreviewLink } from "../components/HoverPreviewLink";
 import { SignatureMotion } from "../components/SignatureMotion";
-import ThemeToggle from "../components/ThemeToggle.astro";
+import SiteFooter from "../components/SiteFooter.astro";
 import { SITE_TITLE } from "../consts";
 import "../styles/global.css";
 
@@ -206,9 +206,7 @@ const favorites: FavoriteEntry[] = [
             <ImageGrid items={photos} />
         </main>
 
-        <footer>
-            <ThemeToggle />
-        </footer>
+        <SiteFooter />
         <script>
             const images = document.querySelectorAll<HTMLImageElement>(
                 ".about-layout .gallery-image",
