@@ -1,0 +1,63 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import CornerNav from "../components/CornerNav.astro";
+import LikingList from "../components/LikingList.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import UsesList from "../components/UsesList.astro";
+import { SITE_TITLE } from "../consts";
+import { fetchLikingEntries, mergeAndSort, type SeedEntry } from "../lib/arena";
+import likingSeed from "../data/liking-seed.json";
+import "../styles/global.css";
+
+// Opt this single route into on-demand rendering + ISR (see astro.config.mjs).
+// The rest of the site stays fully static.
+export const prerender = false;
+
+const ARENA_CHANNEL_SLUG = "liking-2gl2m-x6t-q";
+const ARENA_CHANNEL_URL = `https://www.are.na/jadden-picardal/${ARENA_CHANNEL_SLUG}`;
+
+// Runs per revalidation (not per request). Never throws — on failure it returns
+// an empty list and ISR keeps serving the last successfully rendered version.
+// Are.na can't backdate `connected_at`, so anything older than the channel is
+// hand-added in src/data/liking-seed.json and merged in here.
+const arenaEntries = await fetchLikingEntries(ARENA_CHANNEL_SLUG);
+const entries = mergeAndSort(arenaEntries, likingSeed as SeedEntry[]);
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead
+			title={`now ${SITE_TITLE}`}
+			description="What I'm using and what I'm liking lately."
+		/>
+	</head>
+	<body class="now-page">
+		<CornerNav current="now" />
+		<main class="homepage-container now-layout">
+			<div class="now-uses">
+				<UsesList />
+			</div>
+			<div class="now-liking">
+				<LikingList entries={entries} sourceUrl={ARENA_CHANNEL_URL} />
+			</div>
+		</main>
+
+		<SiteFooter />
+		<script>
+			// Fade thumbnails in once they load instead of snapping in when the
+			// network resolves (see .liking-thumb / .img-loaded in global.css).
+			for (const img of document.querySelectorAll<HTMLImageElement>(
+				".liking-thumb",
+			)) {
+				if (img.complete) {
+					img.classList.add("img-loaded");
+				} else {
+					const reveal = () => img.classList.add("img-loaded");
+					img.addEventListener("load", reveal, { once: true });
+					img.addEventListener("error", reveal, { once: true });
+				}
+			}
+		</script>
+	</body>
+</html>

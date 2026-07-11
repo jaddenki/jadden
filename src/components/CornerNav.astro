@@ -1,0 +1,29 @@
+---
+type NavKey = "home" | "about" | "now";
+
+interface Props {
+	current: NavKey;
+}
+
+const { current } = Astro.props;
+
+const links: { key: NavKey; label: string; href: string }[] = [
+	{ key: "home", label: "Home", href: "/" },
+	{ key: "about", label: "About", href: "/about" },
+	{ key: "now", label: "Now", href: "/now" },
+];
+---
+
+<nav class="corner-nav" aria-label="Primary">
+	{
+		links.map((link) => (
+			<a
+				href={link.href}
+				class:list={["corner-nav-link", { "is-current": link.key === current }]}
+				aria-current={link.key === current ? "page" : undefined}
+			>
+				{link.label}
+			</a>
+		))
+	}
+</nav>

@@ -1,0 +1,118 @@
+---
+import type { LikingEntry } from "../lib/arena";
+
+interface Props {
+	entries: LikingEntry[];
+	sourceUrl?: string;
+}
+
+const { entries, sourceUrl } = Astro.props;
+
+const MONTHS = [
+	"Jan",
+	"Feb",
+	"Mar",
+	"Apr",
+	"May",
+	"Jun",
+	"Jul",
+	"Aug",
+	"Sep",
+	"Oct",
+	"Nov",
+	"Dec",
+];
+
+// UTC so date-only seed values aren't shifted back a day by the local timezone.
+function monthKey(iso: string): string {
+	const d = new Date(iso);
+	return `${d.getUTCFullYear()}-${d.getUTCMonth()}`;
+}
+
+function monthLabel(iso: string): string {
+	const d = new Date(iso);
+	return `${MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()}`;
+}
+
+// Cluster the (already reverse-chronological) entries into month groups so all
+// entries from the same month sit under a single month header.
+const groups: { label: string; entries: LikingEntry[] }[] = [];
+let lastKey = "";
+for (const entry of entries) {
+	const key = monthKey(entry.date);
+	if (key !== lastKey) {
+		groups.push({ label: monthLabel(entry.date), entries: [] });
+		lastKey = key;
+	}
+	groups[groups.length - 1].entries.push(entry);
+}
+
+// Running index for the staggered entrance reveal (see .reveal in global.css).
+let order = 0;
+---
+
+<section class="liking-section" aria-label="Things I'm thinking about lately">
+	<p class="section-heading reveal" style={`--reveal-order: ${order++}`}>
+		What I've been thinking about{" "}
+		{
+			sourceUrl ? (
+				<a
+					class="liking-source"
+					href={sourceUrl}
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					lately
+				</a>
+			) : (
+				"lately"
+			)
+		}...
+	</p>
+
+	{
+		entries.length === 0 ? (
+			<p class="liking-empty">nothing here yet — check back soon.</p>
+		) : (
+			<div class="liking-groups">
+				{groups.map((group) => (
+					<div class="liking-group reveal" style={`--reveal-order: ${order++}`}>
+						<p class="liking-month">{group.label}</p>
+						<ul class="liking-list">
+							{group.entries.map((entry) => (
+								<li class="liking-item">
+									{entry.imageUrl && (
+										<img
+											class:list={[
+												"liking-thumb",
+												{ "is-favicon": entry.isFavicon },
+											]}
+											src={entry.imageUrl}
+											alt={entry.content || ""}
+											loading="lazy"
+											decoding="async"
+										/>
+									)}
+									<div class="liking-body">
+										{entry.url ? (
+											<a
+												class="liking-text liking-link"
+												href={entry.url}
+												target="_blank"
+												rel="noopener noreferrer"
+											>
+												{entry.content}
+											</a>
+										) : (
+											entry.content && <p class="liking-text">{entry.content}</p>
+										)}
+									</div>
+								</li>
+							))}
+						</ul>
+					</div>
+				))}
+			</div>
+		)
+	}
+</section>

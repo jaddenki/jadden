@@ -1,0 +1,135 @@
+---
+import uses from "../data/uses.json";
+
+interface UsePart {
+	text: string;
+	href?: string;
+}
+
+interface UseItem {
+	label: string;
+	href?: string; // links the label directly (e.g. apps with no parts)
+	parts?: UsePart[]; // value products, each optionally linked
+}
+
+interface UseGroup {
+	category?: string;
+	items: UseItem[];
+}
+
+interface UseSection {
+	title: string;
+	hidden?: boolean;
+	groups: UseGroup[];
+}
+
+interface UsesData {
+	updated: string;
+	sections: UseSection[];
+}
+
+const { updated, sections } = uses as UsesData;
+const visibleSections = sections.filter((section) => !section.hidden);
+
+// Running index for the staggered entrance reveal (see .reveal in global.css).
+let order = 0;
+
+const MONTHS = [
+	"Jan",
+	"Feb",
+	"Mar",
+	"Apr",
+	"May",
+	"Jun",
+	"Jul",
+	"Aug",
+	"Sep",
+	"Oct",
+	"Nov",
+	"Dec",
+];
+
+function formatUpdated(iso: string): string {
+	const d = new Date(iso);
+	if (Number.isNaN(d.getTime())) return iso;
+	return `${MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()}`;
+}
+---
+
+<section class="uses-section" aria-label="What I use">
+	<p class="section-heading reveal" style={`--reveal-order: ${order++}`}>
+		Uses as of {formatUpdated(updated)}
+	</p>
+	<div class="uses-sections">
+		{
+			visibleSections.map((section) => (
+				<div class="uses-section-block">
+					{section.title && (
+						<p
+							class="uses-section-title reveal"
+							style={`--reveal-order: ${order++}`}
+						>
+							{section.title}
+						</p>
+					)}
+					<div class="uses-groups">
+						{section.groups.map((group) => (
+							<div
+								class="uses-group reveal"
+								style={`--reveal-order: ${order++}`}
+							>
+								{group.category && (
+									<p class="uses-category">{group.category}</p>
+								)}
+								<ul class="uses-list">
+									{group.items.map((item) => (
+										<li class="uses-item">
+											{item.href && !item.parts ? (
+												<a
+													class="uses-label uses-link"
+													href={item.href}
+													target="_blank"
+													rel="noopener noreferrer"
+												>
+													{item.label}
+												</a>
+											) : (
+												<span class="uses-label">{item.label}</span>
+											)}
+											{item.parts && item.parts.length > 0 && (
+												<>
+													<span class="uses-sep" aria-hidden="true">
+														–
+													</span>
+													<span class="uses-value">
+														{item.parts.map((part, i) => (
+															<>
+																{i > 0 && <span> + </span>}
+																{part.href ? (
+																	<a
+																		class="uses-link"
+																		href={part.href}
+																		target="_blank"
+																		rel="noopener noreferrer"
+																	>
+																		{part.text}
+																	</a>
+																) : (
+																	<span>{part.text}</span>
+																)}
+															</>
+														))}
+													</span>
+												</>
+											)}
+										</li>
+									))}
+								</ul>
+							</div>
+						))}
+					</div>
+				</div>
+			))
+		}
+	</div>
+</section>

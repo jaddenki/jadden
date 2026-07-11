@@ -1,0 +1,143 @@
+{
+	"updated": "2026-07-10",
+	"sections": [
+		{
+			"title": "",
+			"groups": [
+				{
+					"category": "Desk",
+					"items": [
+						{
+							"label": "Keyboard",
+							"parts": [
+								{
+									"text": "Furycube F75",
+									"href": "https://www.furycube.com/products/furycube-f75-aluminum-mechanical-keyboard"
+								},
+								{
+									"text": "Baby Racoon",
+									"href": "https://www.gateron.co/products/gateron-baby-raccoon-linear-switch-set"
+								}
+							]
+						},
+						{
+							"label": "Mouse",
+							"parts": [
+								{
+									"text": "Razer Viper Ultimate",
+									"href": "https://www.razer.com/gaming-mice/razer-viper-ultimate"
+								}
+							]
+						},
+						{
+							"label": "Microphone",
+							"parts": [
+								{ "text": "Elgato Wave:3", "href": "https://www.elgato.com/us/en/p/wave-3-black" }
+							]
+						}
+					]
+				},
+				{
+					"category": "Computer",
+					"items": [
+						{
+							"label": "Laptop",
+							"parts": [
+								{ "text": "M5 MacBook Pro 32GB 2TB", "href": "https://www.apple.com/macbook-pro/" }
+							]
+						},
+						{
+							"label": "Stand",
+							"parts": [
+								{
+									"text": "MOFT Adhesive Laptop Stand",
+									"href": "https://www.moft.us/products/moft-stand-adhesive?variant=41428766654551"
+								}
+							]
+						},
+						{
+							"label": "Charger",
+							"parts": [
+								{
+									"text": "Sharge Pixel 140",
+									"href": "https://sharge.com/products/pixel-100-140-charger"
+								}
+							]
+						}
+					]
+				},
+				{
+					"category": "Audio",
+					"items": [
+						{
+							"label": "Headphones",
+							"parts": [
+								{
+									"text": "Nothing Headphone (1) White",
+									"href": "https://us.nothing.tech/products/headphone-1"
+								},
+								{ "text": "AirPods 4", "href": "https://www.apple.com/airpods-4/" }
+							]
+						}
+					]
+				},
+				{
+					"category": "Carry",
+					"items": [
+						{
+							"label": "Phone",
+							"parts": [
+								{ "text": "iPhone 14", "href": "https://www.apple.com/iphone-14/" }
+							]
+						},
+						{
+							"label": "Watch",
+							"parts": [
+								{ "text": "Fitbit Charge 6", "href": "https://store.google.com/product/fitbit_charge_6" }
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"title": "Software",
+			"hidden": true,
+			"groups": [
+				{
+					"category": "Design",
+					"items": [
+						{ "label": "Figma", "href": "https://www.figma.com" },
+						{ "label": "Paper", "href": "https://paper.design" },
+						{ "label": "Cavalry", "href": "https://cavalry.scenegroup.co" },
+						{ "label": "Adobe After Effects", "href": "https://www.adobe.com/products/aftereffects.html" }
+					]
+				},
+				{
+					"category": "Code",
+					"items": [
+						{ "label": "Zed", "href": "https://zed.dev" },
+						{ "label": "Ghostty", "href": "https://ghostty.org" }
+					]
+				},
+				{
+					"category": "Productivity",
+					"items": [
+						{ "label": "Notion Calendar", "href": "https://www.notion.com/product/calendar" },
+						{ "label": "Granola", "href": "https://www.granola.ai" },
+						{ "label": "Obsidian", "href": "https://obsidian.md" },
+						{ "label": "Avec", "href": "https://www.avec.ai" }
+					]
+				},
+				{
+					"category": "Everyday",
+					"items": [
+						{ "label": "Zen", "href": "https://zen-browser.app" },
+						{ "label": "Arc", "href": "https://arc.net" },
+						{ "label": "Beli", "href": "https://beliapp.com" }
+					]
+				}
+			]
+		}
+	]
+}
