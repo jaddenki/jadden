@@ -21,7 +21,7 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
 
 <section class="projects-gallery" aria-label="Projects gallery">
 	<div class="gallery-grid">
-		{items.map((item, index) => {
+		{items.map((item) => {
 		const isSquare = item.aspectRatio === '1/1';
 		const squareClass = isSquare ? 'gallery-item-square' : '';
 		const videoTileClass = isSquare ? 'gallery-item-square gallery-video-tile' : 'gallery-video-tile';
@@ -94,6 +94,7 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
 	const hasHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
 	if (tooltip && hasHover) {
+		const hoverTooltip = tooltip;
 		const TILT_SENSITIVITY = 0.6;
 		const TILT_MAX = 5;
 		const STIFFNESS = 0.18;
@@ -110,13 +111,13 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
 			tiltVelocity = (tiltVelocity + force) * DAMPING;
 			tiltCurrent += tiltVelocity;
 			tiltTarget *= 0.82;
-			tooltip.style.rotate = tiltCurrent + 'deg';
+			hoverTooltip.style.rotate = tiltCurrent + 'deg';
 			if (Math.abs(tiltCurrent) > 0.05 || Math.abs(tiltVelocity) > 0.05) {
 				rafId = requestAnimationFrame(springTick);
 			} else {
 				tiltCurrent = 0;
 				tiltVelocity = 0;
-				tooltip.style.rotate = '0deg';
+				hoverTooltip.style.rotate = '0deg';
 				rafId = null;
 			}
 		}
@@ -124,8 +125,8 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
 		const tiles = document.querySelectorAll<HTMLElement>('.gallery-grid > *');
 
 		document.addEventListener('mousemove', (e) => {
-			tooltip.style.left = (e.clientX + 12) + 'px';
-			tooltip.style.top = (e.clientY + 16) + 'px';
+			hoverTooltip.style.left = (e.clientX + 12) + 'px';
+			hoverTooltip.style.top = (e.clientY + 16) + 'px';
 			if (reducedMotion) return;
 			const deltaX = e.clientX - prevMouseX;
 			prevMouseX = e.clientX;
@@ -137,13 +138,13 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
 			const label = tile.querySelector('.gallery-item-tooltip')?.textContent?.trim();
 			if (!label) continue;
 			tile.addEventListener('mouseenter', () => {
-				tooltip.textContent = label;
-				tooltip.classList.remove('is-exiting');
-				tooltip.classList.add('is-entering');
+				hoverTooltip.textContent = label;
+				hoverTooltip.classList.remove('is-exiting');
+				hoverTooltip.classList.add('is-entering');
 			});
 			tile.addEventListener('mouseleave', () => {
-				tooltip.classList.remove('is-entering');
-				tooltip.classList.add('is-exiting');
+				hoverTooltip.classList.remove('is-entering');
+				hoverTooltip.classList.add('is-exiting');
 			});
 		}
 	}
