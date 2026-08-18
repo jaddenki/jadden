@@ -119,7 +119,7 @@ body.loading-skip #loading-screen {
     --highlight-bg: black;
     --highlight-text: white;
     --skeleton-bg: #e8e8e8;
-    --z-preview: 90;
+    --z-preview: 1000;
     --z-loading: 9999;
 }
 
