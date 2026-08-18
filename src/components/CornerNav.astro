@@ -16,14 +16,16 @@ const links: { key: NavKey; label: string; href: string }[] = [
 
 <nav class="corner-nav" aria-label="Primary">
 	{
-		links.map((link) => (
-			<a
-				href={link.href}
-				class:list={["corner-nav-link", { "is-current": link.key === current }]}
-				aria-current={link.key === current ? "page" : undefined}
-			>
-				{link.label}
-			</a>
-		))
+		links.map((link) =>
+			link.key === current ? (
+				<span class="corner-nav-link is-current" aria-current="page">
+					{link.label}
+				</span>
+			) : (
+				<a href={link.href} class="corner-nav-link">
+					{link.label}
+				</a>
+			),
+		)
 	}
 </nav>
