@@ -175,8 +175,11 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
     </head>
     <body>
         <script is:inline>
-            if (sessionStorage.getItem("hasVisited"))
+            if (sessionStorage.getItem("hasVisited")) {
                 document.body.classList.add("loading-skip");
+            } else {
+                document.body.classList.add("page-intro-pending");
+            }
         </script>
         <div id="loading-screen">
             <div class="loading-content">
@@ -351,6 +354,7 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
                 window.addEventListener("load", () => {
                     if (loadingScreen) {
                         sessionStorage.setItem("hasVisited", "true");
+                        document.body.classList.remove("page-intro-pending");
                         loadingScreen.classList.add("fade-out");
                         loadingScreen.addEventListener(
                             "transitionend",
@@ -368,7 +372,7 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
                         setTimeout(() => {
                             if (loadingScreen.isConnected)
                                 loadingScreen.remove();
-                        }, 700);
+                        }, 300);
                     }
                 });
             }

@@ -30,7 +30,7 @@ body.loading-skip #loading-screen {
     align-items: center;
     justify-content: center;
     z-index: var(--z-loading);
-    transition: opacity 0.6s ease-out;
+    transition: opacity 220ms cubic-bezier(0.215, 0.61, 0.355, 1);
     padding-left: 2rem;
     padding-right: 2rem;
     box-sizing: border-box;
@@ -95,6 +95,10 @@ body.loading-skip #loading-screen {
 }
 
 @media (prefers-reduced-motion: reduce) {
+    #loading-screen {
+        transition: opacity 100ms linear;
+    }
+
     .loading-pixel {
         animation: none;
     }
@@ -607,8 +611,14 @@ p {
     --reveal-order: 0;
     opacity: 0;
     transform: translateY(12px);
-    animation: text-reveal-in 200ms cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
-    animation-delay: calc(var(--reveal-order) * 45ms);
+    animation: text-reveal-in 180ms cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
+    animation-delay: calc(var(--reveal-order) * 35ms);
+}
+
+/* Keep the first-load reveal behind the loader, then release both together. */
+.page-intro-pending .text-reveal > *,
+.page-intro-pending .reveal {
+    animation-play-state: paused;
 }
 
 @keyframes text-reveal-in {
@@ -738,8 +748,8 @@ footer {
     opacity: 0;
     transform: translateY(8px);
     transition:
-        opacity 400ms ease,
-        transform 400ms cubic-bezier(0.215, 0.61, 0.355, 1);
+        opacity 220ms cubic-bezier(0.215, 0.61, 0.355, 1),
+        transform 220ms cubic-bezier(0.215, 0.61, 0.355, 1);
     will-change: transform, opacity;
 }
 
@@ -1034,8 +1044,8 @@ footer {
     opacity: 0;
     transform: translateY(8px);
     transition:
-        opacity 400ms ease,
-        transform 400ms cubic-bezier(0.215, 0.61, 0.355, 1);
+        opacity 200ms cubic-bezier(0.215, 0.61, 0.355, 1),
+        transform 200ms cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
 .liking-thumb.img-loaded {
