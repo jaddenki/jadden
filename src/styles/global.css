@@ -311,15 +311,21 @@ main {
     height: 11rem;
     z-index: 5;
     pointer-events: none;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 .gallery-edge-blur-top {
     top: 0;
     height: 8rem;
+    mask-image: linear-gradient(to bottom, black, transparent);
+    -webkit-mask-image: linear-gradient(to bottom, black, transparent);
 }
 
 .gallery-edge-blur-bottom {
     bottom: 0;
+    mask-image: linear-gradient(to top, black, transparent);
+    -webkit-mask-image: linear-gradient(to top, black, transparent);
 }
 
 .gallery-blur-layer {
@@ -1151,10 +1157,6 @@ footer {
         overflow: visible;
         padding-bottom: 4rem;
         transform: none;
-    }
-
-    .gallery-edge-blur {
-        display: none;
     }
 
     .corner-nav {
