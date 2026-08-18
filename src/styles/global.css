@@ -112,6 +112,7 @@ body.loading-skip #loading-screen {
 }
 
 :root {
+    color-scheme: light;
     --bg: white;
     --text: black;
     --muted: #5a5a5a;
@@ -123,6 +124,7 @@ body.loading-skip #loading-screen {
 }
 
 [data-theme="dark"] {
+    color-scheme: dark;
     --bg: black;
     --text: white;
     --muted: #c8c8c8;
@@ -158,6 +160,42 @@ body {
     margin: 0;
     padding: 0;
     scroll-behavior: smooth;
+}
+
+/* Paint the theme color on the root canvas so the browser never shows its
+   default white/black between navigations or when restoring the tab. */
+html {
+    background: var(--bg);
+}
+
+/* Cross-document view transitions: same-origin navigations crossfade instead
+   of flashing a blank frame (Chrome 126+, Safari 18.2+; others fall back to a
+   normal navigation, which the html background above keeps flash-free). */
+@view-transition {
+    navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation-duration: 120ms;
+}
+
+/* Nav and footer exist on every page — give them their own transition group
+   so they hold still while the page content crossfades. */
+.corner-nav {
+    view-transition-name: corner-nav;
+}
+
+footer {
+    view-transition-name: site-footer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    ::view-transition-group(*),
+    ::view-transition-old(*),
+    ::view-transition-new(*) {
+        animation: none !important;
+    }
 }
 
 body {
@@ -538,6 +576,7 @@ a:focus-visible,
 .inline-avatar {
     height: 1em;
     width: 1em;
+    margin-inline: 0.15em;
     border-radius: 0;
     object-fit: cover;
     vertical-align: middle;
@@ -587,6 +626,8 @@ p {
     }
 }
 
+/* Skip the staggered reveal on repeat navigations within a session (see the
+   data-revisit flag in BaseHead) and for reduced-motion users. */
 @media (prefers-reduced-motion: reduce) {
     .text-reveal > *,
     .reveal {
@@ -594,6 +635,13 @@ p {
         opacity: 1;
         transform: none;
     }
+}
+
+[data-revisit] .text-reveal > *,
+[data-revisit] .reveal {
+    animation: none;
+    opacity: 1;
+    transform: none;
 }
 
 .corner-nav {

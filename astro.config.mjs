@@ -24,7 +24,12 @@ export default defineConfig({
 	build: {
 		inlineStylesheets: 'auto',
 	},
-	prefetch: true,
+	// Prefetch every internal link as soon as it enters the viewport, so
+	// navigation serves the next page from memory instead of the network.
+	prefetch: {
+		prefetchAll: true,
+		defaultStrategy: 'viewport',
+	},
 	image: {
 		remotePatterns: [
 			{ protocol: 'https', hostname: 'github.com', pathname: '/**' },

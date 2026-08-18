@@ -21,6 +21,16 @@ const { title, description } = Astro.props;
 		document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
 	}
 
+	// Repeat navigations within a session skip the reveal animations so pages
+	// appear fully rendered instantly. Set after load so the first page's own
+	// scripts (e.g. the homepage loading screen) still see a fresh session.
+	if (sessionStorage.getItem('hasVisited')) {
+		document.documentElement.setAttribute('data-revisit', '');
+	}
+	window.addEventListener('load', function() {
+		sessionStorage.setItem('hasVisited', 'true');
+	});
+
 	// Prevent transition flash when switching back to this tab
 	document.addEventListener('visibilitychange', function() {
 		if (!document.hidden) {
