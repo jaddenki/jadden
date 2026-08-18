@@ -215,6 +215,28 @@ const favorites: FavoriteEntry[] = [
 
         <SiteFooter />
         <script>
+            document.addEventListener(
+                "wheel",
+                (event) => {
+                    const gallery =
+                        document.querySelector<HTMLElement>(
+                            ".projects-gallery",
+                        );
+                    if (!gallery) return;
+                    if (
+                        event.target instanceof Node &&
+                        gallery.contains(event.target)
+                    )
+                        return;
+                    gallery.scrollBy({
+                        top: event.deltaY,
+                        behavior: "auto",
+                    });
+                },
+                { passive: true },
+            );
+        </script>
+        <script>
             const images = document.querySelectorAll<HTMLImageElement>(
                 ".about-layout .gallery-image",
             );

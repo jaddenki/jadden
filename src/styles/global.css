@@ -135,7 +135,7 @@ body.loading-skip #loading-screen {
 
 * {
     font-family: "PolySans", Arial, sans-serif;
-    font-size: 18px;
+    font-size: 16px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-wrap: balance;
@@ -479,7 +479,7 @@ main {
     -webkit-backdrop-filter: blur(8px);
     color: var(--text);
     padding: 0.2rem 0.45rem 0.25rem;
-    font-size: 18px;
+    font-size: 16px;
     line-height: 1;
     white-space: nowrap;
     z-index: 50;
@@ -649,7 +649,7 @@ p {
 }
 
 .corner-nav-link {
-    font-size: 18px;
+    font-size: 16px;
     color: var(--muted);
     text-decoration: none;
     padding: 0;
@@ -700,7 +700,7 @@ footer {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
+    font-size: 16px;
 }
 
 .webring-logo {
@@ -873,7 +873,7 @@ footer {
     align-items: center;
     color: var(--muted);
     text-decoration: none;
-    font-size: 18px;
+    font-size: 16px;
     padding: 0;
     margin-right: 0.5rem;
     background: none;
