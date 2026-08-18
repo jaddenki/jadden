@@ -659,6 +659,9 @@ p {
 }
 
 .corner-nav-link {
+    display: flex;
+    align-items: center;
+    min-height: 24px;
     font-size: 16px;
     color: var(--muted);
     text-decoration: none;
@@ -710,6 +713,8 @@ footer {
     display: flex;
     align-items: center;
     justify-content: center;
+    min-width: 24px;
+    min-height: 24px;
     font-size: 16px;
 }
 
