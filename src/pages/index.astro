@@ -3,6 +3,7 @@ import BaseHead from "../components/BaseHead.astro";
 import CornerNav from "../components/CornerNav.astro";
 import { HoverPreviewLink } from "../components/HoverPreviewLink";
 import ImageGrid from "../components/ImageGrid.astro";
+import InlineAvatar from "../components/InlineAvatar.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import "../styles/global.css";
@@ -223,6 +224,34 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
                         motion design
                     </HoverPreviewLink>
                     {""} and making things move
+                </p>
+
+                <p style="--reveal-order: 2">
+                    I'm a design engineer at <InlineAvatar
+                        src="https://avatars.githubusercontent.com/u/107880645?v=4"
+                        alt=""
+                        width={20}
+                        height={20}
+                        class="inline-avatar inline-avatar-ring"
+                    /><HoverPreviewLink
+                        client:visible
+                        href="https://infisical.com"
+                        target="_blank"
+                        previewSrc="/img/previews/infisical.webp"
+                        previewAlt="Infisical homepage"
+                    >Infisical</HoverPreviewLink> & I'm making corners of the world wide web stick with <InlineAvatar
+                        src="https://avatars.githubusercontent.com/fruitjamms"
+                        alt=""
+                        width={20}
+                        height={20}
+                        class="inline-avatar"
+                    /><HoverPreviewLink
+                        client:visible
+                        href="https://jam.ms"
+                        target="_blank"
+                        previewSrc="/img/previews/jamms.webp"
+                        previewAlt="jam.ms preview"
+                    >jamms</HoverPreviewLink>
                 </p>
 
                 <!-- <p>
