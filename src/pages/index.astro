@@ -168,11 +168,15 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
 <html lang="en">
     <head>
         <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-        <link
-            rel="preload"
-            as={isVideoUrl(projects[0].src) ? "video" : "image"}
-            href={projects[0].src}
-        />
+        {
+            projects.slice(0, 2).map((project) => (
+                <link
+                    rel="preload"
+                    as={isVideoUrl(project.src) ? "video" : "image"}
+                    href={project.src}
+                />
+            ))
+        }
     </head>
     <body>
         <script is:inline>
@@ -374,36 +378,72 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
             );
         </script>
         <script>
-            const hasVisited = sessionStorage.getItem("hasVisited");
             const loadingScreen = document.getElementById("loading-screen");
-            if (hasVisited && loadingScreen) {
-                loadingScreen.remove();
-            } else {
-                // only for first vidit
-                window.addEventListener("load", () => {
-                    if (loadingScreen) {
-                        sessionStorage.setItem("hasVisited", "true");
-                        document.body.classList.remove("page-intro-pending");
-                        loadingScreen.classList.add("fade-out");
-                        loadingScreen.addEventListener(
-                            "transitionend",
-                            () => {
-                                loadingScreen.remove();
-                                const liveRegion =
-                                    document.getElementById("page-ready");
-                                if (liveRegion)
-                                    liveRegion.textContent = "Page loaded";
-                            },
-                            {
-                                once: true,
-                            },
-                        );
-                        setTimeout(() => {
-                            if (loadingScreen.isConnected)
-                                loadingScreen.remove();
-                        }, 300);
+
+            const waitForMedia = (media: Element) => {
+                if (media instanceof HTMLImageElement) {
+                    if (media.complete) {
+                        return media.naturalWidth > 0
+                            ? media.decode().catch(() => {})
+                            : Promise.resolve();
                     }
+
+                    return new Promise<void>((resolve) => {
+                        media.addEventListener("load", () => {
+                            void media.decode().catch(() => {}).finally(resolve);
+                        }, { once: true });
+                        media.addEventListener("error", () => resolve(), { once: true });
+                    });
+                }
+
+                if (media instanceof HTMLVideoElement) {
+                    if (media.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+                        return Promise.resolve();
+                    }
+
+                    media.load();
+                    return new Promise<void>((resolve) => {
+                        media.addEventListener("loadeddata", () => resolve(), { once: true });
+                        media.addEventListener("error", () => resolve(), { once: true });
+                    });
+                }
+
+                return Promise.resolve();
+            };
+
+            const finishLoading = () => {
+                sessionStorage.setItem("hasVisited", "true");
+                document.body.classList.remove("page-intro-pending");
+
+                if (!loadingScreen) return;
+                loadingScreen.classList.add("fade-out");
+
+                const removeLoader = () => {
+                    loadingScreen.remove();
+                    const liveRegion = document.getElementById("page-ready");
+                    if (liveRegion) liveRegion.textContent = "Page loaded";
+                };
+
+                loadingScreen.addEventListener("transitionend", removeLoader, {
+                    once: true,
                 });
+                setTimeout(() => {
+                    if (loadingScreen.isConnected) removeLoader();
+                }, 300);
+            };
+
+            if (sessionStorage.getItem("hasVisited")) {
+                loadingScreen?.remove();
+            } else {
+                const media = document.querySelectorAll("[data-loader-media]");
+                const mediaReady = Promise.allSettled(
+                    Array.from(media, waitForMedia),
+                );
+                const timeout = new Promise<void>((resolve) =>
+                    setTimeout(resolve, 10000),
+                );
+
+                void Promise.race([mediaReady, timeout]).then(finishLoading);
             }
         </script>
         <script>

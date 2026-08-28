@@ -31,18 +31,6 @@ const { title, description } = Astro.props;
 		sessionStorage.setItem('hasVisited', 'true');
 	});
 
-	// Prevent transition flash when switching back to this tab
-	document.addEventListener('visibilitychange', function() {
-		if (!document.hidden) {
-			document.body.classList.add('tab-refocus');
-			requestAnimationFrame(function() {
-				requestAnimationFrame(function() {
-					document.body.classList.remove('tab-refocus');
-				});
-			});
-		}
-	});
-
 	// Free GPU layers once text-reveal animations are done
 	document.addEventListener('animationend', function(e) {
 		if (e.animationName === 'text-reveal-in') {
@@ -58,7 +46,6 @@ const { title, description } = Astro.props;
 <link rel="icon" href="/favicon.ico" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <link rel="preload" href="/fonts/PolySans-Slim.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="preload" href="/fonts/PixelHackers.woff2" as="font" type="font/woff2" crossorigin />
 <meta name="generator" content={Astro.generator} />
 <meta name="robots" content="index, follow" />
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />

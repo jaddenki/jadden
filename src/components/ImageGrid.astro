@@ -35,9 +35,10 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
 						style={`aspect-ratio: ${item.aspectRatio};`}
 						data-freeze-time={item.freezeTime ?? 0}
 						data-play-continuously={item.playContinuously ?? false}
+						data-loader-media={eager ? '' : undefined}
 						loop
 						muted
-						preload="metadata"
+						preload={eager ? 'auto' : 'metadata'}
 						playsinline
 						aria-hidden="true"
 				/>
@@ -49,6 +50,7 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
 					src={item.src}
 					alt={item.alt}
 					loading={eager ? 'eager' : 'lazy'}
+					data-loader-media={eager ? '' : undefined}
 					class="gallery-image"
 					style={`aspect-ratio: ${item.aspectRatio};`}
 					decoding="async"

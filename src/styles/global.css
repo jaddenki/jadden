@@ -3,7 +3,7 @@
     src: url("/fonts/PixelHackers.woff2") format("woff2");
     font-weight: 400;
     font-style: normal;
-    font-display: swap;
+    font-display: block;
 }
 
 @font-face {
@@ -13,7 +13,7 @@
     -moz-osx-font-smoothing: grayscale;
     font-weight: 200;
     font-style: normal;
-    font-display: swap;
+    font-display: block;
 }
 body.loading-skip #loading-screen {
     display: none !important;
@@ -900,10 +900,6 @@ footer {
     background: none;
     border: none;
     cursor: pointer;
-}
-
-.tab-refocus * {
-    transition-duration: 0.001ms !important;
 }
 
 .sr-only {
