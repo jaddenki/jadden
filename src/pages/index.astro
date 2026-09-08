@@ -9,11 +9,29 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import "../styles/global.css";
 
 const projects = [
+  {
+      src: "/img/front/avec-site.webm",
+      alt: "Avec video",
+      aspectRatio: "16/9",
+      playContinuously: true,
+  },
+  {
+      src: "/img/front/ridelikebike.webm",
+      alt: "Drop It - Personal",
+      aspectRatio: "1/1",
+      freezeTime: 1.8,
+      playContinuously: true,
+  },
+  {
+      src: "/img/front/agent-proxy-site.webm",
+      alt: "Agent Proxy video",
+      aspectRatio: "16/9",
+      playContinuously: true,
+  },
     {
-        src: "/img/front/capytitle.webm",
-        alt: "Capy",
+        src: "/img/front/beside-site.webm",
+        alt: "Beside video",
         aspectRatio: "16/9",
-        freezeTime: 0.6,
         playContinuously: true,
     },
     {
@@ -31,6 +49,13 @@ const projects = [
         playContinuously: true,
     },
     {
+        src: "/img/front/capytitle.webm",
+        alt: "Capy",
+        aspectRatio: "16/9",
+        freezeTime: 0.6,
+        playContinuously: true,
+    },
+    {
         src: "/img/front/fish.webm",
         alt: "Fish - Personal",
         aspectRatio: "3/4",
@@ -38,16 +63,16 @@ const projects = [
         playContinuously: true,
     },
     {
-        src: "/img/front/infisical.webm",
-        alt: "Infisical - Homepage",
-        aspectRatio: "16/9",
-        playContinuously: true,
-    },
-    {
         src: "/img/front/loco.webm",
         alt: "Go Loco - Personal",
         aspectRatio: "1/1",
         freezeTime: 3.4,
+        playContinuously: true,
+    },
+    {
+        src: "/img/front/infisical.webm",
+        alt: "Infisical - Homepage",
+        aspectRatio: "16/9",
         playContinuously: true,
     },
     // {
@@ -95,69 +120,47 @@ const projects = [
         freezeTime: 3.3,
         playContinuously: true,
     },
-    {
-        src: "/img/front/ridelikebike.webm",
-        alt: "Drop It - Personal",
-        aspectRatio: "1/1",
-        freezeTime: 1.8,
-        playContinuously: true,
-    },
 ];
 
-interface ProjectListItem {
-    name: string;
-    href?: string;
-    gridIndex?: number[];
-    previewSrc?: string;
-    previewAlt?: string;
-    previewText?: string;
-    tag?: string;
-}
-
-const projectList: ProjectListItem[] = [
+const projectList = [
+    { name: "sketchi", href: "https://sketchi.ing", tag: "Game" },
+    { name: "Avec", href: "https://avec.ai", gridIndex: 0, tag: "Video" },
+    { name: "Beside", href: "https://beside.com", gridIndex: 3, tag: "Video" },
+    {
+        name: "Agent Proxy",
+        href: "https://x.com/infisical/status/2082864780402950210?s=20",
+        gridIndex: 2,
+        tag: "Video",
+    },
     {
         name: "Infisical",
-        gridIndex: [4],
         href: "https://infisical.com",
-        previewSrc: "/img/previews/infisical.webp",
-        previewAlt: "Infisical homepage",
+        gridIndex: 9,
         tag: "Homepage",
     },
     {
         name: "Capy",
-        gridIndex: [0],
         href: "https://x.com/capydotai/status/2031430074940195126",
-        previewText: "Launch Video ↗",
-        previewAlt: "Link to Twt",
+        gridIndex: 6,
         tag: "Branding Video",
     },
     {
         name: "PixelHackers",
         href: "https://x.com/igarakii/status/2029082607711863007?s=20",
-        previewText: "Still working on it...↗",
         tag: "Typeface",
     },
-    {
-        name: "etea.cafe",
-        href: "https://etea.cafe",
-        previewText: "Daily Web Game ↗",
-        tag: "Game",
-    },
-    // { name: "etea.cafe", href: "https://etea.cafe", previewSrc: "/img/previews/lowercase.webp", previewAlt: "etea.cafe" },
-    {
-        name: "Spread the Love",
-        gridIndex: [7],
-        href: "https://store.steampowered.com/app/3852520/Spread_The_Love/",
-        previewText: "Steam ↗",
-        tag: "Game",
-    },
+    { name: "etea.cafe", href: "https://etea.cafe", tag: "Game" },
     {
         name: "Respell AI",
-        gridIndex: [6],
         href: "https://respell.ai",
-        previewText: "Site ↗",
-        previewAlt: "Link to Respell AI",
+        gridIndex: 10,
         tag: "Video",
+    },
+    {
+        name: "Spread the Love",
+        href: "https://store.steampowered.com/app/3852520/Spread_The_Love/",
+        gridIndex: 11,
+        tag: "Game",
     },
 ];
 
@@ -311,46 +314,13 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
                     Feel free to scroll through my selected works <br /> Here are
                     some other links to other projects:
                 </p>
-
                 <ul class="project-list" style="--reveal-order: 5">
-                    {
-                        projectList.map((p) => {
-                            const hasPreview = p.previewSrc || p.previewText;
-                            return (
-                                <li data-grid-index={p.gridIndex?.join(",")}>
-                                    <div class="project-list-row">
-                                        <span class="project-list-main">
-                                            {hasPreview && p.href ? (
-                                                <HoverPreviewLink
-                                                    client:visible
-                                                    href={p.href}
-                                                    target={
-                                                        p.href.startsWith("/")
-                                                            ? undefined
-                                                            : "_blank"
-                                                    }
-                                                    previewSrc={p.previewSrc}
-                                                    previewAlt={p.previewAlt}
-                                                    previewText={p.previewText}
-                                                >
-                                                    {p.name}
-                                                </HoverPreviewLink>
-                                            ) : p.href ? (
-                                                <a href={p.href}>{p.name}</a>
-                                            ) : (
-                                                <span>{p.name}</span>
-                                            )}
-                                        </span>
-                                        {p.tag && (
-                                            <span class="project-tag">
-                                                {p.tag}
-                                            </span>
-                                        )}
-                                    </div>
-                                </li>
-                            );
-                        })
-                    }
+                    {projectList.map((project) => (
+                        <li data-grid-index={project.gridIndex}>
+                            <a href={project.href} target="_blank">{project.name}</a>
+                            <span class="project-tag">{project.tag}</span>
+                        </li>
+                    ))}
                 </ul>
                 <p style="--reveal-order: 7">
                     And the list goes on... remind me to add more...
@@ -376,6 +346,30 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
                 },
                 { passive: true },
             );
+        </script>
+        <script>
+            const items = document.querySelectorAll<HTMLElement>(
+                ".project-list li[data-grid-index]",
+            );
+            const tiles = document.querySelectorAll<HTMLElement>(".gallery-grid > *");
+            const gallery = document.querySelector(".gallery-grid");
+
+            const clearGrid = () => {
+                gallery?.classList.remove("grid-dimmed");
+                tiles.forEach((tile) => tile.classList.remove("grid-highlight"));
+            };
+
+            items.forEach((item) => {
+                const link = item.querySelector("a");
+                const index = Number(item.dataset.gridIndex);
+                if (!link || !Number.isFinite(index)) return;
+                link.addEventListener("mouseenter", () => {
+                    gallery?.classList.add("grid-dimmed");
+                    tiles[index]?.classList.add("grid-highlight");
+                    tiles[index]?.scrollIntoView({ behavior: "smooth", block: "center" });
+                });
+                link.addEventListener("mouseleave", clearGrid);
+            });
         </script>
         <script>
             const loadingScreen = document.getElementById("loading-screen");
@@ -444,84 +438,6 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
                 );
 
                 void Promise.race([mediaReady, timeout]).then(finishLoading);
-            }
-        </script>
-        <script>
-            const listItems = document.querySelectorAll<HTMLElement>(
-                ".project-list li[data-grid-index]",
-            );
-            const gridTiles =
-                document.querySelectorAll<HTMLElement>(".gallery-grid > *");
-            const gallery = document.querySelector(".gallery-grid");
-            let leaveTimer: ReturnType<typeof setTimeout> | null = null;
-
-            const dispatchToTileVideos = (
-                tile: HTMLElement,
-                type: "mouseenter" | "mouseleave",
-            ) => {
-                const videos = tile.querySelectorAll<HTMLVideoElement>(
-                    "video.gallery-image",
-                );
-                for (const video of videos) {
-                    video.dispatchEvent(new Event(type, { bubbles: false }));
-                }
-            };
-
-            const clearGrid = () => {
-                gallery?.classList.remove("grid-dimmed");
-                for (const tile of gridTiles) {
-                    tile.classList.remove("grid-highlight");
-                    // Let videos return to their idle / freeze frame state
-                    dispatchToTileVideos(tile, "mouseleave");
-                }
-            };
-
-            for (const li of listItems) {
-                const trigger = li.querySelector<HTMLAnchorElement>("a");
-                if (!trigger) continue;
-
-                trigger.addEventListener("mouseenter", () => {
-                    if (leaveTimer) {
-                        clearTimeout(leaveTimer);
-                        leaveTimer = null;
-                    }
-                    const indicesArray = li.dataset
-                        .gridIndex!.split(",")
-                        .map(Number);
-                    const indices = new Set(indicesArray);
-                    gallery?.classList.add("grid-dimmed");
-                    // Smooth-scroll the first matching tile into view
-                    const firstIndex = Math.min(...indicesArray);
-                    const targetTile = gridTiles[firstIndex];
-                    if (targetTile) {
-                        const prefersReduced = window.matchMedia(
-                            "(prefers-reduced-motion: reduce)",
-                        ).matches;
-                        targetTile.scrollIntoView({
-                            behavior: prefersReduced ? "instant" : "smooth",
-                            block: "center",
-                            inline: "nearest",
-                        });
-                    }
-                    for (let i = 0; i < gridTiles.length; i++) {
-                        const tile = gridTiles[i];
-                        const shouldHighlight = indices.has(i);
-                        tile.classList.toggle(
-                            "grid-highlight",
-                            shouldHighlight,
-                        );
-                        if (shouldHighlight) {
-                            // Trigger the same behavior as hovering the video tile directly
-                            dispatchToTileVideos(tile, "mouseenter");
-                        } else {
-                            dispatchToTileVideos(tile, "mouseleave");
-                        }
-                    }
-                });
-                trigger.addEventListener("mouseleave", () => {
-                    if (leaveTimer) clearTimeout(leaveTimer);
-                    leaveTimer = setTimeout(clearGrid, 75);
-                });
             }
         </script>
     </body>

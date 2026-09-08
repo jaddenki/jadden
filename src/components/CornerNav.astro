@@ -15,17 +15,72 @@ const links: { key: NavKey; label: string; href: string }[] = [
 ---
 
 <nav class="corner-nav" aria-label="Primary">
-	{
-		links.map((link) =>
-			link.key === current ? (
-				<span class="corner-nav-link is-current" aria-current="page">
-					{link.label}
-				</span>
-			) : (
-				<a href={link.href} class="corner-nav-link">
-					{link.label}
-				</a>
-			),
-		)
-	}
+	<button
+		type="button"
+		class="corner-nav-toggle"
+		aria-expanded="false"
+		aria-controls="corner-nav-menu"
+	>
+		<span class="sr-only">Menu</span>
+		<span class="corner-nav-toggle-icon" aria-hidden="true">
+			<span class="corner-nav-toggle-bar"></span>
+			<span class="corner-nav-toggle-bar"></span>
+			<span class="corner-nav-toggle-bar"></span>
+		</span>
+	</button>
+	<div id="corner-nav-menu" class="corner-nav-menu">
+		{
+			links.map((link) =>
+				link.key === current ? (
+					<span class="corner-nav-link is-current" aria-current="page">
+						{link.label}
+					</span>
+				) : (
+					<a href={link.href} class="corner-nav-link">
+						{link.label}
+					</a>
+				),
+			)
+		}
+	</div>
 </nav>
+
+<script>
+	const nav = document.querySelector<HTMLElement>(".corner-nav");
+	const toggle = nav?.querySelector<HTMLButtonElement>(".corner-nav-toggle");
+	const menu = nav?.querySelector<HTMLElement>("#corner-nav-menu");
+
+	if (nav && toggle && menu) {
+		const mq = window.matchMedia("(max-width: 768px)");
+
+		const setOpen = (open: boolean) => {
+			nav.classList.toggle("is-open", open);
+			toggle.setAttribute("aria-expanded", String(open));
+			document.body.classList.toggle("corner-nav-open", open);
+		};
+
+		const closeMenu = () => setOpen(false);
+
+		toggle.addEventListener("click", () => {
+			setOpen(!nav.classList.contains("is-open"));
+		});
+
+		menu.addEventListener("click", (event) => {
+			if (event.target instanceof HTMLAnchorElement) closeMenu();
+		});
+
+		document.addEventListener("keydown", (event) => {
+			if (event.key === "Escape") closeMenu();
+		});
+
+		document.addEventListener("click", (event) => {
+			if (!nav.classList.contains("is-open")) return;
+			if (event.target instanceof Node && nav.contains(event.target)) return;
+			closeMenu();
+		});
+
+		mq.addEventListener("change", () => {
+			if (!mq.matches) closeMenu();
+		});
+	}
+</script>

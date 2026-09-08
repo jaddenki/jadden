@@ -250,48 +250,27 @@ main {
     list-style: none;
     padding: 0;
     margin: 0;
-    display: flex;
-    flex-direction: column;
 }
 
 .project-list li {
-    color: var(--muted);
-    padding: 0.125rem 0;
     display: flex;
     align-items: baseline;
-    gap: 0.25rem;
+    gap: 0.5rem;
+    color: var(--muted);
+    padding: 0.125rem 0;
 }
 
 .project-list li::before {
     content: "— ";
-    flex-shrink: 0;
 }
 
-.project-list a {
-    color: var(--muted);
-}
-
-.project-list-row {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 0.25rem;
-}
-
-.project-list-main {
-    min-width: 0;
-}
-
+.project-list a,
 .project-tag {
     color: var(--muted);
-    white-space: nowrap;
-    text-align: right;
 }
 
 .gallery-grid > * {
-    transition:
-        opacity 150ms ease-out,
-        filter 150ms ease-out;
+    transition: opacity 150ms ease-out, filter 150ms ease-out;
 }
 
 .grid-dimmed > * {
@@ -656,7 +635,8 @@ p {
     position: fixed;
     top: 1rem;
     right: 1.5rem;
-    z-index: 999;
+    /* Above .content (999) so the open menu receives clicks on mobile. */
+    z-index: 10000;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -667,8 +647,10 @@ p {
 .corner-nav-link {
     display: flex;
     align-items: center;
-    min-height: 24px;
+    justify-content: flex-end;
+    min-height: 28px;
     font-size: 16px;
+    line-height: 1;
     color: var(--muted);
     text-decoration: none;
     padding: 0;
@@ -682,6 +664,84 @@ p {
 .liking-source:hover {
     color: var(--text);
     background: transparent;
+}
+
+.corner-nav-toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    margin: 0;
+    border: none;
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.corner-nav-toggle:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+}
+
+.corner-nav-toggle-icon {
+    position: relative;
+    display: block;
+    width: 18px;
+    height: 12px;
+}
+
+.corner-nav-toggle-bar {
+    position: absolute;
+    left: 0;
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: currentColor;
+    transition:
+        transform 150ms ease,
+        opacity 150ms ease;
+    transform-origin: center;
+}
+
+.corner-nav-toggle-bar:nth-child(1) {
+    top: 0;
+}
+
+.corner-nav-toggle-bar:nth-child(2) {
+    top: 5px;
+}
+
+.corner-nav-toggle-bar:nth-child(3) {
+    top: 10px;
+}
+
+.corner-nav.is-open .corner-nav-toggle-bar:nth-child(1) {
+    transform: translateY(5px) rotate(45deg);
+}
+
+.corner-nav.is-open .corner-nav-toggle-bar:nth-child(2) {
+    opacity: 0;
+}
+
+.corner-nav.is-open .corner-nav-toggle-bar:nth-child(3) {
+    transform: translateY(-5px) rotate(-45deg);
+}
+
+.corner-nav-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0;
+    text-align: right;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .corner-nav-toggle-bar {
+        transition: none;
+    }
 }
 
 footer {
@@ -1157,19 +1217,60 @@ footer {
 
     .corner-nav {
         top: 1rem;
-        left: 1.5rem;
-        right: auto;
-        flex-direction: row;
-        align-items: center;
-        gap: 0.75rem;
-        padding: 0.25rem 0.5rem;
-        background: color-mix(in srgb, var(--bg) 70%, transparent);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
+        right: 1.5rem;
+        left: auto;
+        align-items: flex-end;
+        gap: 0;
+    }
+
+    .corner-nav-toggle {
+        display: flex;
+    }
+
+    .corner-nav-menu {
+        position: absolute;
+        top: calc(100% + 0.25rem);
+        right: 0;
+        min-width: 6.5rem;
+        padding: 0.35rem 0.75rem;
+        background: color-mix(in srgb, var(--bg) 92%, transparent);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid color-mix(in srgb, var(--text) 8%, transparent);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-4px);
+        transition:
+            opacity 150ms ease,
+            transform 150ms ease,
+            visibility 150ms ease;
+        pointer-events: none;
+    }
+
+    .corner-nav.is-open .corner-nav-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+        pointer-events: auto;
+    }
+
+    body.corner-nav-open::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        background: color-mix(in srgb, var(--bg) 20%, transparent);
     }
 
     main {
-        padding-top: 3rem;
+        padding-top: 3.5rem;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .corner-nav-menu {
+            transition: none;
+            transform: none;
+        }
     }
 
     footer {
