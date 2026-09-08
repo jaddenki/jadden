@@ -123,43 +123,74 @@ const projects = [
 ];
 
 const projectList = [
-    { name: "sketchi", href: "https://sketchi.ing", tag: "Game" },
-    { name: "Avec", href: "https://avec.ai", gridIndex: 0, tag: "Video" },
-    { name: "Beside", href: "https://beside.com", gridIndex: 3, tag: "Video" },
+    {
+        name: "sketchi",
+        href: "https://sketchi.ing",
+        previewSrc: "/img/previews/sketchi.webp",
+        previewAlt: "Sketchi Game",
+        previewText: "Impostor Web Game ↗",
+        tag: "Game",
+    },
+    {
+        name: "Avec",
+        href: "https://avec.ai",
+        gridIndex: 0,
+        previewText: "avec.ai ↗",
+        tag: "Video",
+    },
+    {
+        name: "Beside",
+        href: "https://beside.com",
+        gridIndex: 3,
+        previewText: "beside.com ↗",
+        tag: "Video",
+    },
     {
         name: "Agent Proxy",
         href: "https://x.com/infisical/status/2082864780402950210?s=20",
         gridIndex: 2,
+        previewText: "Launch Video ↗",
         tag: "Video",
     },
     {
         name: "Infisical",
         href: "https://infisical.com",
         gridIndex: 9,
+        previewSrc: "/img/previews/infisical.webp",
+        previewAlt: "Infisical homepage",
         tag: "Homepage",
     },
     {
         name: "Capy",
         href: "https://x.com/capydotai/status/2031430074940195126",
         gridIndex: 6,
+        previewText: "Launch Video ↗",
         tag: "Branding Video",
     },
     {
         name: "PixelHackers",
         href: "https://x.com/igarakii/status/2029082607711863007?s=20",
+        previewText: "Still working on it...↗",
         tag: "Typeface",
     },
-    { name: "etea.cafe", href: "https://etea.cafe", tag: "Game" },
+    {
+        name: "etea.cafe",
+        href: "https://etea.cafe",
+        previewText: "Daily Web Game ↗",
+        tag: "Game",
+    },
     {
         name: "Respell AI",
         href: "https://respell.ai",
         gridIndex: 10,
+        previewText: "Site ↗",
         tag: "Video",
     },
     {
         name: "Spread the Love",
         href: "https://store.steampowered.com/app/3852520/Spread_The_Love/",
         gridIndex: 11,
+        previewText: "Steam ↗",
         tag: "Game",
     },
 ];
@@ -315,12 +346,28 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
                     some other links to other projects:
                 </p>
                 <ul class="project-list" style="--reveal-order: 5">
-                    {projectList.map((project) => (
-                        <li data-grid-index={project.gridIndex}>
-                            <a href={project.href} target="_blank">{project.name}</a>
-                            <span class="project-tag">{project.tag}</span>
-                        </li>
-                    ))}
+                    {projectList.map((project) => {
+                        const hasPreview = project.previewSrc || project.previewText;
+                        return (
+                            <li data-grid-index={project.gridIndex}>
+                                {hasPreview ? (
+                                    <HoverPreviewLink
+                                        client:visible
+                                        href={project.href}
+                                        target="_blank"
+                                        previewSrc={project.previewSrc}
+                                        previewAlt={project.previewAlt}
+                                        previewText={project.previewText}
+                                    >
+                                        {project.name}
+                                    </HoverPreviewLink>
+                                ) : (
+                                    <a href={project.href} target="_blank">{project.name}</a>
+                                )}
+                                <span class="project-tag">{project.tag}</span>
+                            </li>
+                        );
+                    })}
                 </ul>
                 <p style="--reveal-order: 7">
                     And the list goes on... remind me to add more...
