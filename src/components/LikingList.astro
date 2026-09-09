@@ -51,9 +51,9 @@ for (const entry of entries) {
 let order = 0;
 ---
 
-<section class="liking-section" aria-label="Things I'm thinking about lately">
+<section class="liking-section" aria-label="Recent Are.na posts">
 	<p class="section-heading reveal" style={`--reveal-order: ${order++}`}>
-		What I've been thinking about{" "}
+		What I've recently saved on{" "}
 		{
 			sourceUrl ? (
 				<a
@@ -62,12 +62,12 @@ let order = 0;
 					target="_blank"
 					rel="noopener noreferrer"
 				>
-					lately
+				 Are.na
 				</a>
 			) : (
-				"lately"
+				"my Are.na"
 			)
-		}...
+		}.
 	</p>
 
 	{
@@ -93,6 +93,7 @@ let order = 0;
 											decoding="async"
 										/>
 									)}
+									{!entry.imageUrl && <span class="liking-thumb-placeholder" aria-hidden="true" />}
 									<div class="liking-body">
 										{entry.url ? (
 											<a
@@ -105,6 +106,18 @@ let order = 0;
 											</a>
 										) : (
 											entry.content && <p class="liking-text">{entry.content}</p>
+										)}
+										{entry.channelTitle && (
+											<p class="liking-channel">
+												in{" "}
+												{entry.channelUrl ? (
+													<a href={entry.channelUrl} target="_blank" rel="noopener noreferrer">
+														{entry.channelTitle}
+													</a>
+												) : (
+													entry.channelTitle
+												)}
+											</p>
 										)}
 									</div>
 								</li>

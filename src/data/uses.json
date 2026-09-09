@@ -24,8 +24,8 @@
 							"label": "Mouse",
 							"parts": [
 								{
-									"text": "Razer Viper Ultimate",
-									"href": "https://www.razer.com/gaming-mice/razer-viper-ultimate"
+									"text": "Hitscan Hyperlight",
+									"href": "https://hitscan.com/products/hyperlight?variant=49708834390309"
 								}
 							]
 						},
@@ -94,6 +94,23 @@
 							"label": "Watch",
 							"parts": [
 								{ "text": "Fitbit Charge 6", "href": "https://store.google.com/product/fitbit_charge_6" }
+							]
+						}
+					]
+				},
+				{
+					"category": "Camera",
+					"items": [
+						{
+							"label": "Body",
+							"parts": [
+								{ "text": "Fujifilm X-H2", "href": "https://shopusa.fujifilm-x.com/x-h2-x-h2/?srsltid=AfmBOorz4UBNx2wO4CRPbMAry4JDDSRPWNaD-VOL7rcZq3LA3CerD_5u" }
+							]
+						},
+						{
+							"label": "Lens",
+							"parts": [
+								{ "text": "XF 23mm f/2.8", "href": "https://www.fujifilm-x.com/en-us/products/lenses/xf23mmf28-r-wr/" }
 							]
 						}
 					]

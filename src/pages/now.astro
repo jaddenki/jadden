@@ -5,23 +5,19 @@ import LikingList from "../components/LikingList.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import UsesList from "../components/UsesList.astro";
 import { SITE_TITLE } from "../consts";
-import { fetchLikingEntries, mergeAndSort, type SeedEntry } from "../lib/arena";
-import likingSeed from "../data/liking-seed.json";
+import { fetchProfileEntries } from "../lib/arena";
 import "../styles/global.css";
 
 // Opt this single route into on-demand rendering + ISR (see astro.config.mjs).
 // The rest of the site stays fully static.
 export const prerender = false;
 
-const ARENA_CHANNEL_SLUG = "liking-2gl2m-x6t-q";
-const ARENA_CHANNEL_URL = `https://www.are.na/jadden-picardal/${ARENA_CHANNEL_SLUG}`;
+const ARENA_PROFILE_SLUG = "jadden-picardal";
+const ARENA_PROFILE_URL = `https://www.are.na/${ARENA_PROFILE_SLUG}`;
 
-// Runs per revalidation (not per request). Never throws — on failure it returns
-// an empty list and ISR keeps serving the last successfully rendered version.
-// Are.na can't backdate `connected_at`, so anything older than the channel is
-// hand-added in src/data/liking-seed.json and merged in here.
-const arenaEntries = await fetchLikingEntries(ARENA_CHANNEL_SLUG);
-const entries = mergeAndSort(arenaEntries, likingSeed as SeedEntry[]);
+// Runs per revalidation (not per request). The profile feed includes posts from
+// every channel and returns an empty list if Are.na is temporarily unavailable.
+const entries = await fetchProfileEntries(ARENA_PROFILE_SLUG);
 ---
 
 <!doctype html>
@@ -39,7 +35,7 @@ const entries = mergeAndSort(arenaEntries, likingSeed as SeedEntry[]);
 				<UsesList />
 			</div>
 			<div class="now-liking">
-				<LikingList entries={entries} sourceUrl={ARENA_CHANNEL_URL} />
+				<LikingList entries={entries} sourceUrl={ARENA_PROFILE_URL} />
 			</div>
 		</main>
 

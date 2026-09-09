@@ -11,6 +11,8 @@ export interface LikingEntry {
 	url?: string; // for Link / Attachment
 	imageUrl?: string; // for Image, or Link-with-image
 	isFavicon?: boolean; // when imageUrl is a favicon (Link entries)
+	channelTitle?: string;
+	channelUrl?: string;
 }
 
 // A hand-authored entry from src/data/liking-seed.json. Use this to seed the
@@ -47,6 +49,34 @@ interface ArenaBlock {
 
 interface ArenaContentsResponse {
 	contents?: ArenaBlock[];
+}
+
+interface ArenaBlockResponse {
+	connections?: Array<{
+		title?: string;
+		slug?: string;
+		user_id?: number;
+	}>;
+}
+
+function decodeXml(value: string): string {
+	return value
+		.replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1")
+		.replace(/&amp;/g, "&")
+		.replace(/&lt;/g, "<")
+		.replace(/&gt;/g, ">")
+		.replace(/&quot;/g, '"')
+		.replace(/&#39;/g, "'");
+}
+
+function rssValue(item: string, tag: string): string {
+	return decodeXml(
+		item.match(new RegExp(`<${tag}(?:\\s[^>]*)?>([\\s\\S]*?)<\\/${tag}>`))?.[1] ?? "",
+	).trim();
+}
+
+function textFromHtml(value: string): string {
+	return decodeXml(value.replace(/<[^>]+>/g, " ")).replace(/\s+/g, " ").trim();
 }
 
 const KNOWN_CLASSES: ArenaBlockClass[] = ["Text", "Link", "Image", "Attachment"];
@@ -184,6 +214,68 @@ export async function fetchLikingEntries(
 		// Reverse-chronological by date (newest first).
 		entries.sort((a, b) => b.date.localeCompare(a.date));
 		return entries;
+	} catch {
+		return [];
+	}
+}
+
+/** Fetches recent blocks from every channel represented in a user's public RSS feed. */
+export async function fetchProfileEntries(slug: string): Promise<LikingEntry[]> {
+	try {
+		const res = await fetch(`https://www.are.na/${encodeURIComponent(slug)}/feed/rss`, {
+			headers: { Accept: "application/rss+xml" },
+		});
+		if (!res.ok) return [];
+
+		const xml = await res.text();
+		const entries = [...xml.matchAll(/<item>([\s\S]*?)<\/item>/g)]
+			.map((match): LikingEntry | null => {
+				const item = match[1];
+				const link = rssValue(item, "link");
+				const id = link.match(/\/block\/(\d+)/)?.[1];
+				if (!id) return null;
+
+				const description = rssValue(item, "description");
+				const title = rssValue(item, "title");
+				const imageUrl = description.match(/<img[^>]+src=["']([^"']+)["']/i)?.[1];
+				const sourceUrl = item.match(/<source\s+url=["']([^"']+)["']/i)?.[1];
+				const descriptionText = textFromHtml(description);
+				const content = title === "No title" ? descriptionText : title || descriptionText;
+
+				return {
+					id,
+					date: rssValue(item, "pubDate"),
+					kind: sourceUrl && sourceUrl !== "null" ? "Link" : imageUrl ? "Image" : "Text",
+					content,
+					url: sourceUrl && sourceUrl !== "null" ? sourceUrl : link,
+					imageUrl,
+				};
+			})
+			.filter((entry): entry is LikingEntry => entry !== null)
+			.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+		return await Promise.all(
+			entries.map(async (entry) => {
+				try {
+					const res = await fetch(`https://api.are.na/v2/blocks/${entry.id}`, {
+						headers: { Accept: "application/json" },
+					});
+					if (!res.ok) return entry;
+
+					const block = (await res.json()) as ArenaBlockResponse;
+					const channel = block.connections?.find((connection) => connection.slug);
+					if (!channel?.title || !channel.slug) return entry;
+
+					return {
+						...entry,
+						channelTitle: channel.title,
+						channelUrl: `https://www.are.na/${slug}/${channel.slug}`,
+					};
+				} catch {
+					return entry;
+				}
+			}),
+		);
 	} catch {
 		return [];
 	}
