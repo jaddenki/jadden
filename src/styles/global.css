@@ -1118,6 +1118,14 @@ footer {
     flex-shrink: 0;
 }
 
+.liking-text-icon {
+    width: 1em;
+    height: 1em;
+    flex-shrink: 0;
+    color: currentColor;
+    font-size: inherit;
+}
+
 .liking-thumb.img-loaded {
     opacity: 1;
     transform: translateY(0);
@@ -1150,12 +1158,16 @@ footer {
 }
 
 .liking-channel {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
     margin: 0.2rem 0 0;
     color: var(--muted);
     font-size: 0.85em;
 }
 
 .liking-channel a {
+    font-size: inherit;
     text-decoration: none;
 }
 
