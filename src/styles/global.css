@@ -648,21 +648,18 @@ p {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    min-height: 28px;
     font-size: 16px;
     line-height: 1;
     color: var(--muted);
     text-decoration: none;
-    padding: 0;
-    transition: color 150ms ease;
+    padding: 0 2px;
 }
 
-/* Color-only hover: keep these out of the global a:hover highlight box, which
-   would otherwise set a dark background while the text stays dark (invisible). */
 .corner-nav-link:hover,
+.corner-nav-link:focus-visible,
 .corner-nav-link.is-current {
-    color: var(--text);
-    background: transparent;
+    color: var(--highlight-text);
+    background-color: var(--highlight-bg);
 }
 
 .corner-nav-toggle {
@@ -733,7 +730,7 @@ p {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 0;
+    gap: 0.25rem;
     text-align: right;
 }
 
