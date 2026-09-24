@@ -124,7 +124,7 @@ body.loading-skip #loading-screen {
     --highlight-text: white;
     --skeleton-bg: #e8e8e8;
     --z-preview: 1000;
-    --z-loading: 9999;
+    --z-loading: 10001;
 }
 
 [data-theme="dark"] {
