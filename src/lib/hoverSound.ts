@@ -1,9 +1,12 @@
 const DEFAULTS = {
 	selector: 'a[href], button:not([disabled]), [role="button"]',
-	src: '/audio/magnetic-button-08.wav',
-	volume: 0.1,
-	pitch: 0.2,
-	pitchVariation: 0.3,
+	src: '/audio/click2.wav',
+	volume: 1,
+	pitch: 1,
+	pitchVariation: 0.5,
+	bass: 6,
+	treble: -10,
+	lowPass: 20000,
 	cooldownMs: 45,
 }
 
@@ -68,14 +71,33 @@ const play = async (element?: HTMLElement | null) => {
 		const volume = Math.max(0, numberFrom(element?.dataset.hoverSoundVolume, config.volume))
 		const pitch = Math.max(0.01, numberFrom(element?.dataset.hoverSoundPitch, config.pitch))
 		const variation = Math.max(0, numberFrom(element?.dataset.hoverSoundPitchVariation, config.pitchVariation))
+		const bass = numberFrom(element?.dataset.hoverSoundBass, config.bass)
+		const treble = numberFrom(element?.dataset.hoverSoundTreble, config.treble)
+		const lowPass = Math.max(10, numberFrom(element?.dataset.hoverSoundLowPass, config.lowPass))
 		const cents = (Math.random() * 2 - 1) * variation * 1200
 		const source = audioContext.createBufferSource()
+		const bassFilter = audioContext.createBiquadFilter()
+		const trebleFilter = audioContext.createBiquadFilter()
+		const lowPassFilter = audioContext.createBiquadFilter()
 		const gain = audioContext.createGain()
 
 		source.buffer = await loadBuffer(src)
 		source.detune.value = Math.log2(pitch) * 1200 + cents
+		bassFilter.type = 'lowshelf'
+		bassFilter.frequency.value = 250
+		bassFilter.gain.value = bass
+		trebleFilter.type = 'highshelf'
+		trebleFilter.frequency.value = 4000
+		trebleFilter.gain.value = treble
+		lowPassFilter.type = 'lowpass'
+		lowPassFilter.frequency.value = Math.min(lowPass, audioContext.sampleRate / 2)
 		gain.gain.value = volume
-		source.connect(gain).connect(audioContext.destination)
+		source
+			.connect(bassFilter)
+			.connect(trebleFilter)
+			.connect(lowPassFilter)
+			.connect(gain)
+			.connect(audioContext.destination)
 		source.start()
 	} catch (error) {
 		console.warn(error)
