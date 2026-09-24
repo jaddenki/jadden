@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import hoverSoundUrl from '../lib/hoverSound.ts?url';
+import astroGrabUrl from '../lib/astroGrab.ts?url';
 
 interface Props {
 	title: string;
@@ -88,3 +89,4 @@ const { title, description } = Astro.props;
 <meta name="twitter:image:alt" content="Jadden's portfolio preview" />
 <script defer src="https://umami.purduehackers.com/script.js" data-website-id="685a1d18-887b-466a-8bf1-204a65db316e"></script>
 <script is:inline type="module" src={hoverSoundUrl}></script>
+{import.meta.env.DEV && <script is:inline type="module" src={astroGrabUrl}></script>}
