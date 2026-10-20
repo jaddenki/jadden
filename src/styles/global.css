@@ -67,12 +67,7 @@
    ::selection `color` (but honor them on background), which left selected text
    black-on-black. Split by theme instead. */
 *::selection {
-    background-color: black;
-    color: white;
-}
-
-[data-theme="dark"] *::selection {
-    background-color: white;
+    background-color: #ff4c9c;
     color: black;
 }
 
@@ -171,20 +166,37 @@ main {
 }
 
 .project-list li {
-    display: flex;
+    display: grid;
+    grid-template-columns: 4.5rem 1fr auto;
     align-items: baseline;
-    gap: 0.5rem;
+    gap: 1rem;
     color: var(--muted);
     padding: 0.125rem 0;
 }
 
-.project-list li::before {
-    content: "— ";
+.project-list a,
+.project-name {
+    color: var(--text);
 }
 
-.project-list a,
+.project-name {
+    padding: 0 2px;
+}
+
+.project-list a {
+    text-decoration: none;
+}
+
+.project-list a:not([href]) {
+    cursor: default;
+}
+
+.project-date {
+    letter-spacing: -0.04em;
+}
+
 .project-tag {
-    color: var(--muted);
+    text-align: right;
 }
 
 .gallery-grid > * {
@@ -341,12 +353,12 @@ main {
     cursor: default;
 }
 
-.gallery-image {
-    filter: grayscale(1);
-    transition: filter 200ms ease;
-}
-
 @media (hover: hover) and (pointer: fine) {
+    .gallery-image {
+        filter: grayscale(1);
+        transition: filter 200ms ease;
+    }
+
     .gallery-grid > *:hover .gallery-image,
     .grid-highlight .gallery-image {
         filter: none;

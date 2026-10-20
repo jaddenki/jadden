@@ -17,7 +17,19 @@ const projects = projectMedia.map((project) => ({
 
 const projectList = [
     {
+        name: "Infisical Ad Campaign",
+        date: "2026-10",
+        previewSrcs: [
+            "/img/previews/infisical-ad-1.webp",
+            "/img/previews/infisical-ad-2.webp",
+            "/img/previews/infisical-ad-3.webp",
+        ],
+        previewAlt: "Infisical billboards and subway ad",
+        tag: "Billboard & Subway",
+    },
+    {
         name: "sketchi",
+        date: "2026-09",
         href: "https://sketchi.ing",
         previewSrc: "/img/previews/sketchi.webp",
         previewAlt: "Sketchi Game",
@@ -25,7 +37,30 @@ const projectList = [
         tag: "Game",
     },
     {
+        name: "Riyo Productions",
+        date: "2026-08",
+        href: "https://riyoproductions.com",
+        previewText: "riyoproductions.com ↗",
+        tag: "Website",
+    },
+    {
+        name: "jam.ms",
+        date: "2026-06",
+        href: "https://jam.ms",
+        previewSrc: "/img/previews/jamms.webp",
+        previewAlt: "jam.ms preview",
+        tag: "Website",
+    },
+    {
+        name: "kiwi's shop",
+        date: "2026-03",
+        href: "https://shop.kiwis.page",
+        previewText: "shop.kiwis.page ↗",
+        tag: "Design & Dev",
+    },
+    {
         name: "Avec",
+        date: "2026-08",
         href: "https://avec.ai",
         gridIndex: 0,
         previewText: "avec.ai ↗",
@@ -33,6 +68,7 @@ const projectList = [
     },
     {
         name: "Beside",
+        date: "2026-07",
         href: "https://beside.com",
         gridIndex: 3,
         previewText: "beside.com ↗",
@@ -40,21 +76,31 @@ const projectList = [
     },
     {
         name: "Agent Proxy",
+        date: "2026-07",
         href: "https://x.com/infisical/status/2082864780402950210?s=20",
         gridIndex: 2,
         previewText: "Launch Video ↗",
         tag: "Video",
     },
     {
+        name: "Circleback",
+        date: "2026-05",
+        href: "https://x.com/circlebackai/status/2060045095500750876?s=20",
+        previewText: "Launch Video ↗",
+        tag: "Video",
+    },
+    {
         name: "Infisical",
-        href: "https://infisical.com",
+        date: "2026-04",
+        href: "https://infisical.com/careers",
         gridIndex: 9,
         previewSrc: "/img/previews/infisical.webp",
         previewAlt: "Infisical homepage",
-        tag: "Homepage",
+        tag: "Branding, Web & Video",
     },
     {
         name: "Capy",
+        date: "2026-03",
         href: "https://x.com/capydotai/status/2031430074940195126",
         gridIndex: 6,
         previewText: "Launch Video ↗",
@@ -62,18 +108,21 @@ const projectList = [
     },
     {
         name: "PixelHackers",
+        date: "2026-03",
         href: "https://x.com/igarakii/status/2029082607711863007?s=20",
         previewText: "Still working on it...↗",
         tag: "Typeface",
     },
     {
         name: "etea.cafe",
+        date: "2026-01",
         href: "https://etea.cafe",
         previewText: "Daily Web Game ↗",
         tag: "Game",
     },
     {
         name: "Respell AI",
+        date: "2026-02",
         href: "https://respell.ai",
         gridIndex: 10,
         previewText: "Site ↗",
@@ -81,12 +130,18 @@ const projectList = [
     },
     {
         name: "Spread the Love",
+        date: "2025-09",
         href: "https://store.steampowered.com/app/3852520/Spread_The_Love/",
         gridIndex: 11,
         previewText: "Steam ↗",
         tag: "Game",
     },
-];
+].sort((a, b) => b.date.localeCompare(a.date));
+
+const formatDate = (date: string) => {
+    const [year, month] = date.split("-");
+    return `${month ?? "0N"} ${year}`;
+};
 
 ---
 
@@ -213,22 +268,28 @@ const projectList = [
                 </p>
                 <ul class="project-list" style="--reveal-order: 5">
                     {projectList.map((project) => {
-                        const hasPreview = project.previewSrc || project.previewText;
+                        const hasPreview = project.previewSrc || project.previewSrcs || project.previewText;
                         return (
                             <li data-grid-index={project.gridIndex}>
-                                {hasPreview ? (
+                                <span class="project-date">{formatDate(project.date)}</span>
+                                {!hasPreview ? (
+                                    project.href ? (
+                                        <a href={project.href} target="_blank">{project.name}</a>
+                                    ) : (
+                                        <span class="project-name">{project.name}</span>
+                                    )
+                                ) : (
                                     <HoverPreviewLink
                                         client:visible
                                         href={project.href}
                                         target="_blank"
                                         previewSrc={project.previewSrc}
+                                        previewSrcs={project.previewSrcs}
                                         previewAlt={project.previewAlt}
                                         previewText={project.previewText}
                                     >
                                         {project.name}
                                     </HoverPreviewLink>
-                                ) : (
-                                    <a href={project.href} target="_blank">{project.name}</a>
                                 )}
                                 <span class="project-tag">{project.tag}</span>
                             </li>
@@ -273,7 +334,7 @@ const projectList = [
             };
 
             items.forEach((item) => {
-                const link = item.querySelector("a");
+                const link = item.querySelector("a, .project-name");
                 const index = Number(item.dataset.gridIndex);
                 if (!link || !Number.isFinite(index)) return;
                 link.addEventListener("mouseenter", () => {

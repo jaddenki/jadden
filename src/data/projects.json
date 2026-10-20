@@ -1,0 +1,17 @@
+[
+  { "src": "/img/front/avec-site.webm", "alt": "Avec video", "aspectRatio": "16/9", "posterTime": 1 },
+  { "src": "/img/front/ridelikebike.webm", "alt": "Drop It - Personal", "aspectRatio": "1/1", "posterTime": 1.8 },
+  { "src": "/img/front/agent-proxy-site.webm", "alt": "Agent Proxy video", "aspectRatio": "16/9", "posterTime": 1 },
+  { "src": "/img/front/beside-site.webm", "alt": "Beside video", "aspectRatio": "16/9", "posterTime": 1 },
+  { "src": "/img/front/infrared.webm", "alt": "Infrared - Personal", "aspectRatio": "1/1", "posterTime": 0.6 },
+  { "src": "/img/front/hello_world.webm", "alt": "Hello World - Personal", "aspectRatio": "1/1", "posterTime": 3.5 },
+  { "src": "/img/front/capytitle.webm", "alt": "Capy", "aspectRatio": "16/9", "posterTime": 0.6 },
+  { "src": "/img/front/fish.webm", "alt": "Fish - Personal", "aspectRatio": "3/4", "posterTime": 0.8 },
+  { "src": "/img/front/loco.webm", "alt": "Go Loco - Personal", "aspectRatio": "1/1", "posterTime": 3.4 },
+  { "src": "/img/front/infisical.webm", "alt": "Infisical - Homepage", "aspectRatio": "16/9", "posterTime": 1 },
+  { "src": "/img/front/respellai.webm", "alt": "Respell AI", "aspectRatio": "16/9", "posterTime": 0.5 },
+  { "src": "/img/front/stl.webm", "alt": "Spread the Love", "aspectRatio": "16/9", "posterTime": 2.7 },
+  { "src": "/img/front/indigo.webm", "alt": "Indigo", "aspectRatio": "1/1", "posterTime": 0.5 },
+  { "src": "/img/front/anklyosaur.webm", "alt": "Anklyosaur - Personal", "aspectRatio": "1/1", "posterTime": 3.6 },
+  { "src": "/img/front/glass.webm", "alt": "Glass - Personal", "aspectRatio": "1/1", "posterTime": 3.3 }
+]
