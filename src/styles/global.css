@@ -7,6 +7,23 @@
 }
 
 @font-face {
+    font-family: "Unifont";
+    src: url("/fonts/unifont-18.0.01.otf") format("opentype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: block;
+}
+
+@font-face {
+    font-family: "Unifont";
+    src: url("/fonts/unifont-upper-emoji.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: block;
+    unicode-range: U+1F000-1FAFF;
+}
+
+@font-face {
     font-family: "PolySans";
     src: url("/fonts/PolySans-Slim.woff2") format("woff2");
     webkit-font-smoothing: antialiased;
@@ -15,108 +32,9 @@
     font-style: normal;
     font-display: block;
 }
-body.loading-skip #loading-screen {
-    display: none !important;
-}
-
-#loading-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: var(--bg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: var(--z-loading);
-    transition: opacity 220ms cubic-bezier(0.215, 0.61, 0.355, 1);
-    padding-left: 2rem;
-    padding-right: 2rem;
-    box-sizing: border-box;
-}
-
-#loading-screen.fade-out {
-    opacity: 0;
-    pointer-events: none;
-}
-
-#loading-screen .loading-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-    text-align: center;
-}
-
-.loading-pixels {
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    gap: 12px;
-    height: 36px;
-    min-width: 84px;
-}
-
-.loading-pixel {
-    width: 12px;
-    height: 12px;
-    background: var(--text);
-    animation: loading-pixel-grid 1.2s steps(4, end) infinite;
-    will-change: transform;
-}
-
-.loading-pixel:nth-child(1) {
-    animation-delay: 0s;
-}
-.loading-pixel:nth-child(2) {
-    animation-delay: 0.3s;
-}
-.loading-pixel:nth-child(3) {
-    animation-delay: 0.6s;
-}
-
-@keyframes loading-pixel-grid {
-    0% {
-        transform: translate(0, 0);
-    }
-    25% {
-        transform: translate(12px, 0);
-    }
-    50% {
-        transform: translate(12px, -12px);
-    }
-    75% {
-        transform: translate(0, -12px);
-    }
-    100% {
-        transform: translate(0, 0);
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    #loading-screen {
-        transition: opacity 100ms linear;
-    }
-
-    .loading-pixel {
-        animation: none;
-    }
-}
-
-#loading-screen .loading-text {
-    margin: 0;
-}
-
-@media (max-width: 768px) {
-    #loading-screen {
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
-    }
-}
-
 :root {
     color-scheme: light;
+    --font-size: 14px;
     --bg: white;
     --text: black;
     --muted: #5a5a5a;
@@ -139,7 +57,7 @@ body.loading-skip #loading-screen {
 
 * {
     font-family: "PolySans", Arial, sans-serif;
-    font-size: 16px;
+    font-size: var(--font-size);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-wrap: balance;
@@ -454,6 +372,51 @@ main {
 
 .gallery-video-tile {
     position: relative;
+    aspect-ratio: var(--aspect-ratio);
+}
+
+button.gallery-video-tile {
+    appearance: none;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: inherit;
+    cursor: pointer;
+}
+
+button.gallery-video-tile:focus-visible {
+    outline: 2px solid var(--text);
+    outline-offset: -2px;
+}
+
+.gallery-poster {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.gallery-video-tile[data-has-played="true"] .gallery-poster {
+    visibility: hidden;
+}
+
+.gallery-video-action {
+    position: absolute;
+    right: 0.5rem;
+    bottom: 0.5rem;
+    padding: 0.125rem 0.375rem;
+    background: var(--bg);
+    color: var(--text);
+    pointer-events: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .gallery-video-tile[data-playing="true"]:not(:hover):not(:focus-visible) .gallery-video-action {
+        visibility: hidden;
+    }
 }
 
 .gallery-item-tooltip {
@@ -468,7 +431,6 @@ main {
     -webkit-backdrop-filter: blur(8px);
     color: var(--text);
     padding: 0.2rem 0.45rem 0.25rem;
-    font-size: 16px;
     line-height: 1;
     white-space: nowrap;
     z-index: 50;
@@ -600,12 +562,6 @@ p {
     animation-delay: calc(var(--reveal-order) * 35ms);
 }
 
-/* Keep the first-load reveal behind the loader, then release both together. */
-.page-intro-pending .text-reveal > *,
-.page-intro-pending .reveal {
-    animation-play-state: paused;
-}
-
 @keyframes text-reveal-in {
     to {
         opacity: 1;
@@ -648,7 +604,6 @@ p {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    font-size: 16px;
     line-height: 1;
     color: var(--muted);
     text-decoration: none;
@@ -754,6 +709,7 @@ footer {
     -webkit-backdrop-filter: none;
     display: flex;
     align-items: center;
+    justify-content: flex-end;
     gap: 0.25rem;
     z-index: 999;
 }
@@ -777,7 +733,6 @@ footer {
     justify-content: center;
     min-width: 24px;
     min-height: 24px;
-    font-size: 16px;
 }
 
 .webring-logo {
@@ -790,6 +745,30 @@ footer {
 
 .about-bio {
     margin-bottom: 0;
+}
+
+.about-year {
+    margin-bottom: 2rem;
+}
+
+.about-year p {
+    margin: 0 0 0.75em;
+}
+
+.about-list {
+    list-style: none;
+    margin: 0 0 0.75em;
+    padding: 0;
+}
+
+.about-list li::before {
+    content: "–";
+    margin-right: 0.75em;
+}
+
+.about-year .about-year-label {
+    margin-bottom: 0.5em;
+    color: var(--muted);
 }
 
 .about-layout .content-sidebar {
@@ -950,7 +929,6 @@ footer {
     align-items: center;
     color: var(--muted);
     text-decoration: none;
-    font-size: 16px;
     padding: 0;
     margin-right: 0.5rem;
     background: none;
@@ -1160,7 +1138,6 @@ footer {
     gap: 0.3rem;
     margin: 0.2rem 0 0;
     color: var(--muted);
-    font-size: 0.85em;
 }
 
 .liking-channel a {

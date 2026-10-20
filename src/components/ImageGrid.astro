@@ -4,18 +4,14 @@ interface ImageItem {
 	alt: string;
 	aspectRatio: string;
 	href?: string;
-	/** When set, video pauses on this time (seconds) when idle. Omit or set playContinuously for looping. */
-	freezeTime?: number;
-	/** When true, video loops continuously when idle instead of pausing on a frame. */
-	playContinuously?: boolean;
+	poster?: string;
 }
 
 interface Props {
 	items: ImageItem[];
-	eager?: boolean;
 }
 
-const { items, eager = false } = Astro.props;
+const { items } = Astro.props;
 const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
 ---
 
@@ -28,20 +24,25 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
 		const isVideo = isVideoUrl(item.src);
 			const mediaEl = isVideo ? (
 				<>
-					<span class="sr-only">{item.alt}</span>
 					<video
-						src={item.src}
+						data-src={item.src}
 						class="gallery-image"
 						style={`aspect-ratio: ${item.aspectRatio};`}
-						data-freeze-time={item.freezeTime ?? 0}
-						data-play-continuously={item.playContinuously ?? false}
-						data-loader-media={eager ? '' : undefined}
 						loop
 						muted
-						preload={eager ? 'auto' : 'metadata'}
+						preload="none"
 						playsinline
 						aria-hidden="true"
 				/>
+				{item.poster && <img
+					src={item.poster}
+					class="gallery-image gallery-poster"
+					alt=""
+					loading="lazy"
+					decoding="async"
+					style={`aspect-ratio: ${item.aspectRatio};`}
+				/>}
+				{!item.href && <span class="gallery-video-action" aria-hidden="true">Play</span>}
 				<span class="gallery-item-tooltip" aria-hidden="true">{item.alt}</span>
 				</>
 			) : (
@@ -49,22 +50,24 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
 				<img
 					src={item.src}
 					alt={item.alt}
-					loading={eager ? 'eager' : 'lazy'}
-					data-loader-media={eager ? '' : undefined}
+					loading="lazy"
 					class="gallery-image"
 					style={`aspect-ratio: ${item.aspectRatio};`}
 					decoding="async"
-					fetchpriority={eager ? 'high' : 'auto'}
 				/>
 				<span class="gallery-item-tooltip" aria-hidden="true">{item.alt}</span>
 			</>
 			);
 	return item.href ? (
-		<a href={item.href} class={isVideo ? videoTileClass : squareClass} style={`--aspect-ratio: ${item.aspectRatio};`}>
+		<a href={item.href} aria-label={isVideo ? item.alt : undefined} class={isVideo ? videoTileClass : squareClass} style={`--aspect-ratio: ${item.aspectRatio};`}>
 			{mediaEl}
 		</a>
+	) : isVideo ? (
+		<button type="button" class={videoTileClass} aria-label={`Play ${item.alt}`} data-video-label={item.alt} style={`--aspect-ratio: ${item.aspectRatio};`}>
+			{mediaEl}
+		</button>
 	) : (
-		<div class={isVideo ? videoTileClass : squareClass} {...(isVideo ? { tabindex: 0 } : {})}>
+		<div class={squareClass}>
 			{mediaEl}
 		</div>
 	);
@@ -82,6 +85,7 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
 <div class="gallery-cursor-tooltip" id="gallery-tooltip" aria-hidden="true"></div>
 
 <script>
+	import '../lib/galleryVideos';
 	// --- Cursor-following tooltip with spring tilt ---
 	const tooltip = document.getElementById('gallery-tooltip');
 	const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -143,78 +147,4 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
 		}
 	}
 
-	const videos = document.querySelectorAll("video.gallery-image");
-
-	for (const node of videos) {
-		if (!(node instanceof HTMLVideoElement)) continue;
-		const isLinkTile = !!node.closest("a[href]");
-		const playContinuously = node.dataset.playContinuously === "true";
-		const freezeTime = Number(node.dataset.freezeTime ?? "0");
-
-		const setFreezeFrame = () => {
-			const duration = Number.isFinite(node.duration) ? node.duration : 0;
-			const clampedTime = duration > 0
-				? Math.min(Math.max(freezeTime, 0), Math.max(duration - 0.001, 0))
-				: Math.max(freezeTime, 0);
-			if (Math.abs(node.currentTime - clampedTime) > 0.03) {
-				node.currentTime = clampedTime;
-			}
-			node.pause();
-		};
-
-		const onIdle = () => {
-			if (playContinuously) {
-				// keep looping; do nothing (video stays playing)
-			} else {
-				setFreezeFrame();
-			}
-		};
-
-		node.addEventListener("loadedmetadata", () => {
-			if (playContinuously) {
-				void node.play().catch(() => {});
-			} else {
-				setFreezeFrame();
-			}
-		});
-		node.addEventListener("mouseenter", () => {
-			void node.play().catch(() => {});
-		});
-		node.addEventListener("mouseleave", onIdle);
-		node.addEventListener("focusin", () => {
-			void node.play().catch(() => {});
-		});
-		node.addEventListener("focusout", onIdle);
-		node.addEventListener("click", (event) => {
-			if (isLinkTile) return;
-			event.preventDefault();
-			if (node.paused) {
-				void node.play().catch(() => {});
-				return;
-			}
-			if (playContinuously) {
-				node.pause();
-			} else {
-				setFreezeFrame();
-			}
-		});
-
-		if (node.readyState >= 1) {
-			if (playContinuously) {
-				void node.play().catch(() => {});
-			} else {
-				setFreezeFrame();
-			}
-		}
-	}
-
-	// --- Keyboard access for non-link video tiles ---
-	for (const tile of document.querySelectorAll<HTMLElement>('.gallery-grid > [tabindex]')) {
-		tile.addEventListener('keydown', (e) => {
-			if (e.key !== 'Enter' && e.key !== ' ') return;
-			e.preventDefault();
-			tile.querySelector<HTMLVideoElement>('video.gallery-image')
-				?.dispatchEvent(new MouseEvent('click', { bubbles: false }));
-		});
-	}
 </script>

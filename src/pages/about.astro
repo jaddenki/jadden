@@ -92,64 +92,147 @@ const favorites: FavoriteEntry[] = [
                     style="--reveal-order: 0"
                     aria-label="About me"
                 >
-                    <p style="--reveal-order: 0">A little bit about me:</p>
-                    <p style="--reveal-order: 1">
-                        I was born in the Philippines and raised in Las Vegas,
-                        with periodic visits back that shaped my sense of
-                        identity and belonging over time
-                    </p>
-                    <p style="--reveal-order: 2">
-                        I chose to study computer engineering because I'm fascinated with the things people are capable of imagining and executing.
-                    </p>
-                    <p style="--reveal-order: 3">
-                        But I fell into design for a simpler reason: I reaaally wanted to see my
-                        favorite anime characters rotate on my screen.
-                    </p>
+                    <div class="about-year" style="--reveal-order: 0">
+                        <p>
+                            My name is Jadden. I'm an engineer and designer,
+                            soon to be based in San Francisco. Here's my
+                            provenance:
+                        </p>
+                    </div>
+                    <div class="about-year" style="--reveal-order: 1">
+                        <p class="about-year-label">2005</p>
+                        <p>
+                            I was born in Tacloban, in the Philippines. I
+                            learned how to walk on the beach because I didn't
+                            like falling on my grandma's tiled floors.
+                        </p>
+                    </div>
+                    <div class="about-year" style="--reveal-order: 2">
+                        <p class="about-year-label">2007</p>
+                        <p>
+                            My family moved to Baltimore, Maryland. I don't remember
+                            much from this era. I just remember getting lost in the apartment complex
+                            often and missing my parents when one took the night shift.
+                        </p>
+                    </div>
+                    <div class="about-year" style="--reveal-order: 3">
+                        <p class="about-year-label">2010</p>
+                        <p>
+                            We moved again, this time to Las Vegas. I spent
+                            most of my free time playing Minecraft.
+                        </p>
+                        <p>
+                            My parents never wanted to buy games for me, so I
+                            found an open-source cracked launcher and figured
+                            out how to get it running on my own.
+                        </p>
+                        <p>
+                            Having the whole internet at my disposal fascinated me.
+                        </p>
+                    </div>
+                    <div class="about-year" style="--reveal-order: 4">
+                        <p class="about-year-label">2017</p>
+                        <p>I discovered a few programs:</p>
+                        <ul class="about-list">
+                            <li>Sony Vegas Pro</li>
+                            <li>Adobe After Effects</li>
+                            <li>Adobe Photoshop</li>
+                        </ul>
+                        <p>Then started an obsession in design.</p>
+                    </div>
+                    <div class="about-year" style="--reveal-order: 5">
+                        <p class="about-year-label">2020</p>
+                        <p>
+                            I started posting anime edits on @igarakii. The
+                            reason was simple: I wanted to see my favorite
+                            characters rotate on my screen. The account reached
+                            20k followers in its first year.
+                        </p>
+                        <p>
+                            I also started an editing style that a lot of other editors picked up. I loved being a source of discourse as people would say my "style" was being stolen/overused.
+                        </p>
+                    </div>
+                    <div class="about-year" style="--reveal-order: 6">
+                        <p class="about-year-label">2021</p>
+                        <p>
+                            I hacked my 3DS and started building custom mechanical keyboards. This is how I got into hardware.
+                        </p>
+                    </div>
+                    <div class="about-year" style="--reveal-order: 7">
+                        <p class="about-year-label">2023</p>
+                        <p>
+                            I graduated high school and started studying
+                            Computer Engineering at Purdue. I was fascinated
+                            with the things people are capable of imagining
+                            and executing, and I had assumed that meant
+                            leaving design behind.
+                        </p>
+                    </div>
+                    <div class="about-year" style="--reveal-order: 8">
+                        <p class="about-year-label">2025</p>
+                        <p>
+                            I published a game on Steam with my friends. We're still working on games together on the side.
+                        </p>
+                    </div>
+                    <div class="about-year" style="--reveal-order: 9">
+                        <p class="about-year-label">2026</p>
+                        <p>
+                            I started posting design work on Twitter for fun,
+                            and it brought in a lot of freelance clients. I
+                            also landed a design engineering internship at a
+                            startup.
+                        </p>
+                        <p>
+                            Because of that, I opened up {" "}<InlineAvatar
+                                src="https://avatars.githubusercontent.com/fruitjamms"
+                                alt="jamms github pfp"
+                                width={20}
+                                height={20}
+                                class="inline-avatar"
+                            />
+                            <HoverPreviewLink
+                                client:visible
+                                href="https://jam.ms"
+                                target="_blank"
+                                previewSrc="/img/previews/jamms.webp"
+                                previewAlt="jam.ms preview">jamms</HoverPreviewLink
+                            >, the
+                            game studio I started with my friends, as a broader
+                            creative studio. We now take on videos, software, and other
+                            design work for clients.
+                        </p>
+                        <p>
+                            It's strange to think all of this started with
+                            wanting to see anime characters rotate.
+                        </p>
+                    </div>
+                    <div class="about-year" style="--reveal-order: 10">
+                        <p class="about-year-label">2027</p>
+                        <p>
+                            I'll move to SF and start working at the startup
+                            full time.
+                        </p>
+                    </div>
 
-                    <p style="--reveal-order: 4">
-                        Apparently, that was enough to derail my life.
-                    </p>
-                    <p style="--reveal-order: 5">
-                        What I make starts from an obsession: a song I cannot get out of my
-                        head, a scene I keep replaying, a minuscule detail that keeps me up at night.
-                    </p>
-                    <p style="--reveal-order: 6">
-                        Obsessing isn't enough, so I make my own work to throw out into the world. I push out {" "} <InlineAvatar
-                            src="https://avatars.githubusercontent.com/fruitjamms"
-                            alt="jamms gh"
-                            width={20}
-                            height={20}
-                            class="inline-avatar"
-                        />
-                        <HoverPreviewLink
-                            client:visible
-                            href="https://jam.ms"
-                            target="_blank"
-                            previewSrc="/img/previews/jamms.webp"
-                            previewAlt="jam.ms preview">games</HoverPreviewLink
-                        >
-                        {" "} with my friends and edit <HoverPreviewLink
-                            client:visible
-                            href="https://tiktok.com/@okigarakii"
-                            target="_blank"
-                            previewText="TikTok @okigarakii ↗"
-                            >videos</HoverPreviewLink
-                        >.
-                    </p>
-                    <p style="--reveal-order: 7">
-                        I'm very inspired by sincere projects & ideas.
-                        The best of them keep me in a chokehold.
-                    </p>
-                    <p style="--reveal-order: 8">
-                        I aim for my work to do the same to others.
-                    </p>
+                    <div class="about-year" style="--reveal-order: 11">
+                        <p>
+                            What I make starts from an obsession: a song I
+                            can't get out of my head, a scene I keep replaying,
+                            a small detail that keeps me up at night.
+                        </p>
+                        <p>
+                            I'm inspired by sincere projects and ideas. The
+                            best of them stay with me for a long time, and I
+                            want my work to do the same for others.
+                        </p>
+                    </div>
 
-                    <p class="mb-8" style="--reveal-order: 9">
+                    <p class="mb-8" style="--reveal-order: 12">
                         Reach me: <span class="email"
                             >jadden [at] jam [dot] ms</span
                         >
                     </p>
-                    <div style="--reveal-order: 10">
+                    <div style="--reveal-order: 13">
                         <SignatureMotion
                             client:only="react"
                             style={{ marginTop: "1rem" }}

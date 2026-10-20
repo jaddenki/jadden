@@ -6,121 +6,14 @@ import ImageGrid from "../components/ImageGrid.astro";
 import InlineAvatar from "../components/InlineAvatar.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import projectMedia from "../data/projects.json";
 import "../styles/global.css";
 
-const projects = [
-  {
-      src: "/img/front/avec-site.webm",
-      alt: "Avec video",
-      aspectRatio: "16/9",
-      playContinuously: true,
-  },
-  {
-      src: "/img/front/ridelikebike.webm",
-      alt: "Drop It - Personal",
-      aspectRatio: "1/1",
-      freezeTime: 1.8,
-      playContinuously: true,
-  },
-  {
-      src: "/img/front/agent-proxy-site.webm",
-      alt: "Agent Proxy video",
-      aspectRatio: "16/9",
-      playContinuously: true,
-  },
-    {
-        src: "/img/front/beside-site.webm",
-        alt: "Beside video",
-        aspectRatio: "16/9",
-        playContinuously: true,
-    },
-    {
-        src: "/img/front/infrared.webm",
-        alt: "Infrared - Personal",
-        aspectRatio: "1/1",
-        freezeTime: 0.6,
-        playContinuously: true,
-    },
-    {
-        src: "/img/front/hello_world.webm",
-        alt: "Hello World - Personal",
-        aspectRatio: "1/1",
-        freezeTime: 3.5,
-        playContinuously: true,
-    },
-    {
-        src: "/img/front/capytitle.webm",
-        alt: "Capy",
-        aspectRatio: "16/9",
-        freezeTime: 0.6,
-        playContinuously: true,
-    },
-    {
-        src: "/img/front/fish.webm",
-        alt: "Fish - Personal",
-        aspectRatio: "3/4",
-        freezeTime: 0.8,
-        playContinuously: true,
-    },
-    {
-        src: "/img/front/loco.webm",
-        alt: "Go Loco - Personal",
-        aspectRatio: "1/1",
-        freezeTime: 3.4,
-        playContinuously: true,
-    },
-    {
-        src: "/img/front/infisical.webm",
-        alt: "Infisical - Homepage",
-        aspectRatio: "16/9",
-        playContinuously: true,
-    },
-    // {
-    // 	src: '/img/front/capy-text.webm', not spoiling
-    // 	alt: 'capy text',
-    // 	aspectRatio: '16/9',
-    // },
-    // {
-    // 	src: '/img/front/capy-ui.webm',
-    // 	alt: 'capy ui',
-    // 	aspectRatio: '16/9',
-    // },
-    {
-        src: "/img/front/respellai.webm",
-        alt: "Respell AI",
-        aspectRatio: "16/9",
-        playContinuously: true,
-        // playContinuously: true,
-    },
-    {
-        src: "/img/front/stl.webm",
-        alt: "Spread the Love",
-        aspectRatio: "16/9",
-        freezeTime: 2.7,
-        playContinuously: true,
-    },
-    {
-        src: "/img/front/indigo.webm",
-        alt: "Indigo",
-        aspectRatio: "1/1",
-        freezeTime: 0.5,
-        playContinuously: true,
-    },
-    {
-        src: "/img/front/anklyosaur.webm",
-        alt: "Anklyosaur - Personal",
-        aspectRatio: "1/1",
-        freezeTime: 3.6,
-        playContinuously: true,
-    },
-    {
-        src: "/img/front/glass.webm",
-        alt: "Glass - Personal",
-        aspectRatio: "1/1",
-        freezeTime: 3.3,
-        playContinuously: true,
-    },
-];
+const projects = projectMedia.map((project) => ({
+    ...project,
+    src: project.src.replace("/front/", "/front/optimized/"),
+    poster: project.src.replace("/front/", "/front/optimized/").replace(/\.webm$/, ".webp"),
+}));
 
 const projectList = [
     {
@@ -195,42 +88,15 @@ const projectList = [
     },
 ];
 
-const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
 ---
 
 <!doctype html>
 <html lang="en">
     <head>
         <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-        {
-            projects.slice(0, 2).map((project) => (
-                <link
-                    rel="preload"
-                    as={isVideoUrl(project.src) ? "video" : "image"}
-                    href={project.src}
-                />
-            ))
-        }
+        <link rel="preload" as="image" href={projects[0].poster} media="(min-width: 769px)" />
     </head>
     <body>
-        <script is:inline>
-            if (sessionStorage.getItem("hasVisited")) {
-                document.body.classList.add("loading-skip");
-            } else {
-                document.body.classList.add("page-intro-pending");
-            }
-        </script>
-        <div id="loading-screen">
-            <div class="loading-content">
-                <div class="loading-pixels" aria-hidden="true">
-                    <span class="loading-pixel"></span>
-                    <span class="loading-pixel"></span>
-                    <span class="loading-pixel"></span>
-                </div>
-                <p class="loading-text">Let's take a deep breath...</p>
-            </div>
-        </div>
-        <div id="page-ready" aria-live="polite" class="sr-only"></div>
         <CornerNav current="home" />
         <main class="homepage-container">
             <div class="content text-reveal">
@@ -374,7 +240,7 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
                 </p>
             </div>
 
-            <ImageGrid items={projects} eager />
+            <ImageGrid items={projects} />
         </main>
 
         <SiteFooter />
@@ -417,75 +283,6 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
                 });
                 link.addEventListener("mouseleave", clearGrid);
             });
-        </script>
-        <script>
-            const loadingScreen = document.getElementById("loading-screen");
-
-            const waitForMedia = (media: Element) => {
-                if (media instanceof HTMLImageElement) {
-                    if (media.complete) {
-                        return media.naturalWidth > 0
-                            ? media.decode().catch(() => {})
-                            : Promise.resolve();
-                    }
-
-                    return new Promise<void>((resolve) => {
-                        media.addEventListener("load", () => {
-                            void media.decode().catch(() => {}).finally(resolve);
-                        }, { once: true });
-                        media.addEventListener("error", () => resolve(), { once: true });
-                    });
-                }
-
-                if (media instanceof HTMLVideoElement) {
-                    if (media.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
-                        return Promise.resolve();
-                    }
-
-                    media.load();
-                    return new Promise<void>((resolve) => {
-                        media.addEventListener("loadeddata", () => resolve(), { once: true });
-                        media.addEventListener("error", () => resolve(), { once: true });
-                    });
-                }
-
-                return Promise.resolve();
-            };
-
-            const finishLoading = () => {
-                sessionStorage.setItem("hasVisited", "true");
-                document.body.classList.remove("page-intro-pending");
-
-                if (!loadingScreen) return;
-                loadingScreen.classList.add("fade-out");
-
-                const removeLoader = () => {
-                    loadingScreen.remove();
-                    const liveRegion = document.getElementById("page-ready");
-                    if (liveRegion) liveRegion.textContent = "Page loaded";
-                };
-
-                loadingScreen.addEventListener("transitionend", removeLoader, {
-                    once: true,
-                });
-                setTimeout(() => {
-                    if (loadingScreen.isConnected) removeLoader();
-                }, 300);
-            };
-
-            if (sessionStorage.getItem("hasVisited")) {
-                loadingScreen?.remove();
-            } else {
-                const media = document.querySelectorAll("[data-loader-media]");
-                const mediaReady = Promise.allSettled(
-                    Array.from(media, waitForMedia),
-                );
-                const timeout = new Promise<void>((resolve) =>
-                    setTimeout(resolve, 10000),
-                );
-
-                void Promise.race([mediaReady, timeout]).then(finishLoading);
-            }
         </script>
     </body>
 </html>
