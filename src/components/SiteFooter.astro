@@ -3,6 +3,7 @@ import ThemeToggle from "./ThemeToggle.astro";
 ---
 
 <footer>
+	<button type="button" class="theme-toggle" id="accent-toggle"><span class="accent-shortcut">(⌘J)</span>&nbsp;Color</button>
 	<ThemeToggle />
 	<nav class="webring-nav" aria-label="Purdue Hackers webring">
 		<a
@@ -28,3 +29,10 @@ import ThemeToggle from "./ThemeToggle.astro";
 		</a>
 	</nav>
 </footer>
+<script>
+	const accentBtn = document.getElementById('accent-toggle');
+	if (accentBtn) {
+		if (!/Mac|iPhone|iPad/.test(navigator.platform)) accentBtn.querySelector('.accent-shortcut')!.textContent = '(Ctrl J)';
+		accentBtn.addEventListener('click', () => (window as Window & { toggleAccent?: () => void }).toggleAccent?.());
+	}
+</script>

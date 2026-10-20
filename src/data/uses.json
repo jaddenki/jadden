@@ -1,5 +1,5 @@
 {
-	"updated": "2026-07-10",
+	"updated": "2026-10-20",
 	"sections": [
 		{
 			"title": "",
@@ -94,6 +94,23 @@
 							"label": "Watch",
 							"parts": [
 								{ "text": "Fitbit Charge 6", "href": "https://store.google.com/product/fitbit_charge_6" }
+							]
+						}
+					]
+				},
+				{
+					"category": "E-ink",
+					"items": [
+						{
+							"label": "Tablet",
+							"parts": [
+								{ "text": "Supernote Manta", "href": "https://supernote.com/pages/supernote-manta" }
+							]
+						},
+						{
+							"label": "Reader",
+							"parts": [
+								{ "text": "Xteink X3", "href": "https://www.xteink.com/products/xteink-x3" }
 							]
 						}
 					]

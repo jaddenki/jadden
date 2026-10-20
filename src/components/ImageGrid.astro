@@ -86,50 +86,16 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
 
 <script>
 	import '../lib/galleryVideos';
-	// --- Cursor-following tooltip with spring tilt ---
 	const tooltip = document.getElementById('gallery-tooltip');
-	const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 	const hasHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
 	if (tooltip && hasHover) {
 		const hoverTooltip = tooltip;
-		const TILT_SENSITIVITY = 0.6;
-		const TILT_MAX = 5;
-		const STIFFNESS = 0.18;
-		const DAMPING = 0.72;
-
-		let tiltTarget = 0;
-		let tiltCurrent = 0;
-		let tiltVelocity = 0;
-		let prevMouseX = 0;
-		let rafId: number | null = null;
-
-		function springTick() {
-			const force = (tiltTarget - tiltCurrent) * STIFFNESS;
-			tiltVelocity = (tiltVelocity + force) * DAMPING;
-			tiltCurrent += tiltVelocity;
-			tiltTarget *= 0.82;
-			hoverTooltip.style.rotate = tiltCurrent + 'deg';
-			if (Math.abs(tiltCurrent) > 0.05 || Math.abs(tiltVelocity) > 0.05) {
-				rafId = requestAnimationFrame(springTick);
-			} else {
-				tiltCurrent = 0;
-				tiltVelocity = 0;
-				hoverTooltip.style.rotate = '0deg';
-				rafId = null;
-			}
-		}
-
 		const tiles = document.querySelectorAll<HTMLElement>('.gallery-grid > *');
 
 		document.addEventListener('mousemove', (e) => {
 			hoverTooltip.style.left = (e.clientX + 12) + 'px';
 			hoverTooltip.style.top = (e.clientY + 16) + 'px';
-			if (reducedMotion) return;
-			const deltaX = e.clientX - prevMouseX;
-			prevMouseX = e.clientX;
-			tiltTarget = Math.max(-TILT_MAX, Math.min(TILT_MAX, deltaX * TILT_SENSITIVITY));
-			if (!rafId) rafId = requestAnimationFrame(springTick);
 		});
 
 		for (const tile of tiles) {
@@ -137,14 +103,11 @@ const isVideoUrl = (url: string) => /\.(webm)(\?|$)/i.test(url);
 			if (!label) continue;
 			tile.addEventListener('mouseenter', () => {
 				hoverTooltip.textContent = label;
-				hoverTooltip.classList.remove('is-exiting');
-				hoverTooltip.classList.add('is-entering');
+				hoverTooltip.classList.add('is-visible');
 			});
 			tile.addEventListener('mouseleave', () => {
-				hoverTooltip.classList.remove('is-entering');
-				hoverTooltip.classList.add('is-exiting');
+				hoverTooltip.classList.remove('is-visible');
 			});
 		}
 	}
-
 </script>

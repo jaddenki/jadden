@@ -21,6 +21,19 @@ const { title, description } = Astro.props;
 		var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 		document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
 	}
+	if (localStorage.getItem('accent')) {
+		document.documentElement.setAttribute('data-accent', '');
+	}
+	window.toggleAccent = function() {
+		var on = document.documentElement.toggleAttribute('data-accent');
+		if (on) localStorage.setItem('accent', '1');
+		else localStorage.removeItem('accent');
+	};
+	document.addEventListener('keydown', function(e) {
+		if (!(e.metaKey || e.ctrlKey) || e.key.toLowerCase() !== 'j') return;
+		e.preventDefault();
+		window.toggleAccent();
+	});
 
 	// Repeat navigations within a session skip the reveal animations so pages
 	// appear fully rendered instantly. Set after load to preserve the first reveal.
