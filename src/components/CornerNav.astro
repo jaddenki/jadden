@@ -1,4 +1,8 @@
 ---
+import AccentToggle from "./AccentToggle.astro";
+import ThemeToggle from "./ThemeToggle.astro";
+import WebringNav from "./WebringNav.astro";
+
 type NavKey = "home" | "about" | "blog";
 
 interface Props {
@@ -42,6 +46,11 @@ const links: { key: NavKey; label: string; href: string }[] = [
 				),
 			)
 		}
+		<div class="corner-nav-extras">
+			<AccentToggle />
+			<ThemeToggle />
+			<WebringNav />
+		</div>
 	</div>
 </nav>
 

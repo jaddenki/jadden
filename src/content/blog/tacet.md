@@ -1,6 +1,6 @@
 ---
 title: "tacet"
-date: 2026-10-20
+date: 2026-09-01
 ---
 
 Freshman year of college, I met some of the most creative people I know, all of them studying CS.

@@ -1381,11 +1381,14 @@ footer,
     transition: opacity 200ms ease;
 }
 
-[data-reading] .blog-index:not(:hover, :focus-within),
-[data-reading] .corner-nav:not(:hover, :focus-within),
-[data-reading] footer:not(:hover, :focus-within),
-[data-reading] .reading-toggle:not(:hover, :focus-visible) {
-    opacity: 0.3;
+/* Only fade where hover can bring things back. */
+@media (hover: hover) {
+    [data-reading] .blog-index:not(:hover, :focus-within),
+    [data-reading] .corner-nav:not(:hover, :focus-within),
+    [data-reading] footer:not(:hover, :focus-within),
+    [data-reading] .reading-toggle:not(:hover, :focus-visible) {
+        opacity: 0.3;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1491,4 +1494,71 @@ footer,
 
 .blog-post-body em {
     color: var(--muted);
+}
+
+/* Footer controls live in the hamburger menu on mobile. */
+.corner-nav-extras,
+.blog-index-mobile-label {
+    display: none;
+}
+
+/* Keyboard shortcut hints mean nothing on touch screens. */
+@media (hover: none) {
+    .accent-shortcut,
+    .theme-shortcut,
+    .reading-shortcut {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    footer {
+        display: none;
+    }
+
+    .corner-nav-menu {
+        min-width: 0;
+        white-space: nowrap;
+    }
+
+    .corner-nav-link {
+        padding: 0.3rem 0;
+    }
+
+    .corner-nav-extras {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 0.35rem;
+        margin-top: 0.4rem;
+        padding-top: 0.6rem;
+        border-top: 1px solid color-mix(in srgb, var(--text) 8%, transparent);
+    }
+
+    .corner-nav-extras .theme-toggle {
+        margin-right: 0;
+        min-height: 28px;
+    }
+
+    .corner-nav-extras .webring-link {
+        white-space: nowrap;
+    }
+
+    /* Post first, the index after it as "All posts". */
+    .blog-post {
+        order: -1;
+    }
+
+    .blog-index {
+        padding-top: 1.5rem;
+        border-top: 1px solid color-mix(in srgb, var(--text) 8%, transparent);
+    }
+
+    .blog-index-mobile-label {
+        display: block;
+    }
+
+    .blog-index-item {
+        padding: 0.15rem 0;
+    }
 }

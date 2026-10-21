@@ -1,0 +1,9 @@
+---
+---
+<button type="button" class="theme-toggle js-accent-toggle"><span class="accent-shortcut">(⌘J)</span>&nbsp;Color</button>
+<script>
+	for (const btn of document.querySelectorAll<HTMLButtonElement>('.js-accent-toggle')) {
+		if (!/Mac|iPhone|iPad/.test(navigator.platform)) btn.querySelector('.accent-shortcut')!.textContent = '(Ctrl J)';
+		btn.addEventListener('click', () => (window as Window & { toggleAccent?: () => void }).toggleAccent?.());
+	}
+</script>
