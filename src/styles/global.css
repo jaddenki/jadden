@@ -207,6 +207,22 @@ main {
     cursor: default;
 }
 
+/* Hover highlight in each studio's color. */
+[data-studio="infisical"] {
+    --highlight-bg: #f5fe37;
+    --highlight-text: black;
+}
+
+[data-studio="lowercase"] {
+    --highlight-bg: #0064f6;
+    --highlight-text: white;
+}
+
+[data-studio="jamms"] {
+    --highlight-bg: #ff339e;
+    --highlight-text: black;
+}
+
 .project-date {
     letter-spacing: -0.04em;
 }

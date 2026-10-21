@@ -18,6 +18,7 @@ const projects = projectMedia.map((project) => ({
 const projectList = [
     {
         name: "Infisical Ad Campaign",
+        studio: "infisical",
         date: "2026-10",
         previewSrcs: [
             "/img/previews/infisical-ad-1.webp",
@@ -29,6 +30,7 @@ const projectList = [
     },
     {
         name: "403",
+        studio: "infisical",
         date: "2026-09",
         href: "https://infisical.com/403",
         previewText: "btw api key is dGhpcyBpcyBub3cgYSBwdWJsaWMga2V5",
@@ -36,6 +38,7 @@ const projectList = [
     },
     {
         name: "Next Chapter",
+        studio: "lowercase",
         date: "2026-04",
         href: "https://nextchapter-site.vercel.app/",
         previewText: "w/ lowercase.club ↗",
@@ -43,6 +46,7 @@ const projectList = [
     },
     {
         name: "Reactor",
+        studio: "lowercase",
         date: "2026-02",
         href: "https://reactor-site.vercel.app/manifesto",
         previewText: "w/ lowercase.club ↗",
@@ -50,6 +54,7 @@ const projectList = [
     },
     {
         name: "sketchi",
+        studio: "jamms",
         date: "2026-09",
         href: "https://sketchi.ing",
         previewSrc: "/img/previews/sketchi.webp",
@@ -66,6 +71,7 @@ const projectList = [
     },
     {
         name: "jam.ms",
+        studio: "jamms",
         date: "2026-06",
         href: "https://jam.ms",
         previewSrc: "/img/previews/jamms.webp",
@@ -74,6 +80,7 @@ const projectList = [
     },
     {
         name: "kiwi's shop",
+        studio: "jamms",
         date: "2026-03",
         href: "https://shop.kiwis.page",
         previewText: "shop.kiwis.page ↗",
@@ -97,6 +104,7 @@ const projectList = [
     },
     {
         name: "Agent Proxy",
+        studio: "infisical",
         date: "2026-07",
         href: "https://x.com/infisical/status/2082864780402950210?s=20",
         gridIndex: 2,
@@ -112,6 +120,7 @@ const projectList = [
     },
     {
         name: "Infisical",
+        studio: "infisical",
         date: "2026-04",
         href: "https://infisical.com/careers",
         gridIndex: 9,
@@ -121,6 +130,7 @@ const projectList = [
     },
     {
         name: "Capy",
+        studio: "lowercase",
         date: "2026-03",
         href: "https://x.com/capydotai/status/2031430074940195126",
         gridIndex: 6,
@@ -136,6 +146,7 @@ const projectList = [
     },
     {
         name: "etea.cafe",
+        studio: "jamms",
         date: "2026-01",
         href: "https://etea.cafe",
         previewText: "Daily Web Game ↗",
@@ -151,6 +162,7 @@ const projectList = [
     },
     {
         name: "Spread the Love",
+        studio: "jamms",
         date: "2025-09",
         href: "https://store.steampowered.com/app/3852520/Spread_The_Love/",
         gridIndex: 11,
@@ -217,6 +229,7 @@ const formatDate = (date: string) => {
                         client:visible
                         href="https://infisical.com"
                         target="_blank"
+                        data-studio="infisical"
                         previewSrc="/img/previews/infisical.webp"
                         previewAlt="Infisical homepage"
                     >Infisical</HoverPreviewLink> & I'm making corners of the world wide web stick with <InlineAvatar
@@ -229,6 +242,7 @@ const formatDate = (date: string) => {
                         client:visible
                         href="https://jam.ms"
                         target="_blank"
+                        data-studio="jamms"
                         previewSrc="/img/previews/jamms.webp"
                         previewAlt="jam.ms preview"
                     >jamms</HoverPreviewLink>
@@ -243,6 +257,7 @@ const formatDate = (date: string) => {
                         client:visible
                         href="https://lowercase.club"
                         target="_blank"
+                        data-studio="lowercase"
                         previewText="lowercase.club ↗"
                     >lowercase</HoverPreviewLink>
                 </p>
@@ -304,7 +319,7 @@ const formatDate = (date: string) => {
                     {projectList.map((project) => {
                         const hasPreview = project.previewSrc || project.previewSrcs || project.previewText;
                         return (
-                            <li data-grid-index={project.gridIndex}>
+                            <li data-grid-index={project.gridIndex} data-studio={project.studio}>
                                 <span class="project-date">{formatDate(project.date)}</span>
                                 {!hasPreview ? (
                                     project.href ? (
