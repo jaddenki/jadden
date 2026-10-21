@@ -38,6 +38,8 @@
     --bg: white;
     --text: black;
     --muted: rgb(0 0 0 / 0.65);
+    --soft: rgb(0 0 0 / 0.82);
+    --reading-bg: #fbf8f2;
     --highlight-bg: black;
     --highlight-text: white;
     --skeleton-bg: #e8e8e8;
@@ -50,6 +52,8 @@
     --bg: black;
     --text: white;
     --muted: rgb(255 255 255 / 0.78);
+    --soft: rgb(255 255 255 / 0.88);
+    --reading-bg: #14110d;
     --highlight-bg: white;
     --highlight-text: black;
     --skeleton-bg: #2a2a2a;
@@ -174,7 +178,7 @@ main {
 .project-list {
     list-style: none;
     padding: 0;
-    margin: 0;
+    margin: 1em 0 0;
 }
 
 .project-list li {
@@ -955,55 +959,6 @@ footer {
     border: 0;
 }
 
-/* /now — uses stays in flow on the left; liking is centered on the viewport
-   the same way the homepage image grid is (fixed + translateX centering). */
-.now-layout {
-    --now-pad: 2rem;
-    --now-uses-max: 360px;
-    --now-col-gap: 4rem;
-    --now-safe-left: calc(
-        var(--now-pad) + var(--now-uses-max) + var(--now-col-gap)
-    );
-    align-items: flex-start;
-}
-
-.now-uses {
-    width: var(--now-uses-max);
-    max-width: var(--now-uses-max);
-    flex-shrink: 1;
-    min-height: 0;
-    max-height: 100%;
-    overflow-y: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-}
-
-.now-liking {
-    --now-liking-max: 460px;
-    --now-liking-w: min(
-        var(--now-liking-max),
-        max(0px, calc(100vw - var(--now-safe-left) - var(--now-pad)))
-    );
-    position: fixed;
-    /* Align the top with the uses column, which sits at main's 2rem padding. */
-    top: 2rem;
-    bottom: 2.5rem;
-    width: var(--now-liking-w);
-    /* Center on the viewport when there's room; otherwise keep the left edge
-       clear of the uses column. Mirrors .projects-gallery. */
-    left: max(50vw, calc(var(--now-safe-left) + var(--now-liking-w) / 2));
-    transform: translateX(-50%);
-    overflow-y: auto;
-    overflow-x: hidden;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-}
-
-.now-uses::-webkit-scrollbar,
-.now-liking::-webkit-scrollbar {
-    display: none;
-}
-
 
 .liking-source {
     color: var(--muted);
@@ -1195,23 +1150,6 @@ footer {
         width: 100%;
     }
 
-    .now-uses,
-    .now-liking {
-        max-width: 100%;
-        width: 100%;
-        max-height: none;
-        overflow-y: visible;
-    }
-
-    /* Drop the viewport-centered fixed positioning; stack normally on mobile. */
-    .now-liking {
-        position: static;
-        top: auto;
-        bottom: auto;
-        left: auto;
-        transform: none;
-    }
-
     .projects-gallery {
         position: static;
         width: 100%;
@@ -1283,4 +1221,253 @@ footer {
         position: relative;
         padding: 1rem 1.5rem;
     }
+}
+
+/* /blog — post index stays in flow on the left; the post is centered on the
+   viewport. */
+.blog-layout {
+    --blog-pad: 2rem;
+    --blog-index-max: 260px;
+    --blog-col-gap: 4rem;
+    --blog-safe-left: calc(
+        var(--blog-pad) + var(--blog-index-max) + var(--blog-col-gap)
+    );
+    align-items: flex-start;
+}
+
+.blog-index {
+    width: var(--blog-index-max);
+    flex-shrink: 0;
+    min-height: 0;
+    max-height: 100%;
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+
+.blog-index-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.blog-index-section + .blog-index-section {
+    margin-top: 2rem;
+}
+
+.blog-index-label {
+    margin: 0 0 0.5rem;
+    color: var(--muted);
+}
+
+.blog-index-item {
+    display: grid;
+    grid-template-columns: 4.5rem 1fr;
+    align-items: baseline;
+    gap: 1rem;
+}
+
+.blog-index-link {
+    color: var(--text);
+    text-decoration: none;
+    padding: 0 2px;
+    margin: 0 -2px;
+    justify-self: start;
+}
+
+.blog-index-link.is-current {
+    background-color: var(--highlight-bg);
+    color: var(--highlight-text);
+    text-decoration: none;
+}
+
+.blog-index-date {
+    color: var(--muted);
+    letter-spacing: -0.04em;
+}
+
+.blog-post {
+    --blog-post-max: 520px;
+    --blog-post-w: min(
+        var(--blog-post-max),
+        max(0px, calc(100vw - var(--blog-safe-left) - var(--blog-pad)))
+    );
+    position: fixed;
+    top: 2rem;
+    bottom: 0;
+    width: var(--blog-post-w);
+    left: max(50vw, calc(var(--blog-safe-left) + var(--blog-post-w) / 2));
+    transform: translateX(-50%);
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    padding-bottom: 4rem;
+    box-sizing: border-box;
+}
+
+.blog-index::-webkit-scrollbar,
+.blog-post::-webkit-scrollbar {
+    display: none;
+}
+
+.blog-post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.reading-toggle {
+    flex-shrink: 0;
+    margin-right: 0;
+    padding: 0 2px;
+}
+
+.reading-toggle[aria-pressed="true"]:not(:hover, :focus-visible) {
+    color: var(--text);
+}
+
+/* Reading mode: paper-warm background (the ⌘J accent keeps its own color),
+   ~65 characters per line, and the chrome fades until hovered. */
+[data-reading]:not([data-accent]) {
+    --bg: var(--reading-bg);
+}
+
+html[data-reading],
+html[data-reading] body {
+    transition: background-color 240ms ease;
+}
+
+[data-reading] .blog-post {
+    --blog-post-max: 660px;
+}
+
+[data-reading] .blog-post-title,
+[data-reading] .blog-post-body,
+[data-reading] .blog-post-body *,
+[data-reading] .blog-post-list * {
+    font-size: 21px;
+}
+
+[data-reading] .blog-post-meta,
+[data-reading] .blog-post-meta * {
+    font-size: 16px;
+}
+
+[data-reading] .blog-post-body {
+    line-height: 1.6;
+}
+
+.blog-index,
+.corner-nav,
+footer,
+.reading-toggle {
+    transition: opacity 200ms ease;
+}
+
+[data-reading] .blog-index:not(:hover, :focus-within),
+[data-reading] .corner-nav:not(:hover, :focus-within),
+[data-reading] footer:not(:hover, :focus-within),
+[data-reading] .reading-toggle:not(:hover, :focus-visible) {
+    opacity: 0.3;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html[data-reading],
+    html[data-reading] body,
+    .blog-index,
+    .corner-nav,
+    footer,
+    .reading-toggle {
+        transition: none;
+    }
+}
+
+.blog-post-title {
+    font-weight: inherit;
+    margin: 0 0 0.25em;
+}
+
+.blog-post-meta {
+    display: flex;
+    gap: 1em;
+    margin: 0;
+    color: var(--muted);
+}
+
+.blog-post-list {
+    color: var(--text);
+}
+
+.blog-post-body {
+    line-height: 1.5;
+    color: var(--soft);
+}
+
+.blog-post-body * {
+    text-wrap: pretty;
+}
+
+.blog-post-body > :first-child {
+    margin-top: 0;
+}
+
+.blog-post-body p {
+    margin: 0 0 1em;
+}
+
+.blog-post-body ul,
+.blog-post-body ol {
+    margin: 0 0 1em;
+    padding-left: 1.25em;
+}
+
+.blog-post-body ul ul,
+.blog-post-body ul ol {
+    margin: 0;
+}
+
+.blog-post-body li {
+    margin-bottom: 0.25em;
+    color: var(--muted);
+}
+
+.blog-post-body h2,
+.blog-post-body h3 {
+    font-weight: inherit;
+    color: var(--text);
+    margin: 2.5em 0 0.75em;
+}
+
+@media (max-width: 768px) {
+    .blog-index {
+        width: 100%;
+        max-height: none;
+        overflow-y: visible;
+    }
+
+    .blog-post {
+        position: static;
+        width: 100%;
+        transform: none;
+        overflow-y: visible;
+        padding-bottom: 2rem;
+    }
+}
+
+.blog-post-body img {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 1.5em 0;
+}
+
+.blog-post-body hr {
+    border: 0;
+    border-top: 1px solid color-mix(in srgb, var(--text) 12%, transparent);
+    margin: 2em 0;
+}
+
+.blog-post-body em {
+    color: var(--muted);
 }

@@ -1,0 +1,9 @@
+---
+import BlogLayout from "../../components/BlogLayout.astro";
+import UsesList from "../../components/UsesList.astro";
+import uses from "../../data/uses.json";
+---
+
+<BlogLayout id="uses" title="Uses" description="What I'm using lately." date={new Date(uses.updated)}>
+	<UsesList hideHeading />
+</BlogLayout>

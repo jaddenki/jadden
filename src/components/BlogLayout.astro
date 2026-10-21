@@ -1,0 +1,188 @@
+---
+import { render } from "astro:content";
+import BaseHead from "./BaseHead.astro";
+import CornerNav from "./CornerNav.astro";
+import SiteFooter from "./SiteFooter.astro";
+import { SITE_TITLE } from "../consts";
+import { formatIndexDate, formatPostDate, getIndex, type BlogPost } from "../lib/blog";
+import "../styles/global.css";
+
+interface Props {
+	post?: BlogPost;
+	id?: string;
+	title?: string;
+	description?: string;
+	date?: Date;
+}
+
+const { post } = Astro.props;
+const id = post?.id ?? Astro.props.id!;
+const title = post?.data.title ?? Astro.props.title!;
+const description = post?.data.description ?? Astro.props.description;
+const date = post?.data.date ?? Astro.props.date;
+const Content = post ? (await render(post)).Content : undefined;
+const readMinutes =
+	post && !post.data.page
+		? Math.max(1, Math.round((post.body ?? "").split(/\s+/).filter(Boolean).length / 230))
+		: undefined;
+
+const { posts, lists } = await getIndex();
+const sections = [
+	{ label: undefined, entries: posts, dated: true },
+	{ label: "Lists", entries: lists, dated: false },
+].filter((section) => section.entries.length > 0);
+let order = 0;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead
+			title={`${title} ${SITE_TITLE}`}
+			description={description ?? `${title}, by Jadden.`}
+		/>
+		<script is:inline>
+			try {
+				if (localStorage.getItem("reading")) document.documentElement.setAttribute("data-reading", "");
+			} catch (e) {}
+		</script>
+	</head>
+	<body class="blog-page">
+		<CornerNav current="blog" />
+		<main class="homepage-container blog-layout">
+			<nav class="blog-index" aria-label="Posts">
+				{
+					sections.map((section) => (
+						<div class="blog-index-section">
+							{section.label && (
+								<p class="blog-index-label reveal" style={`--reveal-order: ${order++}`}>
+									{section.label}
+								</p>
+							)}
+							<ul class="blog-index-list">
+								{section.entries.map((entry) => (
+									<li class="blog-index-item reveal" style={`--reveal-order: ${order++}`} data-href={`/blog/${entry.id}`} data-current={entry.id === id ? "" : undefined}>
+										<span class="blog-index-date">
+											{section.dated && entry.date && (
+												<time datetime={entry.date.toISOString()}>{formatIndexDate(entry.date)}</time>
+											)}
+										</span>
+										{entry.id === id ? (
+											<span class="blog-index-link is-current" aria-current="page">
+												{entry.title}
+											</span>
+										) : (
+											<a href={`/blog/${entry.id}`} class="blog-index-link">
+												{entry.title}
+											</a>
+										)}
+									</li>
+								))}
+							</ul>
+						</div>
+					))
+				}
+			</nav>
+			<article class="blog-post">
+				<header class="blog-post-header">
+					<div>
+						<h1 class="blog-post-title">{title}</h1>
+						{(date || readMinutes) && (
+							<p class="blog-post-meta">
+								{date && <time datetime={date.toISOString()}>{formatPostDate(date)}</time>}
+								{readMinutes && <span>{readMinutes} min read</span>}
+							</p>
+						)}
+					</div>
+					<button type="button" class="theme-toggle reading-toggle" id="reading-toggle" aria-pressed="false">
+						<span class="reading-shortcut">(R)</span>&nbsp;Reading Mode
+					</button>
+				</header>
+				{
+					Content ? (
+						<div class="blog-post-body">
+							<Content />
+						</div>
+					) : (
+						<div class="blog-post-list">
+							<slot />
+						</div>
+					)
+				}
+			</article>
+		</main>
+
+		<SiteFooter />
+		<script>
+			const root = document.documentElement;
+			const button = document.getElementById("reading-toggle");
+
+			const setReading = (on: boolean) => {
+				root.toggleAttribute("data-reading", on);
+				button?.setAttribute("aria-pressed", String(on));
+				try {
+					if (on) localStorage.setItem("reading", "1");
+					else localStorage.removeItem("reading");
+				} catch {}
+			};
+
+			try {
+				if (localStorage.getItem("reading")) setReading(true);
+			} catch {}
+
+			button?.addEventListener("click", () => setReading(!root.hasAttribute("data-reading")));
+
+			const post = document.querySelector<HTMLElement>(".blog-post");
+			const items = [...document.querySelectorAll<HTMLElement>(".blog-index-item")];
+			const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+			// Remember where each post was left off. The post scrolls itself on
+			// desktop; on mobile the window does.
+			const scrollKey = `scroll:${location.pathname}`;
+			const scroller = () => (post && post.scrollHeight > post.clientHeight ? post : document.scrollingElement);
+			try {
+				const saved = Number(localStorage.getItem(scrollKey));
+				if (saved > 0) scroller()?.scrollTo({ top: saved });
+			} catch {}
+			let saveQueued = false;
+			const saveScroll = () => {
+				if (saveQueued) return;
+				saveQueued = true;
+				requestAnimationFrame(() => {
+					saveQueued = false;
+					try {
+						localStorage.setItem(scrollKey, String(Math.round(scroller()?.scrollTop ?? 0)));
+					} catch {}
+				});
+			};
+			post?.addEventListener("scroll", saveScroll, { passive: true });
+			window.addEventListener("scroll", saveScroll, { passive: true });
+
+			document.addEventListener("keydown", (e) => {
+				const target = e.target as HTMLElement | null;
+				if (target?.isContentEditable || target?.closest("input, textarea, select")) return;
+				const arrow = e.key === "ArrowUp" ? -1 : e.key === "ArrowDown" ? 1 : 0;
+
+				// ⌘↑/↓ cycles posts, wrapping at either end of the list.
+				if (arrow && (e.metaKey || e.ctrlKey) && !e.altKey && !e.shiftKey) {
+					e.preventDefault();
+					const current = items.findIndex((item) => item.hasAttribute("data-current"));
+					const next = items[(current + arrow + items.length) % items.length];
+					if (next?.dataset.href) window.location.href = next.dataset.href;
+					return;
+				}
+
+				if (e.metaKey || e.ctrlKey || e.altKey) return;
+
+				// The post is its own scroll container on desktop, so arrows need routing to it.
+				if (arrow && post && post.scrollHeight > post.clientHeight) {
+					e.preventDefault();
+					post.scrollBy({ top: arrow * 100, behavior: reducedMotion.matches || e.repeat ? "auto" : "smooth" });
+					return;
+				}
+
+				if (e.key.toLowerCase() === "r" && !e.repeat) setReading(!root.hasAttribute("data-reading"));
+			});
+		</script>
+	</body>
+</html>

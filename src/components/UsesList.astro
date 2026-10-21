@@ -28,6 +28,11 @@ interface UsesData {
 	sections: UseSection[];
 }
 
+interface Props {
+	hideHeading?: boolean;
+}
+
+const { hideHeading = false } = Astro.props;
 const { updated, sections } = uses as UsesData;
 const visibleSections = sections.filter((section) => !section.hidden);
 
@@ -57,9 +62,11 @@ function formatUpdated(iso: string): string {
 ---
 
 <section class="uses-section" aria-label="What I use">
-	<p class="section-heading reveal" style={`--reveal-order: ${order++}`}>
-		Uses as of {formatUpdated(updated)}
-	</p>
+	{!hideHeading && (
+		<p class="section-heading reveal" style={`--reveal-order: ${order++}`}>
+			Uses as of {formatUpdated(updated)}
+		</p>
+	)}
 	<div class="uses-sections">
 		{
 			visibleSections.map((section) => (

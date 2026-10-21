@@ -1,0 +1,28 @@
+---
+import BlogLayout from "../../components/BlogLayout.astro";
+import LikingList from "../../components/LikingList.astro";
+import { fetchProfileEntries } from "../../lib/arena";
+
+// Rendered on demand and cached via ISR (see astro.config.mjs) so new Are.na
+// blocks appear without a rebuild.
+export const prerender = false;
+
+const ARENA_PROFILE_SLUG = "jadden-picardal";
+const entries = await fetchProfileEntries(ARENA_PROFILE_SLUG);
+---
+
+<BlogLayout id="liking" title="Liking" description="What I'm liking lately.">
+	<LikingList entries={entries} sourceUrl={`https://www.are.na/${ARENA_PROFILE_SLUG}`} />
+	<script>
+		// Fade thumbnails in once they load (see .liking-thumb / .img-loaded in global.css).
+		for (const img of document.querySelectorAll<HTMLImageElement>(".liking-thumb")) {
+			if (img.complete) {
+				img.classList.add("img-loaded");
+			} else {
+				const reveal = () => img.classList.add("img-loaded");
+				img.addEventListener("load", reveal, { once: true });
+				img.addEventListener("error", reveal, { once: true });
+			}
+		}
+	</script>
+</BlogLayout>

@@ -1,0 +1,8 @@
+---
+import BlogLayout from "../../components/BlogLayout.astro";
+import { getPosts } from "../../lib/blog";
+
+const [latest] = await getPosts();
+---
+
+<BlogLayout post={latest} />
