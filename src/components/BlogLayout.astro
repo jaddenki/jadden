@@ -8,6 +8,8 @@ import { formatIndexDate, formatPostDate, getIndex, type BlogPost } from "../lib
 import "../styles/global.css";
 
 interface Props {
+	// /blog itself: on mobile it shows just the post list.
+	isIndex?: boolean;
 	post?: BlogPost;
 	id?: string;
 	title?: string;
@@ -15,7 +17,7 @@ interface Props {
 	date?: Date;
 }
 
-const { post } = Astro.props;
+const { post, isIndex = false } = Astro.props;
 const id = post?.id ?? Astro.props.id!;
 const title = post?.data.title ?? Astro.props.title!;
 const description = post?.data.description ?? Astro.props.description;
@@ -49,9 +51,8 @@ let order = 0;
 	</head>
 	<body class="blog-page">
 		<CornerNav current="blog" />
-		<main class="homepage-container blog-layout">
+		<main class:list={["homepage-container", "blog-layout", { "is-index": isIndex }]}>
 			<nav class="blog-index" aria-label="Posts">
-				<p class="blog-index-label blog-index-mobile-label">All posts</p>
 				{
 					sections.map((section) => (
 						<div class="blog-index-section">
@@ -68,15 +69,13 @@ let order = 0;
 												<time datetime={entry.date.toISOString()}>{formatIndexDate(entry.date)}</time>
 											)}
 										</span>
-										{entry.id === id ? (
-											<span class="blog-index-link is-current" aria-current="page">
-												{entry.title}
-											</span>
-										) : (
-											<a href={`/blog/${entry.id}`} class="blog-index-link">
-												{entry.title}
-											</a>
-										)}
+										<a
+											href={`/blog/${entry.id}`}
+											class:list={["blog-index-link", { "is-current": entry.id === id }]}
+											aria-current={entry.id === id ? "page" : undefined}
+										>
+											{entry.title}
+										</a>
 									</li>
 								))}
 							</ul>
@@ -85,6 +84,7 @@ let order = 0;
 				}
 			</nav>
 			<article class="blog-post">
+				<a href="/blog" class="blog-back">← All posts</a>
 				<header class="blog-post-header">
 					<div>
 						<h1 class="blog-post-title">{title}</h1>

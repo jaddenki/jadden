@@ -1498,7 +1498,7 @@ footer,
 
 /* Footer controls live in the hamburger menu on mobile. */
 .corner-nav-extras,
-.blog-index-mobile-label {
+.blog-back {
     display: none;
 }
 
@@ -1544,21 +1544,27 @@ footer,
         white-space: nowrap;
     }
 
-    /* Post first, the index after it as "All posts". */
-    .blog-post {
-        order: -1;
+    /* /blog lists the posts; each post page shows only the post. */
+    .blog-layout.is-index .blog-post,
+    .blog-layout:not(.is-index) .blog-index {
+        display: none;
     }
 
-    .blog-index {
-        padding-top: 1.5rem;
-        border-top: 1px solid color-mix(in srgb, var(--text) 8%, transparent);
+    /* Nothing is open yet on the mobile list. */
+    .blog-layout.is-index .blog-index-link.is-current:not(:hover, :focus-visible) {
+        background-color: transparent;
+        color: var(--text);
     }
 
-    .blog-index-mobile-label {
-        display: block;
+    .blog-back {
+        display: inline-block;
+        margin-bottom: 1.5rem;
+        color: var(--muted);
+        text-decoration: none;
     }
 
     .blog-index-item {
-        padding: 0.15rem 0;
+        padding: 0.35rem 0;
     }
+
 }
