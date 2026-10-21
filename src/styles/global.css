@@ -1468,6 +1468,11 @@ footer,
     margin: 2em 0;
 }
 
+.blog-post-body strong,
+.blog-post-body b {
+    font-weight: inherit;
+}
+
 .blog-post-body em {
     color: var(--muted);
 }
