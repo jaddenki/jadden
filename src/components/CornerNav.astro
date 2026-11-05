@@ -11,10 +11,10 @@ interface Props {
 
 const { current } = Astro.props;
 
-const links: { key: NavKey; label: string; href: string }[] = [
-	{ key: "home", label: "Home", href: "/" },
-	{ key: "about", label: "About", href: "/about" },
-	{ key: "blog", label: "Blog", href: "/blog" },
+const links: { key: NavKey; label: string; href: string; shortcut: string }[] = [
+	{ key: "home", label: "Home", href: "/", shortcut: "H" },
+	{ key: "about", label: "About", href: "/about", shortcut: "A" },
+	{ key: "blog", label: "Blog", href: "/blog", shortcut: "B" },
 ];
 ---
 
@@ -37,11 +37,11 @@ const links: { key: NavKey; label: string; href: string }[] = [
 			links.map((link) =>
 				link.key === current ? (
 					<span class="corner-nav-link is-current" aria-current="page">
-						{link.label}
+						<span class="nav-shortcut">({link.shortcut})</span>&nbsp;{link.label}
 					</span>
 				) : (
-					<a href={link.href} class="corner-nav-link">
-						{link.label}
+					<a href={link.href} class="corner-nav-link" aria-keyshortcuts={link.shortcut}>
+						<span class="nav-shortcut">({link.shortcut})</span>&nbsp;{link.label}
 					</a>
 				),
 			)
@@ -55,6 +55,17 @@ const links: { key: NavKey; label: string; href: string }[] = [
 </nav>
 
 <script>
+	const routes: Record<string, string> = { h: "/", a: "/about", b: "/blog" };
+
+	document.addEventListener("keydown", (event) => {
+		if (event.metaKey || event.ctrlKey || event.altKey || event.shiftKey || event.repeat) return;
+		const target = event.target as HTMLElement | null;
+		if (target?.isContentEditable || target?.closest("input, textarea, select")) return;
+		const href = routes[event.key.toLowerCase()];
+		if (!href || location.pathname.replace(/\/$/, "") === href.replace(/\/$/, "")) return;
+		window.location.href = href;
+	});
+
 	const nav = document.querySelector<HTMLElement>(".corner-nav");
 	const toggle = nav?.querySelector<HTMLButtonElement>(".corner-nav-toggle");
 	const menu = nav?.querySelector<HTMLElement>("#corner-nav-menu");

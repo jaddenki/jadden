@@ -56,7 +56,7 @@ export default defineConfig({
 		],
 	},
 	// The site stays static by default; only routes that opt out with
-	// `export const prerender = false` (currently just /blog/liking) are rendered on
+	// `export const prerender = false` (/blog/liking, /blog/reading) are rendered on
 	// demand and cached via ISR, so new Are.na blocks appear without a rebuild.
 	adapter: vercel({
 		isr: {

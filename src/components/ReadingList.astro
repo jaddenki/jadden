@@ -1,0 +1,164 @@
+---
+import type { CuriusLink } from "../lib/curius";
+import { formatIndexDate } from "../lib/blog";
+
+interface Props {
+	links: CuriusLink[];
+	sourceUrl: string;
+}
+
+const { links, sourceUrl } = Astro.props;
+
+const groups = [
+	{ label: "Want to read", items: links.filter((item) => item.toRead) },
+	{ label: "Previously read", items: links.filter((item) => !item.toRead) },
+];
+
+let order = 0;
+---
+
+<section class="reading-section" aria-label="Reading list">
+	<p class="section-heading reveal" style={`--reveal-order: ${order++}`}>
+		Pulled from my{" "}
+		<a class="liking-source" href={sourceUrl} target="_blank" rel="noopener noreferrer">Curius</a>.
+		Not recommendations, and saving something doesn't mean I agree with it. It's just how I keep
+		track of what I read online.
+	</p>
+
+	<div class="uses-sections">
+		{
+			groups.map((group) => (
+				<div class="reveal" style={`--reveal-order: ${order++}`}>
+					<p class="uses-section-title">{group.label}</p>
+					{group.items.length ? (
+						<ul class="uses-list">
+							{group.items.map((item) => {
+								const date = new Date(item.createdDate);
+								return (
+									<li class="reading-item">
+										<time class="reading-date" datetime={date.toISOString()}>
+											{formatIndexDate(date)}
+										</time>
+										<a
+											class:list={["reading-link", { "has-highlight": item.highlights.length > 0 }]}
+											href={item.link}
+											target="_blank"
+											rel="noopener noreferrer"
+											data-highlight={item.highlights.join("\n\n") || undefined}
+										>
+											{item.title}
+										</a>
+									</li>
+								);
+							})}
+						</ul>
+					) : (
+						<p class="liking-empty reading-empty">Nothing queued right now.</p>
+					)}
+				</div>
+			))
+		}
+	</div>
+</section>
+
+<div class="reading-preview hover-preview-float" aria-hidden="true" hidden></div>
+
+<script>
+	const OFFSET = { x: 8, y: 24 };
+	const FOLLOW_STRENGTH = 0.02;
+	const preview = document.querySelector<HTMLElement>(".reading-preview");
+	// .blog-post is transformed and scrolls, which would trap a fixed child.
+	if (preview) document.body.append(preview);
+	const hoverable = window.matchMedia("(hover: hover) and (pointer: fine)");
+	let active: HTMLElement | null = null;
+
+	const place = (e: PointerEvent, link: HTMLElement) => {
+		if (!preview) return;
+		const rect = link.getBoundingClientRect();
+		const x = e.clientX + OFFSET.x + (e.clientX - rect.left - rect.width / 2) * FOLLOW_STRENGTH;
+		const y = e.clientY + OFFSET.y + (e.clientY - rect.top - rect.height / 2) * FOLLOW_STRENGTH;
+		const maxX = window.innerWidth - preview.offsetWidth - 8;
+		preview.style.transform = `translate(${Math.min(x, maxX)}px, ${y}px)`;
+	};
+
+	document.addEventListener("pointerover", (e) => {
+		if (!preview || !hoverable.matches) return;
+		const link = (e.target as Element).closest<HTMLElement>(".reading-link[data-highlight]");
+		if (!link || link === active) return;
+		active = link;
+		preview.textContent = link.dataset.highlight ?? "";
+		preview.hidden = false;
+		place(e, link);
+	});
+
+	document.addEventListener("pointermove", (e) => {
+		if (active) place(e, active);
+	});
+
+	document.addEventListener("pointerout", (e) => {
+		if (!active || !preview) return;
+		if (active.contains(e.relatedTarget as Node | null)) return;
+		active = null;
+		preview.hidden = true;
+	});
+</script>
+
+<style>
+	.reading-item {
+		display: grid;
+		grid-template-columns: 4.5em 1fr;
+		align-items: baseline;
+		gap: 1rem;
+		margin-bottom: 0.35rem;
+		line-height: 1.35;
+	}
+
+	.reading-date {
+		white-space: nowrap;
+		color: var(--muted);
+		letter-spacing: -0.04em;
+		font-variant-numeric: tabular-nums;
+	}
+
+	.reading-empty {
+		margin: 0;
+	}
+
+	.reading-link {
+		color: var(--text);
+		text-decoration: none;
+		justify-self: start;
+	}
+
+	.reading-link.has-highlight {
+		text-decoration: underline dotted var(--muted);
+		text-underline-offset: 3px;
+	}
+
+	.reading-link:hover,
+	.reading-link:focus-visible {
+		color: var(--highlight-text);
+		text-decoration: none;
+	}
+
+	.reading-preview {
+		position: fixed;
+		top: 0;
+		left: 0;
+		max-width: 280px;
+		padding: 0 4px 3px;
+		background: var(--text);
+		color: var(--bg);
+		white-space: pre-wrap;
+		box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.12);
+		pointer-events: none;
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 12;
+		overflow: hidden;
+	}
+
+	.reading-preview[hidden] {
+		display: none;
+	}
+</style>

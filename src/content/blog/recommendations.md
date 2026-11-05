@@ -19,6 +19,7 @@ Title says it all
 ## [People + studios](https://www.are.na/jadden-picardal/people-studios-vfws9xveimo)
 - [Yayoi Kusama](https://yayoi-kusama.jp/)
 - [Tim Rodenbröker](https://timrodenbroeker.de/category/all/): creative coder whose work, classes, and Discord have shaped a lot of how I approach generative visuals.
+- [Celine Nguyen](https://celinenguyen.com/)
 - [Ian Henry](https://ianthehenry.com/): software engineer with incredible writing and deeply considered projects. Bookmark everything.
 - [Keita Yamada](https://p5aholic.me/): p5.js wizard. His sketches got me into creative coding in the first place.
 - [Mattaniah Aytenfsu](https://mattaniah.online/): creative technologist + storyteller. I wanna be her fr.

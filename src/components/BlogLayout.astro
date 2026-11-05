@@ -5,6 +5,7 @@ import CornerNav from "./CornerNav.astro";
 import SiteFooter from "./SiteFooter.astro";
 import { SITE_TITLE } from "../consts";
 import { formatIndexDate, formatPostDate, getIndex, type BlogPost } from "../lib/blog";
+import "@fontsource-variable/lora/wght.css";
 import "../styles/global.css";
 
 interface Props {
@@ -95,9 +96,11 @@ let order = 0;
 							</p>
 						)}
 					</div>
-					<button type="button" class="theme-toggle reading-toggle" id="reading-toggle" aria-pressed="false">
-						<span class="reading-shortcut">(R)</span>&nbsp;Reading Mode
-					</button>
+					{!isIndex && (
+						<button type="button" class="theme-toggle reading-toggle" id="reading-toggle" aria-pressed="false">
+							<span class="reading-shortcut">(R)</span>&nbsp;Reading Mode
+						</button>
+					)}
 				</header>
 				{
 					Content ? (
@@ -168,7 +171,8 @@ let order = 0;
 				if (arrow && (e.metaKey || e.ctrlKey) && !e.altKey && !e.shiftKey) {
 					e.preventDefault();
 					const current = items.findIndex((item) => item.hasAttribute("data-current"));
-					const next = items[(current + arrow + items.length) % items.length];
+					const from = current < 0 ? (arrow > 0 ? -1 : items.length) : current;
+					const next = items[(from + arrow + items.length) % items.length];
 					if (next?.dataset.href) window.location.href = next.dataset.href;
 					return;
 				}

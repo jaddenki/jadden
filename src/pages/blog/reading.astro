@@ -1,0 +1,13 @@
+---
+import BlogLayout from "../../components/BlogLayout.astro";
+import ReadingList from "../../components/ReadingList.astro";
+import { fetchCuriusLinks } from "../../lib/curius";
+
+export const prerender = false;
+
+const links = await fetchCuriusLinks(5584);
+---
+
+<BlogLayout id="reading" title="Reading" description="What I've been reading online, from Curius.">
+	<ReadingList links={links} sourceUrl="https://curius.app/jadden-picardal" />
+</BlogLayout>

@@ -1,8 +1,12 @@
 ---
 import BlogLayout from "../../components/BlogLayout.astro";
-import { getPosts } from "../../lib/blog";
-
-const [latest] = await getPosts();
 ---
 
-<BlogLayout post={latest} isIndex />
+<BlogLayout id="" title="Blog" description="Posts and lists by Jadden." isIndex>
+	<p class="blog-landing">
+		Welcome to my blog. I'm trying to form a habit of writing down my thoughts.
+	</p>
+	<p class="blog-landing">
+		Pick something from the list<span class="blog-landing-keys">, or flip through with ⌘↑ ⌘↓</span>.
+	</p>
+</BlogLayout>
