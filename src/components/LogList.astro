@@ -1,0 +1,130 @@
+---
+import type { LogEntry } from "../lib/log";
+
+interface Props {
+	entries: LogEntry[];
+	sourceUrl: string;
+}
+
+const { entries, sourceUrl } = Astro.props;
+
+const TZ = "America/Indiana/Indianapolis";
+const stampFormat = new Intl.DateTimeFormat("en-US", {
+	timeZone: TZ,
+	year: "numeric",
+	month: "2-digit",
+	day: "2-digit",
+	hour: "2-digit",
+	minute: "2-digit",
+	hourCycle: "h23",
+});
+
+function formatStamp(iso: string): string {
+	const parts = stampFormat.formatToParts(new Date(iso));
+	const get = (type: Intl.DateTimeFormatPartTypes) =>
+		parts.find((part) => part.type === type)?.value ?? "";
+	return `${get("year")}${get("month")}${get("day")} ${get("hour")}:${get("minute")}`;
+}
+
+const rows = entries.map((entry) => ({
+	...entry,
+	stamp: formatStamp(entry.loggedAt),
+}));
+
+let order = 0;
+---
+
+<section class="log-section" aria-label="Log">
+	<p class="section-heading reveal" style={`--reveal-order: ${order++}`}>
+		One message a day about what I did, pulled from my{" "}
+		<a class="liking-source" href={sourceUrl} target="_blank" rel="noopener noreferrer">Are.na</a>.
+	</p>
+
+	{
+		rows.length === 0 ? (
+			<p class="liking-empty">Nothing logged yet.</p>
+		) : (
+			<ul class="uses-list log-list reveal" style={`--reveal-order: ${order++}`}>
+				{rows.map((entry) => (
+					<li class="log-item">
+						<time class="log-when" datetime={entry.loggedAt}>{entry.stamp}</time>
+						<div class="log-body">
+							{entry.text &&
+								(entry.href ? (
+									<a
+										class="log-text log-link"
+										href={entry.href}
+										target="_blank"
+										rel="noopener noreferrer"
+									>
+										{entry.text}
+									</a>
+								) : (
+									<p class="log-text">{entry.text}</p>
+								))}
+							{entry.imageUrl && (
+								<img
+									class:list={["log-image", { "is-solo": !entry.text }]}
+									src={entry.imageUrl}
+									alt={entry.text || "Logged image"}
+									loading="lazy"
+									decoding="async"
+								/>
+							)}
+						</div>
+					</li>
+				))}
+			</ul>
+		)
+	}
+</section>
+
+<style>
+	.log-item {
+		display: grid;
+		grid-template-columns: max-content minmax(0, 1fr);
+		align-items: start;
+		gap: 1rem;
+		margin-bottom: 0.85rem;
+		line-height: 1.35;
+	}
+
+	.log-item:last-child {
+		margin-bottom: 0;
+	}
+
+	.log-when {
+		color: var(--muted);
+		letter-spacing: -0.04em;
+		font-variant-numeric: tabular-nums;
+		white-space: nowrap;
+	}
+
+	.log-text {
+		margin: 0;
+		color: var(--text);
+		white-space: pre-wrap;
+	}
+
+	.log-link {
+		text-decoration: none;
+		border-bottom: 1px solid var(--muted);
+	}
+
+	.log-link:hover,
+	.log-link:focus-visible {
+		border-bottom-color: var(--text);
+	}
+
+	.log-image {
+		display: block;
+		width: 100%;
+		height: auto;
+		margin-top: 0.45rem;
+		border-radius: 3px;
+	}
+
+	.log-image.is-solo {
+		margin-top: 0;
+	}
+</style>

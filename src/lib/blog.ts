@@ -7,7 +7,7 @@ export async function getEntries(): Promise<BlogPost[]> {
 	return entries.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 }
 
-// Pages are living lists (coursework, recommendations) kept out of the post feed.
+// Pages are living lists (coursework) kept out of the post feed.
 export async function getPosts(): Promise<BlogPost[]> {
 	return (await getEntries()).filter((entry) => !entry.data.page);
 }
@@ -41,6 +41,7 @@ export interface IndexEntry {
 export const COMPONENT_PAGES: IndexEntry[] = [
 	{ id: "uses", title: "Uses" },
 	{ id: "liking", title: "Liking" },
+	{ id: "log", title: "Log" },
 	{ id: "reading", title: "Reading" },
 ];
 
