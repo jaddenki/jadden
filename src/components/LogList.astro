@@ -9,26 +9,27 @@ interface Props {
 const { entries, sourceUrl } = Astro.props;
 
 const TZ = "America/Indiana/Indianapolis";
-const dateFormat = new Intl.DateTimeFormat("en-US", {
+const stampFormat = new Intl.DateTimeFormat("en-US", {
 	timeZone: TZ,
-	month: "short",
-	day: "numeric",
 	year: "numeric",
-});
-const timeFormat = new Intl.DateTimeFormat("en-US", {
-	timeZone: TZ,
-	hour: "numeric",
+	month: "2-digit",
+	day: "2-digit",
+	hour: "2-digit",
 	minute: "2-digit",
+	hourCycle: "h23",
 });
 
-const rows = entries.map((entry) => {
-	const date = new Date(entry.loggedAt);
-	return {
-		...entry,
-		dateLabel: dateFormat.format(date),
-		timeLabel: timeFormat.format(date),
-	};
-});
+function formatStamp(iso: string): string {
+	const parts = stampFormat.formatToParts(new Date(iso));
+	const get = (type: Intl.DateTimeFormatPartTypes) =>
+		parts.find((part) => part.type === type)?.value ?? "";
+	return `${get("year")}${get("month")}${get("day")} ${get("hour")}:${get("minute")}`;
+}
+
+const rows = entries.map((entry) => ({
+	...entry,
+	stamp: formatStamp(entry.loggedAt),
+}));
 
 let order = 0;
 ---
@@ -46,10 +47,7 @@ let order = 0;
 			<ul class="uses-list log-list reveal" style={`--reveal-order: ${order++}`}>
 				{rows.map((entry) => (
 					<li class="log-item">
-						<time class="log-when" datetime={entry.loggedAt}>
-							<span class="log-date">{entry.dateLabel}</span>
-							<span class="log-time">{entry.timeLabel}</span>
-						</time>
+						<time class="log-when" datetime={entry.loggedAt}>{entry.stamp}</time>
 						<div class="log-body">
 							{entry.text &&
 								(entry.href ? (
@@ -84,7 +82,7 @@ let order = 0;
 <style>
 	.log-item {
 		display: grid;
-		grid-template-columns: 8.5rem 1fr;
+		grid-template-columns: max-content minmax(0, 1fr);
 		align-items: start;
 		gap: 1rem;
 		margin-bottom: 0.85rem;
@@ -96,8 +94,6 @@ let order = 0;
 	}
 
 	.log-when {
-		display: flex;
-		flex-direction: column;
 		color: var(--muted);
 		letter-spacing: -0.04em;
 		font-variant-numeric: tabular-nums;
