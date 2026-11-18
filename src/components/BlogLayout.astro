@@ -31,8 +31,8 @@ const readMinutes =
 
 const { posts, lists } = await getIndex();
 const sections = [
-	{ label: undefined, entries: posts, dated: true },
 	{ label: "Lists", entries: lists, dated: false },
+	{ label: undefined, entries: posts, dated: true },
 ].filter((section) => section.entries.length > 0);
 let order = 0;
 ---
