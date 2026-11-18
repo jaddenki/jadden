@@ -41,6 +41,7 @@ export interface IndexEntry {
 export const COMPONENT_PAGES: IndexEntry[] = [
 	{ id: "uses", title: "Uses" },
 	{ id: "liking", title: "Liking" },
+	{ id: "log", title: "Log" },
 	{ id: "reading", title: "Reading" },
 ];
 

@@ -1,0 +1,14 @@
+---
+import BlogLayout from "../../components/BlogLayout.astro";
+import LogList from "../../components/LogList.astro";
+import { fetchLogEntries } from "../../lib/log";
+
+// Static on purpose: the channel is read during `astro build`, so a bad
+// Are.na response can't take the route down. New entries show up on the next deploy.
+const CHANNEL_SLUG = "journal-kdzyijsq-zk";
+const entries = await fetchLogEntries(CHANNEL_SLUG);
+---
+
+<BlogLayout id="log" title="Log" description="A day-by-day log of what I've been doing.">
+	<LogList entries={entries} sourceUrl={`https://www.are.na/jadden-picardal/${CHANNEL_SLUG}`} />
+</BlogLayout>
