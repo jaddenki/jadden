@@ -56,11 +56,11 @@ export default defineConfig({
 		],
 	},
 	// The site stays static by default; only routes that opt out with
-	// `export const prerender = false` (/blog/liking, /blog/reading) are rendered on
-	// demand and cached via ISR, so new Are.na blocks appear without a rebuild.
+	// `export const prerender = false` (/blog/liking, /blog/log, /blog/reading) are
+	// rendered on demand and cached via ISR, so new Are.na blocks appear without a rebuild.
 	adapter: vercel({
 		isr: {
-			expiration: 60 * 15, // 15 min
+			expiration: 60 * 60, // 1 hour
 		},
 	}),
 	integrations: [mdx(), react(), sitemap()],

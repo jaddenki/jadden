@@ -132,7 +132,8 @@ async function fetchContentsPage(slug: string, page: number): Promise<ArenaBlock
 	return null;
 }
 
-export async function fetchLogEntries(slug: string): Promise<LogEntry[]> {
+// Returns null when Are.na fails, so ISR keeps the last good page.
+export async function fetchLogEntries(slug: string): Promise<LogEntry[] | null> {
 	try {
 		const blocks: ArenaBlock[] = [];
 		const seen = new Set<string>();
@@ -141,8 +142,8 @@ export async function fetchLogEntries(slug: string): Promise<LogEntry[]> {
 			const contents = await fetchContentsPage(slug, page);
 			if (!contents) {
 				if (page === 1) {
-					console.warn(`[log] Are.na channel "${slug}" didn't load; showing an empty log.`);
-					return [];
+					console.warn(`[log] Are.na channel "${slug}" didn't load.`);
+					return null;
 				}
 				console.warn(`[log] Stopped after page ${page - 1} of Are.na channel "${slug}".`);
 				break;
@@ -165,7 +166,7 @@ export async function fetchLogEntries(slug: string): Promise<LogEntry[]> {
 			.filter((entry): entry is LogEntry => entry !== null)
 			.sort((a, b) => Date.parse(b.loggedAt) - Date.parse(a.loggedAt));
 	} catch (error) {
-		console.warn(`[log] Are.na channel "${slug}" didn't load; showing an empty log.`, error);
-		return [];
+		console.warn(`[log] Are.na channel "${slug}" didn't load.`, error);
+		return null;
 	}
 }

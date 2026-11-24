@@ -3,10 +3,13 @@ import BlogLayout from "../../components/BlogLayout.astro";
 import LogList from "../../components/LogList.astro";
 import { fetchLogEntries } from "../../lib/log";
 
-// Static on purpose: the channel is read during `astro build`, so a bad
-// Are.na response can't take the route down. New entries show up on the next deploy.
+// Rendered on demand and cached via ISR (see astro.config.mjs). A failed Are.na
+// fetch returns a 500, so Vercel keeps serving the last good version.
+export const prerender = false;
+
 const CHANNEL_SLUG = "journal-kdzyijsq-zk";
 const entries = await fetchLogEntries(CHANNEL_SLUG);
+if (!entries) return new Response(null, { status: 500 });
 ---
 
 <BlogLayout id="log" title="Log" description="A day-by-day log of what I've been doing.">
