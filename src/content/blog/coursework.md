@@ -15,7 +15,7 @@ I'm studying computer engineering at Purdue with concentrations in computer syst
 - ECE 495: Senior Design
 
 ## Spring 2026
-- ECE 337: ASIC Design
+- ECE 337: ASIC Design (I dropped this)
 - ECE 20869: Discrete Math
 - ECE 494: Professional Communication Capstone
 - ECE 49595: Senior Design I
